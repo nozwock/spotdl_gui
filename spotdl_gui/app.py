@@ -39,7 +39,7 @@ class PollProc(QtCore.QThread):
     tx = QtCore.pyqtSignal(object)  # Why object? https://stackoverflow.com/a/46694063
 
     def __init__(self, parent):
-        QtCore.QThread.__init__(self, parent)
+        super().__init__(parent)
 
     def run(self):
         while ...:
@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         clear_screen()
         print("Sync canceled")
 
-    def on_proc_complete(self):
+    def on_proc_complete(self) -> None:
         self.set_page()
         kill_all_procs()
         print("Sync complete")
