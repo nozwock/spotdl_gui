@@ -162,12 +162,28 @@ def init_sync(choice: str) -> None:
     print(f"Starting sync/download for {choice}")
     if choice == CHOICES[0]:
         PROCS.append(
-            subprocess.Popen(["python", "-m", "spotdl", "saved", "--user-auth"])
+            subprocess.Popen(
+                [
+                    sys.executable,
+                    "-m",
+                    "spotdl",
+                    "saved",
+                    "--user-auth",
+                    "--sponsor-block",
+                ]
+            )
         )
     else:
         PROCS.append(
             subprocess.Popen(
-                ["python", "-m", "spotdl", "all-user-playlists", "--user-auth"]
+                [
+                    sys.executable,
+                    "-m",
+                    "spotdl",
+                    "all-user-playlists",
+                    "--user-auth",
+                    "--sponsor-block",
+                ]
             )
         )
 
