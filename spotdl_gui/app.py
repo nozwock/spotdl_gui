@@ -188,9 +188,10 @@ def main() -> None:
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
+
+    set_output_dir(STATE["output_dir"])
     sys.exit(app.exec())
 
 
 if __name__ == "__main__":
-    set_output_dir(STATE["output_dir"])
     main()
