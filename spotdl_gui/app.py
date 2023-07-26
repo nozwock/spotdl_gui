@@ -13,6 +13,7 @@ from PyQt6.QtWidgets import (
     QApplication,
     QComboBox,
     QFileDialog,
+    QLineEdit,
     QMainWindow,
     QPushButton,
     QStackedLayout,
@@ -21,7 +22,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-CHOICES = ["Liked Songs", "All User Playlists"]
+CHOICES = ["Liked Songs", "All User Playlists", "Custom Query"]
 PROCS: list[subprocess.Popen] = []
 
 STATE_DIR = Path(platformdirs.user_config_dir()).joinpath("spotdl_gui")
@@ -58,7 +59,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.resize(250, 100)
-        self.setMaximumSize(QSize(270, 100))
+        # self.setMaximumSize(QSize(270, 100))
         self.setWindowTitle("Spotdl GUI")
 
         self.menubar = self.menuBar()
@@ -86,6 +87,17 @@ class MainWindow(QMainWindow):
         self.choice_list = QComboBox(self)
         main_vbox.addWidget(self.choice_list)
         self.choice_list.addItems(CHOICES)
+
+        self.query = QLineEdit(self)
+        main_vbox.addWidget(self.query)
+        self.query.setPlaceholderText("Playlist link, Song link, etc...")
+        self.query.setMaximumWidth(250)
+        self.query.hide()
+        self.choice_list.currentTextChanged.connect(
+            lambda: self.query.show()
+            if self.choice_list.currentText() == CHOICES[2]
+            else self.query.hide()
+        )
 
         download_btn = QPushButton("Download", self)
         main_vbox.addWidget(download_btn)
@@ -126,7 +138,7 @@ class MainWindow(QMainWindow):
 
     def download_btn_clicked(self) -> None:
         self.set_page(1, False)
-        init_download(self.choice_list.currentText())
+        init_download(self.choice_list.currentText(), self.query.text())
 
         poll = PollProc(self)
         poll.tx.connect(
@@ -158,7 +170,7 @@ def kill_all_procs() -> None:
         PROCS.pop(0)
 
 
-def init_download(choice: str) -> None:
+def init_download(choice: str, query: str) -> None:
     print(f"Starting sync/download for {choice}")
     if choice == CHOICES[0]:
         PROCS.append(
@@ -173,7 +185,7 @@ def init_download(choice: str) -> None:
                 ]
             )
         )
-    else:
+    elif choice == CHOICES[1]:
         PROCS.append(
             subprocess.Popen(
                 [
@@ -186,6 +198,21 @@ def init_download(choice: str) -> None:
                 ]
             )
         )
+    elif choice == CHOICES[2]:
+        PROCS.append(
+            subprocess.Popen(
+                [
+                    sys.executable,
+                    "-m",
+                    "spotdl",
+                    query,
+                    "--user-auth",
+                    "--sponsor-block",
+                ]
+            )
+        )
+    else:
+        raise Exception
 
 
 def set_output_dir(dir: str) -> None:
