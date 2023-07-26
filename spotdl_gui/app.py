@@ -59,7 +59,6 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.resize(250, 100)
-        # self.setMaximumSize(QSize(270, 100))
         self.setWindowTitle("Spotdl GUI")
 
         self.menubar = self.menuBar()
@@ -155,12 +154,12 @@ class MainWindow(QMainWindow):
 
         self.set_page()
         clear_screen()
-        print("Sync canceled")
+        print("Download canceled")
 
     def on_proc_complete(self) -> None:
         self.set_page()
         kill_all_procs()
-        print("Sync complete")
+        print("Download complete")
 
 
 def kill_all_procs() -> None:
@@ -171,48 +170,20 @@ def kill_all_procs() -> None:
 
 
 def init_download(choice: str, query: str) -> None:
-    print(f"Starting sync/download for {choice}")
+    print(f"Starting download for {choice}")
+
+    cmd = [sys.executable, "-m", "spotdl", "--user-auth", "--sponsor-block", "download"]
+
     if choice == CHOICES[0]:
-        PROCS.append(
-            subprocess.Popen(
-                [
-                    sys.executable,
-                    "-m",
-                    "spotdl",
-                    "saved",
-                    "--user-auth",
-                    "--sponsor-block",
-                ]
-            )
-        )
+        cmd.append("saved")
     elif choice == CHOICES[1]:
-        PROCS.append(
-            subprocess.Popen(
-                [
-                    sys.executable,
-                    "-m",
-                    "spotdl",
-                    "all-user-playlists",
-                    "--user-auth",
-                    "--sponsor-block",
-                ]
-            )
-        )
+        cmd.append("all-user-playlists")
     elif choice == CHOICES[2]:
-        PROCS.append(
-            subprocess.Popen(
-                [
-                    sys.executable,
-                    "-m",
-                    "spotdl",
-                    query,
-                    "--user-auth",
-                    "--sponsor-block",
-                ]
-            )
-        )
+        cmd.append(query)
     else:
-        raise Exception
+        raise Exception("Impossible case")
+
+    PROCS.append(subprocess.Popen(cmd))
 
 
 def set_output_dir(dir: str) -> None:
