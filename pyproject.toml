@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "spotdl-gui"
+version = "0.1.0"
+description = ""
+authors = ["nozwock <57829219+nozwock@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{ include = "spotdl_gui" }]
+
+[tool.poetry.scripts]
+spotdl-gui = 'spotdl_gui.app:main'
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.12"
+spotdl = "^4.2.0"
+pyqt6 = "^6.5.1"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.4.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
