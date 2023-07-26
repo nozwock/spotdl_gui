@@ -75,6 +75,8 @@ class MainWindow(QMainWindow):
         )
         filemenu.addAction(outputdir)
 
+        self.statusbar = self.statusBar()
+
         self.pages = QStackedLayout()
 
         main_page = QWidget()
@@ -137,6 +139,7 @@ class MainWindow(QMainWindow):
 
     def download_btn_clicked(self) -> None:
         self.set_page(1, False)
+        self.statusbar.showMessage("Downloading...")
         init_download(self.choice_list.currentText(), self.query.text())
 
         poll = PollProc(self)
@@ -153,11 +156,13 @@ class MainWindow(QMainWindow):
         self.threads.pop(0)
 
         self.set_page()
+        self.statusbar.showMessage("Download canceled", 5000)
         clear_screen()
         print("Download canceled")
 
     def on_proc_complete(self) -> None:
         self.set_page()
+        self.statusbar.showMessage("Download complete", 5000)
         kill_all_procs()
         print("Download complete")
 
