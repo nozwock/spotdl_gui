@@ -13,6 +13,7 @@ spotdl-gui = 'spotdl_gui.app:main'
 python = ">=3.11,<3.12"
 spotdl = "^4.2.0"
 pyqt6 = "^6.5.1"
+platformdirs = "^3.9.1"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,8 +1,10 @@
 import os
+import pickle
 import subprocess
 import sys
 from pathlib import Path
 
+import platformdirs
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (
@@ -19,6 +21,17 @@ from PyQt6.QtWidgets import (
 
 CHOICES = ["Liked Songs", "All User Playlists"]
 PROCS: list[subprocess.Popen] = []
+
+STATE_DIR = Path(platformdirs.user_config_dir()).joinpath("spotdl_gui")
+STATE_DIR.mkdir(parents=True, exist_ok=True)
+STATE_PATH = STATE_DIR.joinpath("state.pickle")
+
+if STATE_PATH.is_file():
+    with open(STATE_PATH, "rb") as f:
+        STATE = pickle.load(f)
+else:
+    STATE = {"output_dir": Path()}
+
 
 """
 TODO return to main page after the process completes (polling)
@@ -38,7 +51,11 @@ class MainWindow(QMainWindow):
         outputdir = QAction("Pick output folder", self)
         outputdir.triggered.connect(
             lambda: set_output_dir(
-                QFileDialog.getExistingDirectory(self, "Pick output folder")
+                QFileDialog.getExistingDirectory(
+                    self,
+                    "Pick output folder",
+                    directory=str(STATE["output_dir"].absolute()),
+                )
             )
         )
         filemenu.addAction(outputdir)
@@ -78,6 +95,9 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         kill_all_procs()
 
+        with open(STATE_PATH, "wb") as f:
+            pickle.dump(STATE, f)
+
     def sync_btn_clicked(self) -> None:
         self.pages.setCurrentIndex(1)
         self.menubar.setDisabled(True)
@@ -86,7 +106,7 @@ class MainWindow(QMainWindow):
     def cancel_btn_clicked(self) -> None:
         kill_all_procs()
         self.pages.setCurrentIndex(0)
-        self.menubar.setDisabled(False)
+        self.menubar.setEnabled(True)
         print("Sync canceled")
 
 
@@ -108,6 +128,7 @@ def set_output_dir(dir: str) -> None:
     if dir:
         path = Path(dir)
         os.chdir(path)
+        STATE["output_dir"] = path
         print(f"Output folder: {path.absolute()}")
 
 
@@ -119,4 +140,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    print(f"Output folder: {STATE['output_dir'].absolute()}")
     main()
