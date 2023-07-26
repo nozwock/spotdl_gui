@@ -130,7 +130,7 @@ class MainWindow(QMainWindow):
 
         poll = PollProc(self)
         poll.tx.connect(
-            self.proc_complete
+            self.on_proc_complete
         )  # Go back to the main page once the proc is complete
         poll.start()
         self.threads.append(poll)
@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         clear_screen()
         print("Sync canceled")
 
-    def proc_complete(self):
+    def on_proc_complete(self):
         self.set_page()
         kill_all_procs()
         print("Sync complete")
