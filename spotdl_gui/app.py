@@ -172,7 +172,15 @@ def kill_all_procs() -> None:
 def init_download(choice: str, query: str) -> None:
     print(f"Starting download for {choice}")
 
-    cmd = [sys.executable, "-m", "spotdl", "--user-auth", "--sponsor-block", "download"]
+    cmd = [
+        sys.executable,
+        "-m",
+        "spotdl",
+        "--print-errors",
+        "--user-auth",
+        "--sponsor-block",
+        "download",
+    ]
 
     if choice == CHOICES[0]:
         cmd.append("saved")
