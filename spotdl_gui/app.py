@@ -22,7 +22,6 @@ PROCS: list[subprocess.Popen] = []
 
 """
 TODO return to main page after the process completes (polling)
-TODO disable menu in cancel page
 """
 
 
@@ -34,8 +33,8 @@ class MainWindow(QMainWindow):
         self.setMaximumSize(QSize(270, 100))
         self.setWindowTitle("Spotdl GUI")
 
-        menubar = self.menuBar()
-        filemenu = menubar.addMenu("File")
+        self.menubar = self.menuBar()
+        filemenu = self.menubar.addMenu("File")
         outputdir = QAction("Pick output folder", self)
         outputdir.triggered.connect(
             lambda: set_output_dir(
@@ -44,59 +43,57 @@ class MainWindow(QMainWindow):
         )
         filemenu.addAction(outputdir)
 
-        pages = QStackedLayout()
+        self.pages = QStackedLayout()
 
         main_page = QWidget()
         main_vbox = QVBoxLayout()
         main_vbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
         main_page.setLayout(main_vbox)
-        pages.addWidget(main_page)
+        self.pages.addWidget(main_page)
 
-        choice_list = QComboBox(self)
-        main_vbox.addWidget(choice_list)
-        choice_list.addItems(CHOICES)
+        self.choice_list = QComboBox(self)
+        main_vbox.addWidget(self.choice_list)
+        self.choice_list.addItems(CHOICES)
 
         sync_btn = QPushButton("Sync / Download", self)
         main_vbox.addWidget(sync_btn)
-        sync_btn.clicked.connect(
-            lambda: sync_btn_clicked(pages, 1, choice_list.currentText())
-        )
+        sync_btn.clicked.connect(self.sync_btn_clicked)
 
         cancel_page = QWidget()
         cancel_vbox = QVBoxLayout()
         cancel_vbox.setAlignment(Qt.AlignmentFlag.AlignCenter)
         cancel_page.setLayout(cancel_vbox)
-        pages.addWidget(cancel_page)
+        self.pages.addWidget(cancel_page)
 
         cancel_btn = QPushButton("Cancel", self)
         cancel_vbox.addWidget(cancel_btn)
-        cancel_btn.clicked.connect(lambda: cancel_btn_clicked(pages, 0))
+        cancel_btn.clicked.connect(self.cancel_btn_clicked)
 
-        pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(0)
 
         widget = QWidget()
-        widget.setLayout(pages)
+        widget.setLayout(self.pages)
         self.setCentralWidget(widget)
 
     def closeEvent(self, event):
         kill_all_procs()
+
+    def sync_btn_clicked(self) -> None:
+        self.pages.setCurrentIndex(1)
+        self.menubar.setDisabled(True)
+        init_sync(self.choice_list.currentText())
+
+    def cancel_btn_clicked(self) -> None:
+        kill_all_procs()
+        self.pages.setCurrentIndex(0)
+        self.menubar.setDisabled(False)
+        print("Sync canceled")
 
 
 def kill_all_procs() -> None:
     for p in PROCS:
         p.kill()
         PROCS.pop(0)
-
-
-def sync_btn_clicked(pages: QStackedLayout, page_idx: int, choice: str) -> None:
-    pages.setCurrentIndex(page_idx)
-    init_sync(choice)
-
-
-def cancel_btn_clicked(pages: QStackedLayout, page_idx: int) -> None:
-    kill_all_procs()
-    pages.setCurrentIndex(page_idx)
-    print("Sync canceled")
 
 
 def init_sync(choice: str) -> None:
