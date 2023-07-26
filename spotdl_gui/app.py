@@ -163,13 +163,13 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         self.threads.pop(0)
 
         self.set_page()
-        self.statusbar.showMessage("Download canceled", 5000)
+        self.statusbar.showMessage("Process canceled", 5000)
         clear_screen()
         print("Download canceled")
 
     def on_proc_complete(self) -> None:
         self.set_page()
-        self.statusbar.showMessage("Download complete", 5000)
+        self.statusbar.showMessage("Process complete", 5000)
         kill_all_procs()
         print("Download complete")
 
