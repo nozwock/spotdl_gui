@@ -87,9 +87,9 @@ class MainWindow(QMainWindow):
         main_vbox.addWidget(self.choice_list)
         self.choice_list.addItems(CHOICES)
 
-        sync_btn = QPushButton("Sync / Download", self)
-        main_vbox.addWidget(sync_btn)
-        sync_btn.clicked.connect(self.sync_btn_clicked)
+        download_btn = QPushButton("Download", self)
+        main_vbox.addWidget(download_btn)
+        download_btn.clicked.connect(self.download_btn_clicked)
 
         cancel_page = QWidget()
         cancel_vbox = QVBoxLayout()
@@ -124,9 +124,9 @@ class MainWindow(QMainWindow):
         self.pages.setCurrentIndex(page_idx)
         self.menubar.setEnabled(menubar_enabled)
 
-    def sync_btn_clicked(self) -> None:
+    def download_btn_clicked(self) -> None:
         self.set_page(1, False)
-        init_sync(self.choice_list.currentText())
+        init_download(self.choice_list.currentText())
 
         poll = PollProc(self)
         poll.tx.connect(
@@ -158,7 +158,7 @@ def kill_all_procs() -> None:
         PROCS.pop(0)
 
 
-def init_sync(choice: str) -> None:
+def init_download(choice: str) -> None:
     print(f"Starting sync/download for {choice}")
     if choice == CHOICES[0]:
         PROCS.append(
