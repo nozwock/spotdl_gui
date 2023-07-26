@@ -92,6 +92,13 @@ class MainWindow(QMainWindow):
         self.query = QLineEdit(self)
         main_vbox.addWidget(self.query)
         self.query.setPlaceholderText("Playlist link, Song link, etc...")
+        self.query.setToolTip(
+            r"""Spotify/YouTube URL for a song/playlist/album/artist/etc. to download.
+
+For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
+(ie. 'album:the album name' you can mix these options to get more accurate results).
+        """
+        )
         self.query.setMaximumWidth(250)
         self.query.hide()
         self.choice_list.currentTextChanged.connect(
