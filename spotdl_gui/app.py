@@ -2,9 +2,11 @@ import os
 import pickle
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import platformdirs
+from PyQt6 import QtCore
 from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (
@@ -33,12 +35,25 @@ else:
     STATE = {"output_dir": Path()}
 
 
-"""
-TODO return to main page after the process completes (polling)
-"""
+class PollProc(QtCore.QThread):
+    tx = QtCore.pyqtSignal(object)  # Why object? https://stackoverflow.com/a/46694063
+
+    def __init__(self, parent):
+        QtCore.QThread.__init__(self, parent)
+
+    def run(self):
+        while ...:
+            is_procs_complete = all(p.poll() is not None for p in PROCS)
+            if is_procs_complete:
+                self.tx.emit(0)
+                break
+            time.sleep(0.1)
+        self.exit()
 
 
 class MainWindow(QMainWindow):
+    threads: list[QtCore.QThread] = []
+
     def __init__(self):
         super().__init__()
 
@@ -95,33 +110,66 @@ class MainWindow(QMainWindow):
     def closeEvent(self, event):
         kill_all_procs()
 
+        # Cleaning up threads
+        for t in self.threads:
+            t.disconnect()
+            while t.isRunning():
+                t.wait()
+            self.threads.pop(0)
+
         with open(STATE_PATH, "wb") as f:
             pickle.dump(STATE, f)
 
+    def set_page(self, page_idx: int = 0, menubar_enabled: bool = True) -> None:
+        self.pages.setCurrentIndex(page_idx)
+        self.menubar.setEnabled(menubar_enabled)
+
     def sync_btn_clicked(self) -> None:
-        self.pages.setCurrentIndex(1)
-        self.menubar.setDisabled(True)
+        self.set_page(1, False)
         init_sync(self.choice_list.currentText())
+
+        poll = PollProc(self)
+        poll.tx.connect(
+            self.proc_complete
+        )  # Go back to the main page once the proc is complete
+        poll.start()
+        self.threads.append(poll)
 
     def cancel_btn_clicked(self) -> None:
         kill_all_procs()
-        self.pages.setCurrentIndex(0)
-        self.menubar.setEnabled(True)
+
+        self.threads[0].disconnect()
+        self.threads.pop(0)
+
+        self.set_page()
+        clear_screen()
         print("Sync canceled")
+
+    def proc_complete(self):
+        self.set_page()
+        kill_all_procs()
+        print("Sync complete")
 
 
 def kill_all_procs() -> None:
     for p in PROCS:
-        p.kill()
+        if p.poll() is None:
+            p.kill()  # bcz spotdl doesn't exit after TERM, for way too long
         PROCS.pop(0)
 
 
 def init_sync(choice: str) -> None:
     print(f"Starting sync/download for {choice}")
     if choice == CHOICES[0]:
-        PROCS.append(subprocess.Popen(["spotdl", "saved", "--user-auth"]))
+        PROCS.append(
+            subprocess.Popen(["python", "-m", "spotdl", "saved", "--user-auth"])
+        )
     else:
-        PROCS.append(subprocess.Popen(["spotdl", "all-user-playlists", "--user-auth"]))
+        PROCS.append(
+            subprocess.Popen(
+                ["python", "-m", "spotdl", "all-user-playlists", "--user-auth"]
+            )
+        )
 
 
 def set_output_dir(dir: str) -> None:
@@ -132,6 +180,10 @@ def set_output_dir(dir: str) -> None:
         print(f"Output folder: {path.absolute()}")
 
 
+def clear_screen() -> None:
+    os.system("cls" if os.name == "nt" else "clear")
+
+
 def main() -> None:
     app = QApplication(sys.argv)
     window = MainWindow()
@@ -140,5 +192,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    print(f"Output folder: {STATE['output_dir'].absolute()}")
+    set_output_dir(STATE["output_dir"])
     main()
