@@ -215,7 +215,7 @@ def kill_all_procs() -> None:
     for _ in range(len(PROCS)):
         p = PROCS[0]
         if p.is_alive():
-            p.kill()  # bcz spotdl doesn't exit after TERM, for way too long
+            p.kill()
         PROCS.pop(0)
 
 
