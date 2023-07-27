@@ -112,8 +112,10 @@ def merge_maps(key_from: dict[str, Any], values_from: dict[str, Any]) -> dict[st
     """
 
     out = {}
+    override_keys = values_from.keys()
     for k in key_from.keys():
-        out[k] = values_from[k]
+        if k in override_keys:
+            out[k] = values_from[k]
 
     return out
 
@@ -126,10 +128,8 @@ if __name__ == "__main__":
 
     spotify_options, downloader_options = SpotdlApi.get_config_options()
 
-    spotify_options["user_auth"] = True
-
-    downloader_options["sponsor_block"] = True
-    downloader_options["print_errors"] = True
+    spotify_options.update({"user_auth": True})
+    downloader_options.update({"sponsor_block": True, "print_errors": True})
 
     tempdir = tempfile.mkdtemp()
     print(f"Output folder: {tempdir}")
