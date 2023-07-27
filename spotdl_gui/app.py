@@ -181,18 +181,19 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         self.set_page()
         self.statusbar.showMessage("Process canceled", 5000)
         clear_screen()
-        print("Download canceled")
+        print("Process canceled")
 
     def on_proc_complete(self) -> None:
         self.set_page()
         self.statusbar.showMessage("Process complete", 5000)
         kill_all_procs()
-        print("Download complete")
+        print("Process complete")
 
 
 def init_download(choice: str, query: str) -> None:
     def _download(query: list[str]) -> None:
         with SpotdlApi(spotify_options, downloader_options) as api:
+            # This runs in a new proc every time, so maybe 'cleanup()' is fine?
             api.download(query)
 
     print(f"Starting download for {choice}")
