@@ -141,8 +141,11 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         kill_all_procs()
 
         # Cleaning up threads
-        for t in self.threads:
-            t.disconnect()
+        for _ in range(len(self.threads)):
+            t = self.threads[0]
+            if t.isRunning():
+                t.disconnect()
+                t.exit()
             while t.isRunning():
                 t.wait()
             self.threads.pop(0)
@@ -169,7 +172,10 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
     def cancel_btn_clicked(self) -> None:
         kill_all_procs()
 
-        self.threads[0].disconnect()
+        t = self.threads[0]
+        if t.isRunning():
+            t.disconnect()
+            t.exit()
         self.threads.pop(0)
 
         self.set_page()
@@ -205,7 +211,8 @@ def init_download(choice: str, query: str) -> None:
 
 
 def kill_all_procs() -> None:
-    for p in PROCS:
+    for _ in range(len(PROCS)):
+        p = PROCS[0]
         if p.is_alive():
             p.kill()  # bcz spotdl doesn't exit after TERM, for way too long
         PROCS.pop(0)
