@@ -2,8 +2,11 @@
 
 ## Installation
 ```sh
+python -m pip install --user pipx
 pipx install git+https://github.com/nozwock/spotdl_gui.git
 ```
+
+- Run with `spotdl-gui`
 
 ## Building frozen app 
 ```sh
