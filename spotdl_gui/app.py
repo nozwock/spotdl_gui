@@ -185,7 +185,7 @@ def init_download(choice: str, query: str) -> None:
     print(f"Starting download for {choice}")
 
     cmd = [
-        sys.executable,
+        sys.executable,  # TODO won't work if the app is freezed, make a spotdl api and use it to make the app freezable
         "-m",
         "spotdl",
         "--print-errors",
