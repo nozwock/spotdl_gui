@@ -3,6 +3,7 @@ import pickle
 import subprocess
 import sys
 import time
+from multiprocessing import Process
 from pathlib import Path
 
 import platformdirs
@@ -22,8 +23,10 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from spotdl_gui.spotdl_api import SpotdlApi
+
 CHOICES = ["Liked Songs", "All User Playlists", "Custom Query"]
-PROCS: list[subprocess.Popen] = []
+PROCS: list[Process] = []
 
 STATE_DIR = Path(platformdirs.user_config_dir()).joinpath("spotdl_gui")
 STATE_DIR.mkdir(parents=True, exist_ok=True)
@@ -36,6 +39,12 @@ else:
     STATE = {"output_dir": Path()}
 
 
+spotify_options, downloader_options = SpotdlApi.get_config_options()
+
+spotify_options.update({"user_auth": True})
+downloader_options.update({"sponsor_block": True, "print_errors": True})
+
+
 class PollProc(QtCore.QThread):
     tx = QtCore.pyqtSignal(object)  # Why object? https://stackoverflow.com/a/46694063
 
@@ -44,8 +53,9 @@ class PollProc(QtCore.QThread):
 
     def run(self):
         while ...:
-            is_procs_complete = all(p.poll() is not None for p in PROCS)
+            is_procs_complete = all(not p.is_alive() for p in PROCS)
             if is_procs_complete:
+                kill_all_procs()
                 self.tx.emit(0)
                 break
             time.sleep(0.1)
@@ -174,42 +184,37 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         print("Download complete")
 
 
-def kill_all_procs() -> None:
-    for p in PROCS:
-        if p.poll() is None:
-            p.kill()  # bcz spotdl doesn't exit after TERM, for way too long
-        PROCS.pop(0)
-
-
 def init_download(choice: str, query: str) -> None:
+    def _download(query: list[str]) -> None:
+        with SpotdlApi(spotify_options, downloader_options) as api:
+            api.download(query)
+
     print(f"Starting download for {choice}")
 
-    cmd = [
-        sys.executable,  # TODO won't work if the app is freezed, make a spotdl api and use it to make the app freezable
-        "-m",
-        "spotdl",
-        "--print-errors",
-        "--user-auth",
-        "--sponsor-block",
-        "download",
-    ]
-
     if choice == CHOICES[0]:
-        cmd.append("saved")
+        p = Process(target=_download, args=(["saved"],))
     elif choice == CHOICES[1]:
-        cmd.append("all-user-playlists")
+        p = Process(target=_download, args=(["all-user-playlists"],))
     elif choice == CHOICES[2]:
-        cmd.append(query)
+        p = Process(target=_download, args=([query],))
     else:
         raise Exception("Impossible case")
 
-    PROCS.append(subprocess.Popen(cmd))
+    PROCS.append(p)
+    p.start()
+
+
+def kill_all_procs() -> None:
+    for p in PROCS:
+        if p.is_alive():
+            p.kill()  # bcz spotdl doesn't exit after TERM, for way too long
+        PROCS.pop(0)
 
 
 def set_output_dir(dir: str) -> None:
     if dir:
         path = Path(dir)
-        os.chdir(path)
+        downloader_options["output"] = str(path.absolute())
         STATE["output_dir"] = path
         print(f"Output folder: {path.absolute()}")
 
