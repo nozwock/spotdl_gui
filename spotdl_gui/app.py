@@ -1,14 +1,11 @@
 import os
-import pickle
-import subprocess
 import sys
 import time
 from multiprocessing import Process
 from pathlib import Path
 
-import platformdirs
 from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, Qt
+from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 from PyQt6.QtWidgets import (
     QApplication,
@@ -18,7 +15,6 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QStackedLayout,
-    QToolBar,
     QVBoxLayout,
     QWidget,
 )

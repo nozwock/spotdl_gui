@@ -4,8 +4,6 @@ import pickle
 from dataclasses import dataclass
 from pathlib import Path
 
-import platformdirs
-
 from .defines import CONFIG_DIR, CONFIG_PATH
 
 
