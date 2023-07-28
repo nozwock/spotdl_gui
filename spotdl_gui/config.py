@@ -20,11 +20,11 @@ class Config:
         if CONFIG_PATH.is_file():
             with open(CONFIG_PATH, "rb") as f:
                 cfg = pickle.load(f)
-                if not isinstance(cfg, Config):
+                if not isinstance(cfg, cls):
                     raise Exception(f"Corrupted config: {CONFIG_PATH}")
                 return cfg
 
-        return Config(output_dir=Path())
+        return cls(output_dir=Path())
 
     def store(self) -> None:
         with open(CONFIG_PATH, "wb") as f:
