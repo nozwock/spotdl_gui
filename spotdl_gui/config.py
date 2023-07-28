@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import pickle
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .defines import CONFIG_DIR, CONFIG_PATH
@@ -9,7 +9,7 @@ from .defines import CONFIG_DIR, CONFIG_PATH
 
 @dataclass
 class Config:
-    output_dir: Path
+    output_dir: Path = field(default_factory=Path)
 
     @classmethod
     def load(cls) -> Config:
@@ -22,7 +22,7 @@ class Config:
                     raise Exception(f"Corrupted config: {CONFIG_PATH}")
                 return cfg
 
-        return cls(output_dir=Path())
+        return cls()
 
     def store(self) -> None:
         with open(CONFIG_PATH, "wb") as f:
