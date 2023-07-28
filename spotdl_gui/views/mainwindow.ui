@@ -267,10 +267,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionSettings"/>
    <addaction name="actionImport"/>
    <addaction name="actionExport"/>
    <addaction name="actionDownload"/>
-   <addaction name="actionSettings"/>
   </widget>
   <action name="actionOpen_SpotDL_config_folder">
    <property name="text">
@@ -278,6 +278,10 @@
    </property>
   </action>
   <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="../../assets/resource.qrc">
+     <normaloff>:/icons/bx-cog.svg</normaloff>:/icons/bx-cog.svg</iconset>
+   </property>
    <property name="text">
     <string>Settings</string>
    </property>
@@ -286,6 +290,10 @@
    </property>
   </action>
   <action name="actionDownload">
+   <property name="icon">
+    <iconset resource="../../assets/resource.qrc">
+     <normaloff>:/icons/bx-download.svg</normaloff>:/icons/bx-download.svg</iconset>
+   </property>
    <property name="text">
     <string>Download</string>
    </property>
@@ -297,6 +305,10 @@
    </property>
   </action>
   <action name="actionExport">
+   <property name="icon">
+    <iconset resource="../../assets/resource.qrc">
+     <normaloff>:/icons/bxs-file-export.svg</normaloff>:/icons/bxs-file-export.svg</iconset>
+   </property>
    <property name="text">
     <string>Export</string>
    </property>
@@ -308,6 +320,10 @@
    </property>
   </action>
   <action name="actionImport">
+   <property name="icon">
+    <iconset resource="../../assets/resource.qrc">
+     <normaloff>:/icons/bxs-file-import.svg</normaloff>:/icons/bxs-file-import.svg</iconset>
+   </property>
    <property name="text">
     <string>Import</string>
    </property>
@@ -319,6 +335,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../assets/resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
