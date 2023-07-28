@@ -23,21 +23,13 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
+from spotdl_gui.config import Config
 from spotdl_gui.spotdl_api import SpotdlApi
 
 CHOICES = ["Liked Songs", "All User Playlists", "Custom Query"]
 PROCS: list[Process] = []
 
-STATE_DIR = Path(platformdirs.user_config_dir()).joinpath("spotdl_gui")
-STATE_DIR.mkdir(parents=True, exist_ok=True)
-STATE_PATH = STATE_DIR.joinpath("state.pickle")
-
-if STATE_PATH.is_file():
-    with open(STATE_PATH, "rb") as f:
-        STATE = pickle.load(f)
-else:
-    STATE = {"output_dir": Path()}
-
+CONFIG = Config.load()
 
 spotify_options, downloader_options = SpotdlApi.get_config_options()
 
@@ -79,7 +71,7 @@ class MainWindow(QMainWindow):
                 QFileDialog.getExistingDirectory(
                     self,
                     "Pick output folder",
-                    directory=str(STATE["output_dir"].absolute()),
+                    directory=str(CONFIG.output_dir.absolute()),
                 )
             )
         )
@@ -150,8 +142,7 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
                 t.wait()
             self.threads.pop(0)
 
-        with open(STATE_PATH, "wb") as f:
-            pickle.dump(STATE, f)
+        CONFIG.store()
 
     def set_page(self, page_idx: int = 0, menubar_enabled: bool = True) -> None:
         self.pages.setCurrentIndex(page_idx)
@@ -219,12 +210,14 @@ def kill_all_procs() -> None:
         PROCS.pop(0)
 
 
-def set_output_dir(dir: str) -> None:
-    if dir:
-        path = Path(dir)
-        downloader_options["output"] = str(path.absolute())
-        STATE["output_dir"] = path
-        print(f"Output folder: {path.absolute()}")
+def set_output_dir(dir: Path | str) -> None:
+    if isinstance(dir, str):
+        dir = Path(dir)
+
+    downloader_options["output"] = str(dir.absolute())
+    if dir != CONFIG.output_dir:
+        CONFIG.output_dir = dir
+    print(f"Output folder: {dir.absolute()}")
 
 
 def clear_screen() -> None:
@@ -236,7 +229,7 @@ def main() -> None:
     window = MainWindow()
     window.show()
 
-    set_output_dir(STATE["output_dir"])
+    set_output_dir(CONFIG.output_dir)
     sys.exit(app.exec())
 
 
