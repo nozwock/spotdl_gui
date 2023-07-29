@@ -31,7 +31,7 @@
            <string/>
           </property>
           <property name="placeholderText">
-           <string>Search for music...</string>
+           <string>Search for music or paste link here...</string>
           </property>
          </widget>
         </item>
@@ -279,7 +279,7 @@
   </action>
   <action name="actionSettings">
    <property name="icon">
-    <iconset resource="../../assets/resource.qrc">
+    <iconset resource="../assets/resource.qrc">
      <normaloff>:/icons/bx-cog.svg</normaloff>:/icons/bx-cog.svg</iconset>
    </property>
    <property name="text">
@@ -291,7 +291,7 @@
   </action>
   <action name="actionDownload">
    <property name="icon">
-    <iconset resource="../../assets/resource.qrc">
+    <iconset resource="../assets/resource.qrc">
      <normaloff>:/icons/bx-download.svg</normaloff>:/icons/bx-download.svg</iconset>
    </property>
    <property name="text">
@@ -306,7 +306,7 @@
   </action>
   <action name="actionExport">
    <property name="icon">
-    <iconset resource="../../assets/resource.qrc">
+    <iconset resource="../assets/resource.qrc">
      <normaloff>:/icons/bxs-file-export.svg</normaloff>:/icons/bxs-file-export.svg</iconset>
    </property>
    <property name="text">
@@ -321,7 +321,7 @@
   </action>
   <action name="actionImport">
    <property name="icon">
-    <iconset resource="../../assets/resource.qrc">
+    <iconset resource="../assets/resource.qrc">
      <normaloff>:/icons/bxs-file-import.svg</normaloff>:/icons/bxs-file-import.svg</iconset>
    </property>
    <property name="text">
@@ -336,7 +336,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../../assets/resource.qrc"/>
+  <include location="../assets/resource.qrc"/>
  </resources>
  <connections/>
 </ui>
