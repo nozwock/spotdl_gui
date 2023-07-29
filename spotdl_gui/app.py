@@ -6,7 +6,7 @@ from pathlib import Path
 
 import platformdirs
 from PySide6 import QtCore
-from PySide6.QtCore import QObject, QRunnable, QSize, Qt, QThreadPool, Signal, Slot
+from PySide6.QtCore import QObject, QRunnable, QSize, Qt, Signal
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import (
     QApplication,
@@ -27,7 +27,7 @@ CONFIG = Config.load()
 
 
 class PollProc(QtCore.QThread):
-    proc_done = QtCore.Signal()
+    proc_done = Signal()
 
     def __init__(self, parent, proc: Process):
         super().__init__(parent)
@@ -61,7 +61,7 @@ class MainWindow(QMainWindow):
                 QFileDialog.getExistingDirectory(
                     self,
                     "Pick output folder",
-                    dir=str(STATE["output_dir"].absolute()),
+                    dir=str(CONFIG.output_dir.absolute()),
                 )
             )
         )
