@@ -218,16 +218,23 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>36</width>
+     <height>36</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionSettings"/>
+   <addaction name="actionPick_Output_Folder"/>
    <addaction name="actionImport"/>
    <addaction name="actionExport"/>
    <addaction name="actionDownload"/>
+   <addaction name="actionSettings"/>
   </widget>
   <action name="actionOpen_SpotDL_config_folder">
    <property name="text">
@@ -255,7 +262,7 @@
     <string>Download</string>
    </property>
    <property name="toolTip">
-    <string>Download selected</string>
+    <string>Download selected tracks</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -270,7 +277,7 @@
     <string>Export</string>
    </property>
    <property name="toolTip">
-    <string>Export fetched song list to a file</string>
+    <string>Export tracks list to a file</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -285,7 +292,22 @@
     <string>Import</string>
    </property>
    <property name="toolTip">
-    <string>Import exported songs list</string>
+    <string>Import exported tracks list</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::NoRole</enum>
+   </property>
+  </action>
+  <action name="actionPick_Output_Folder">
+   <property name="icon">
+    <iconset resource="../assets/resource.qrc">
+     <normaloff>:/icons/bxs-folder-open.svg</normaloff>:/icons/bxs-folder-open.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Pick Output Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Pick output folder</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>

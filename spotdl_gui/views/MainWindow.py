@@ -149,6 +149,7 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName("menuFile")
         MainWindow.setMenuBar(self.menuBar)
         self.toolBar = QtWidgets.QToolBar(parent=MainWindow)
+        self.toolBar.setIconSize(QtCore.QSize(36, 36))
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.ToolBarArea.TopToolBarArea, self.toolBar)
         self.actionOpen_SpotDL_config_folder = QtGui.QAction(parent=MainWindow)
@@ -195,12 +196,23 @@ class Ui_MainWindow(object):
         self.actionImport.setIcon(icon3)
         self.actionImport.setMenuRole(QtGui.QAction.MenuRole.NoRole)
         self.actionImport.setObjectName("actionImport")
+        self.actionPick_Output_Folder = QtGui.QAction(parent=MainWindow)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(
+            QtGui.QPixmap(":/icons/bxs-folder-open.svg"),
+            QtGui.QIcon.Mode.Normal,
+            QtGui.QIcon.State.Off,
+        )
+        self.actionPick_Output_Folder.setIcon(icon4)
+        self.actionPick_Output_Folder.setMenuRole(QtGui.QAction.MenuRole.NoRole)
+        self.actionPick_Output_Folder.setObjectName("actionPick_Output_Folder")
         self.menuFile.addAction(self.actionOpen_SpotDL_config_folder)
         self.menuBar.addAction(self.menuFile.menuAction())
-        self.toolBar.addAction(self.actionSettings)
+        self.toolBar.addAction(self.actionPick_Output_Folder)
         self.toolBar.addAction(self.actionImport)
         self.toolBar.addAction(self.actionExport)
         self.toolBar.addAction(self.actionDownload)
+        self.toolBar.addAction(self.actionSettings)
 
         self.retranslateUi(MainWindow)
         self.stackedWidget.setCurrentIndex(0)
@@ -240,12 +252,20 @@ class Ui_MainWindow(object):
         )
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.actionDownload.setText(_translate("MainWindow", "Download"))
-        self.actionDownload.setToolTip(_translate("MainWindow", "Download selected"))
+        self.actionDownload.setToolTip(
+            _translate("MainWindow", "Download selected tracks")
+        )
         self.actionExport.setText(_translate("MainWindow", "Export"))
         self.actionExport.setToolTip(
-            _translate("MainWindow", "Export fetched song list to a file")
+            _translate("MainWindow", "Export tracks list to a file")
         )
         self.actionImport.setText(_translate("MainWindow", "Import"))
         self.actionImport.setToolTip(
-            _translate("MainWindow", "Import exported songs list")
+            _translate("MainWindow", "Import exported tracks list")
+        )
+        self.actionPick_Output_Folder.setText(
+            _translate("MainWindow", "Pick Output Folder")
+        )
+        self.actionPick_Output_Folder.setToolTip(
+            _translate("MainWindow", "Pick output folder")
         )
