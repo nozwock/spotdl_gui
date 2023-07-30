@@ -10,7 +10,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.setWindowTitle("SpotDL GUI")
 
 
 app = QtWidgets.QApplication(sys.argv)
