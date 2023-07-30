@@ -76,9 +76,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def search(self) -> None:
         def search_success(v) -> None:
-            self.set_page(2)
             self.tracks_model.tracks = v
             self.tracks_model.layoutChanged.emit()
+            self.set_page(2)
 
         def search_error(e) -> None:
             self.set_page(0)
