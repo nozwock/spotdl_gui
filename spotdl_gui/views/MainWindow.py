@@ -36,23 +36,54 @@ class Ui_MainWindow(object):
         self.page_intro.setObjectName("page_intro")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.page_intro)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label = QtWidgets.QLabel(parent=self.page_intro)
-        self.label.setObjectName("label")
-        self.verticalLayout_2.addWidget(
-            self.label, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
-        )
-        self.stackedWidget.addWidget(self.page_intro)
-        self.page_searching = QtWidgets.QWidget()
-        self.page_searching.setObjectName("page_searching")
-        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.page_searching)
-        self.verticalLayout_6.setObjectName("verticalLayout_6")
         spacerItem = QtWidgets.QSpacerItem(
             20,
             40,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.verticalLayout_6.addItem(spacerItem)
+        self.verticalLayout_2.addItem(spacerItem)
+        self.label_2 = QtWidgets.QLabel(parent=self.page_intro)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
+        self.label_2.setObjectName("label_2")
+        self.verticalLayout_2.addWidget(self.label_2)
+        self.label = QtWidgets.QLabel(parent=self.page_intro)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
+        )
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy)
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(
+            self.label, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
+        )
+        spacerItem1 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
+        self.verticalLayout_2.addItem(spacerItem1)
+        self.stackedWidget.addWidget(self.page_intro)
+        self.page_searching = QtWidgets.QWidget()
+        self.page_searching.setObjectName("page_searching")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.page_searching)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        spacerItem2 = QtWidgets.QSpacerItem(
+            20,
+            40,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+        )
+        self.verticalLayout_6.addItem(spacerItem2)
         self.label_searching = QtWidgets.QLabel(parent=self.page_searching)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.MinimumExpanding,
@@ -77,13 +108,13 @@ class Ui_MainWindow(object):
         )
         self.pushButton_cancel_search.setObjectName("pushButton_cancel_search")
         self.verticalLayout_6.addWidget(self.pushButton_cancel_search)
-        spacerItem1 = QtWidgets.QSpacerItem(
+        spacerItem3 = QtWidgets.QSpacerItem(
             20,
             40,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.verticalLayout_6.addItem(spacerItem1)
+        self.verticalLayout_6.addItem(spacerItem3)
         self.stackedWidget.addWidget(self.page_searching)
         self.page_songs_list = QtWidgets.QWidget()
         self.page_songs_list.setObjectName("page_songs_list")
@@ -97,13 +128,13 @@ class Ui_MainWindow(object):
         self.page_downloading.setObjectName("page_downloading")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.page_downloading)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        spacerItem2 = QtWidgets.QSpacerItem(
+        spacerItem4 = QtWidgets.QSpacerItem(
             20,
             40,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.verticalLayout_5.addItem(spacerItem2)
+        self.verticalLayout_5.addItem(spacerItem4)
         self.label_downloading = QtWidgets.QLabel(parent=self.page_downloading)
         sizePolicy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
@@ -126,13 +157,13 @@ class Ui_MainWindow(object):
         )
         self.pushButton_cancel_download.setObjectName("pushButton_cancel_download")
         self.verticalLayout_5.addWidget(self.pushButton_cancel_download)
-        spacerItem3 = QtWidgets.QSpacerItem(
+        spacerItem5 = QtWidgets.QSpacerItem(
             20,
             40,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.verticalLayout_5.addItem(spacerItem3)
+        self.verticalLayout_5.addItem(spacerItem5)
         self.stackedWidget.addWidget(self.page_downloading)
         self.verticalLayout_3.addWidget(
             self.stackedWidget, 0, QtCore.Qt.AlignmentFlag.AlignHCenter
@@ -147,6 +178,8 @@ class Ui_MainWindow(object):
         self.menuBar.setObjectName("menuBar")
         self.menuFile = QtWidgets.QMenu(parent=self.menuBar)
         self.menuFile.setObjectName("menuFile")
+        self.menuHelp = QtWidgets.QMenu(parent=self.menuBar)
+        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menuBar)
         self.toolBar = QtWidgets.QToolBar(parent=MainWindow)
         self.toolBar.setIconSize(QtCore.QSize(36, 36))
@@ -206,8 +239,12 @@ class Ui_MainWindow(object):
         self.actionPick_Output_Folder.setIcon(icon4)
         self.actionPick_Output_Folder.setMenuRole(QtGui.QAction.MenuRole.NoRole)
         self.actionPick_Output_Folder.setObjectName("actionPick_Output_Folder")
+        self.actionAbout = QtGui.QAction(parent=MainWindow)
+        self.actionAbout.setObjectName("actionAbout")
         self.menuFile.addAction(self.actionOpen_SpotDL_config_folder)
+        self.menuHelp.addAction(self.actionAbout)
         self.menuBar.addAction(self.menuFile.menuAction())
+        self.menuBar.addAction(self.menuHelp.menuAction())
         self.toolBar.addAction(self.actionPick_Output_Folder)
         self.toolBar.addAction(self.actionImport)
         self.toolBar.addAction(self.actionExport)
@@ -225,6 +262,12 @@ class Ui_MainWindow(object):
             _translate("MainWindow", "🔍  Search for tracks or paste link here...")
         )
         self.pushButton_search.setText(_translate("MainWindow", "Search"))
+        self.label_2.setText(
+            _translate(
+                "MainWindow",
+                '<html><head/><body><p align="center"><span style=" font-size:16pt; font-weight:700; color:#ffb27f;">Spotify Downloader</span></p></body></html>',
+            )
+        )
         self.label.setText(
             _translate(
                 "MainWindow",
@@ -246,6 +289,7 @@ class Ui_MainWindow(object):
         )
         self.pushButton_cancel_download.setText(_translate("MainWindow", "Cancel"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
+        self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionOpen_SpotDL_config_folder.setText(
             _translate("MainWindow", "Open SpotDL Config Folder")
@@ -269,3 +313,4 @@ class Ui_MainWindow(object):
         self.actionPick_Output_Folder.setToolTip(
             _translate("MainWindow", "Pick output folder")
         )
+        self.actionAbout.setText(_translate("MainWindow", "About"))
