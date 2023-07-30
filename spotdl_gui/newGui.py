@@ -159,19 +159,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.download_worker.kill()
                 self.set_page(2)
 
-        self.set_page(3)
-        self.label_downloading.setText(
-            self.label_downloading_text.replace(
-                "%count%", str(len(self.tracks_model.tracks))
-            )
-        )
-
         songs = [
             self.tracks_model.tracks[row.row()]
             for row in self.tableView_tracks_list.selectionModel().selectedRows()
         ]
 
         if songs:
+            self.set_page(3)
+            self.label_downloading.setText(
+                self.label_downloading_text.replace(
+                    "%count%", str(len(self.tracks_model.tracks))
+                )
+            )
+
             self.download_worker = DownloadWorker(songs)
             self.download_worker.signals.result.connect(download_success)
             self.download_worker.signals.error.connect(download_error)
@@ -186,6 +186,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if dir != self.config.output_dir:
             self.config.output_dir = dir
+        print(f"{self.config.output_dir=}")
 
 
 def main() -> None:
