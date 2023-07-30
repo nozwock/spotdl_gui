@@ -184,7 +184,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if dir != self.config.output_dir:
             self.config.output_dir = dir
-        print(f"{self.config.output_dir=}")
 
 
 def main() -> None:

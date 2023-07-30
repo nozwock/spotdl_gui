@@ -33,7 +33,10 @@ class DownloadWorker(QRunnable):
         def _run(queue: Queue) -> None:
             api = SpotdlApi()
             if self.output_dir is not None:
-                api.downloader.settings["output"] = str(self.output_dir.absolute())
+                output = Path(api.downloader.settings["output"])
+                api.downloader.settings["output"] = str(
+                    self.output_dir.joinpath(output.name).absolute()
+                )
             try:
                 ret = api.download_songs(self.songs)
                 queue.put(ret)
