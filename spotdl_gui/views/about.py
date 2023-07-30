@@ -24,6 +24,7 @@ class Ui_About(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(About)
+        self.buttonBox.accepted.connect(About.accept) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(About)
 
     def retranslateUi(self, About):

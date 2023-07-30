@@ -12,7 +12,6 @@ class AboutDialog(QtWidgets.QDialog, Ui_About):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)
-        self.buttonBox.accepted.connect(self.accept)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):

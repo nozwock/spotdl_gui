@@ -45,9 +45,9 @@
        </layout>
       </item>
       <item alignment="Qt::AlignHCenter">
-       <widget class="QStackedWidget" name="stackedWidget">
+       <widget class="QStackedWidget" name="stackedWidget_pages">
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="page_intro">
          <layout class="QVBoxLayout" name="verticalLayout_2">
