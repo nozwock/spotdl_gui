@@ -47,7 +47,7 @@
       <item>
        <widget class="QStackedWidget" name="stackedWidget_pages">
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="page_intro">
          <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -120,7 +120,7 @@
             </property>
            </spacer>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QLabel" name="label_searching">
             <property name="sizePolicy">
              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -136,8 +136,20 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QProgressBar" name="progressBar_search">
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>650</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>0</number>
             </property>
@@ -146,8 +158,14 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="pushButton_cancel_search">
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Cancel</string>
             </property>
@@ -169,9 +187,13 @@
          </layout>
         </widget>
         <widget class="QWidget" name="page_tracks_list">
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="QTableView" name="tableView_tracks_list"/>
+           <widget class="QTableView" name="tableView_tracks_list">
+            <property name="selectionBehavior">
+             <enum>QAbstractItemView::SelectRows</enum>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -190,7 +212,7 @@
             </property>
            </spacer>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QLabel" name="label_downloading">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -206,8 +228,14 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QProgressBar" name="progressBar_download">
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="maximum">
              <number>0</number>
             </property>
@@ -216,8 +244,14 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignHCenter">
            <widget class="QPushButton" name="pushButton_cancel_download">
+            <property name="minimumSize">
+             <size>
+              <width>300</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="text">
              <string>Cancel</string>
             </property>

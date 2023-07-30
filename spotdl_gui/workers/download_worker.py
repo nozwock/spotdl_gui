@@ -3,7 +3,7 @@ from multiprocessing import Process, Queue
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
-from ..spotdl_api import SpotdlApi
+from ..spotdl_api import DownloaderOptions, Song, SpotdlApi
 from . import EVENT_CHECK_DELAY
 
 
@@ -12,10 +12,16 @@ class WorkerSignals(QObject):
     error = Signal(object)
 
 
-class SearchWorker(QRunnable):
-    def __init__(self, query: list[str]):
+# Should do some abstraction maybe...
+
+
+class DownloadWorker(QRunnable):
+    def __init__(
+        self,
+        songs: list[Song],
+    ):
         super().__init__()
-        self.query = query
+        self.songs = songs
         self.signals = WorkerSignals()
         self.stopped = False
         self.queue = Queue()  # type: ignore
@@ -28,7 +34,7 @@ class SearchWorker(QRunnable):
         def _run(queue: Queue) -> None:
             api = SpotdlApi()
             try:
-                ret = api.simple_search(self.query)
+                ret = api.download_songs(self.songs)
                 queue.put(ret)
             except Exception as e:
                 queue.put(e)
@@ -36,8 +42,6 @@ class SearchWorker(QRunnable):
         def pkill() -> None:
             if p.is_alive():
                 p.kill()
-
-        # I know...
 
         p = Process(target=_run, args=[self.queue])
         p.start()

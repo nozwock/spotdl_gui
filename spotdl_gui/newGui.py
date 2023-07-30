@@ -2,17 +2,19 @@ import sys
 from pathlib import Path
 
 import qdarktheme
-from PySide6 import QtWidgets
-from PySide6.QtCore import QThreadPool
+from PySide6 import QtCore, QtWidgets
+from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QAction, QKeySequence, QShortcut
-from PySide6.QtWidgets import QDialog, QFileDialog, QWidget
+from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableView, QWidget
 
 from .assets import resource
 from .config import Config
 from .models.tracks_model import TracksModel
-from .spotdl_api import Song
+from .spotdl_api import Song, get_spotdl_path
+from .utils import open_default
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
+from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
 
 
@@ -32,10 +34,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.config = Config.load()
 
+        self.label_searching_text = self.label_searching.text()
+        self.label_downloading_text = self.label_downloading.text()
+
         self.threadpool = QThreadPool(self)
+        self.search_worker: SearchWorker | None = None
+        self.download_worker: DownloadWorker | None = None
 
         self.about_dialog = AboutDialog(self)
         self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
+
+        self.actionOpen_SpotDL_config_folder.triggered.connect(
+            lambda: open_default(get_spotdl_path())
+        )
 
         self.actionPick_Output_Folder.triggered.connect(
             lambda: self.set_output_dir(
@@ -55,10 +66,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.pushButton_search.clicked.connect(self.search)
 
-        self.label_searching_text = self.label_searching.text()
+        self.actionDownload.triggered.connect(self.download)
 
     def closeEvent(self, event):
+        if self.search_worker:
+            self.search_worker.kill()
+        if self.download_worker:
+            self.download_worker.kill()
+
         self.threadpool.clear()
+
         self.config.store()
 
     def set_page(self, idx: int) -> None:
@@ -102,11 +119,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         def search_error(e) -> None:
             self.set_page(0)
-            print(f"{e}\nError")
+            QMessageBox.critical(self, "Search failed", repr(e))
 
         def cancel_search() -> None:
-            self.search_worker.kill()
-            self.set_page(0)
+            if self.search_worker:
+                self.search_worker.kill()
+                self.set_page(0)
 
         self.set_page(1)
         self.label_searching.setText(
@@ -118,6 +136,43 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.search_worker.signals.error.connect(search_error)
         self.pushButton_cancel_search.clicked.connect(cancel_search)
         self.threadpool.start(self.search_worker)
+
+    def download(self) -> None:
+        def download_success(v) -> None:
+            self.set_page(2)
+            QMessageBox.information(
+                self,
+                "Download complete",
+                f"Downloaded {len(self.tracks_model.tracks)} tracks in {self.config.output_dir}",
+            )
+
+        def download_error(e) -> None:
+            self.set_page(2)
+            QMessageBox.critical(self, "Download failed", repr(e))
+
+        def cancel_download() -> None:
+            if self.download_worker:
+                self.download_worker.kill()
+                self.set_page(2)
+
+        self.set_page(3)
+        self.label_downloading.setText(
+            self.label_downloading_text.replace(
+                "%count%", str(len(self.tracks_model.tracks))
+            )
+        )
+
+        songs = [
+            self.tracks_model.tracks[row.row()]
+            for row in self.tableView_tracks_list.selectionModel().selectedRows()
+        ]
+
+        if songs:
+            self.download_worker = DownloadWorker(songs)
+            self.download_worker.signals.result.connect(download_success)
+            self.download_worker.signals.error.connect(download_error)
+            self.pushButton_cancel_download.clicked.connect(cancel_download)
+            self.threadpool.start(self.download_worker)
 
     def set_output_dir(self, dir: Path | str) -> None:
         if isinstance(dir, str):

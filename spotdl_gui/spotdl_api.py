@@ -9,7 +9,12 @@ import spotdl
 from spotdl.download.downloader import Downloader
 from spotdl.types.options import DownloaderOptions, SpotifyOptions
 from spotdl.types.song import Song
-from spotdl.utils.config import DOWNLOADER_OPTIONS, SPOTIFY_OPTIONS, get_config
+from spotdl.utils.config import (
+    DOWNLOADER_OPTIONS,
+    SPOTIFY_OPTIONS,
+    get_config,
+    get_spotdl_path,
+)
 from spotdl.utils.console import generate_initial_config
 from spotdl.utils.ffmpeg import FFmpegError, is_ffmpeg_installed
 from spotdl.utils.search import get_simple_songs
@@ -32,12 +37,7 @@ class SpotdlApi(spotdl.Spotdl):
 
     def __init__(
         self,
-        client_id: str | None = None,
-        client_secret: str | None = None,
-        user_auth: bool | None = None,
-        cache_path: str | None = None,
-        no_cache: bool | None = None,
-        headless: bool | None = None,
+        spotify_options: SpotifyOptions | None = None,
         downloader_options: DownloaderOptions | None = None,
     ):
         """
@@ -47,35 +47,22 @@ class SpotdlApi(spotdl.Spotdl):
 
     def __new__(
         cls,
-        client_id: str | None = None,
-        client_secret: str | None = None,
-        user_auth: bool | None = None,
-        cache_path: str | None = None,
-        no_cache: bool | None = None,
-        headless: bool | None = None,
+        spotify_options: SpotifyOptions | None = None,
         downloader_options: DownloaderOptions | None = None,
     ):
         if cls._instance is None:
-            spotify_options, cfg_downloader_options = cls.get_config_options()
+            if spotify_options is None or downloader_options is None:
+                cfg_spotify_options, cfg_downloader_options = cls.get_config_options()
 
-            if client_id is not None:
-                spotify_options["client_id"] = client_id
-            if client_secret is not None:
-                spotify_options["client_secret"] = client_secret
-            if user_auth is not None:
-                spotify_options["user_auth"] = user_auth
-            if cache_path is not None:
-                spotify_options["client_secret"] = cache_path
-            if no_cache is not None:
-                spotify_options["no_cache"] = no_cache
-            if headless is not None:
-                spotify_options["headless"] = headless
+                spotify_options = (
+                    cfg_spotify_options if spotify_options is None else spotify_options
+                )
 
-            downloader_options = (
-                cfg_downloader_options
-                if downloader_options is None
-                else downloader_options
-            )
+                downloader_options = (
+                    cfg_downloader_options
+                    if downloader_options is None
+                    else downloader_options
+                )
 
             cls._spotify_options = spotify_options
 
@@ -151,7 +138,7 @@ if __name__ == "__main__":
     tempdir = tempfile.mkdtemp()
     print(f"Output folder: {tempdir}")
 
-    api = SpotdlApi(user_auth=True)
-    api.downloader.settings.update({"sponsor_block": True, "output": tempdir})
-    result = api.simple_search_and_download(["saved"])
-    print(result)
+    # api = SpotdlApi(user_auth=True)
+    # api.downloader.settings.update({"sponsor_block": True, "output": tempdir})
+    # result = api.simple_search_and_download(["saved"])
+    # print(result)
