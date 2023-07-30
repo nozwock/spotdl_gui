@@ -8,12 +8,11 @@ from views.about import Ui_About
 from views.mainwindow import Ui_MainWindow
 
 
-class AboutDialog(QtWidgets.QDialog):
+class AboutDialog(QtWidgets.QDialog, Ui_About):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_About()
-        self.ui.setupUi(self)
-        self.ui.buttonBox.accepted.connect(self.accept)
+        self.setupUi(self)
+        self.buttonBox.accepted.connect(self.accept)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -25,9 +24,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
 
 
-app = QtWidgets.QApplication(sys.argv)
-qdarktheme.setup_theme()
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    qdarktheme.setup_theme()
 
-window = MainWindow()
-window.show()
-app.exec()
+    window = MainWindow()
+    window.show()
+    app.exec()
+
+
+if __name__ == "__main__":
+    main()
