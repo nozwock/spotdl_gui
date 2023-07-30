@@ -1,86 +1,115 @@
+from __future__ import annotations
+
 import os
 import sys
+from pathlib import Path
 from typing import Any
 
 import spotdl
 from spotdl.download.downloader import Downloader
 from spotdl.types.options import DownloaderOptions, SpotifyOptions
+from spotdl.types.song import Song
 from spotdl.utils.config import DOWNLOADER_OPTIONS, SPOTIFY_OPTIONS, get_config
 from spotdl.utils.console import generate_initial_config
 from spotdl.utils.ffmpeg import FFmpegError, is_ffmpeg_installed
+from spotdl.utils.search import get_simple_songs
 from spotdl.utils.spotify import SpotifyClient, SpotifyError, save_spotify_cache
 
 
-class SpotdlApi:
-    """WIP"""
+class SpotdlApi(spotdl.Spotdl):
+    """
+    Singleton Object, arguments passed will only take effect for the first initialization.
+    A wrapper over Spotdl.
+
+    ```python
+    api = SpotdlApi(user_auth=True)
+    api.downloader.settings.update({"sponsor_block": True})
+    api.simple_search_and_download(["saved"])
+    ```
+    """
+
+    _instance: SpotdlApi | None = None
 
     def __init__(
-        self, spotify_options: SpotifyOptions, downloader_options: DownloaderOptions
+        self,
+        client_id: str | None = None,
+        client_secret: str | None = None,
+        user_auth: bool | None = None,
+        cache_path: str | None = None,
+        no_cache: bool | None = None,
+        headless: bool | None = None,
+        downloader_options: DownloaderOptions | None = None,
     ):
-        self.spotify_options, self.downloader_options = (
-            spotify_options,
-            downloader_options,
+        """
+        Dummy method for LSP functionalities.
+        """
+        ...
+
+    def __new__(
+        cls,
+        client_id: str | None = None,
+        client_secret: str | None = None,
+        user_auth: bool | None = None,
+        cache_path: str | None = None,
+        no_cache: bool | None = None,
+        headless: bool | None = None,
+        downloader_options: DownloaderOptions | None = None,
+    ):
+        if cls._instance is None:
+            spotify_options, cfg_downloader_options = cls.get_config_options()
+
+            if client_id is not None:
+                spotify_options["client_id"] = client_id
+            if client_secret is not None:
+                spotify_options["client_secret"] = client_secret
+            if user_auth is not None:
+                spotify_options["user_auth"] = user_auth
+            if cache_path is not None:
+                spotify_options["client_secret"] = cache_path
+            if no_cache is not None:
+                spotify_options["no_cache"] = no_cache
+            if headless is not None:
+                spotify_options["headless"] = headless
+
+            downloader_options = (
+                cfg_downloader_options
+                if downloader_options is None
+                else downloader_options
+            )
+
+            cls._spotify_options = spotify_options
+
+            SpotifyClient.init(**cls._spotify_options)
+            cls._spotify_client = SpotifyClient()
+
+            cls.downloader = Downloader(downloader_options)
+
+            cls._instance = super().__new__(cls)
+
+            return cls._instance
+        else:
+            return cls._instance
+
+    def simple_search(self, query: list[str]) -> list[Song]:
+        return get_simple_songs(
+            query,
+            self.downloader.settings["ytm_data"],
+            self.downloader.settings["playlist_numbering"],
         )
 
-        SpotifyClient.init(**self.spotify_options)
-        self.spotify_client = SpotifyClient()
+    def simple_search_and_download(
+        self, query: list[str]
+    ) -> list[tuple[Song, Path | None]]:
+        return self.download_songs(self.simple_search(query))
 
-        self.downloader = Downloader(downloader_options)
+    def search_and_download(self, query: list[str]) -> list[tuple[Song, Path | None]]:
+        return self.download_songs(self.search(query))
 
-    def download(self, query: list[str]) -> None:
-        try:
-            spotdl.console.download.download(query, self.downloader)
-        except Exception as e:
-            self._handle_err()
-            raise e
+    def save_if_use_cache_file(self) -> None:
+        """Save Spotify cache."""
 
-    def sync(self, query: list[str]) -> None:
-        try:
-            spotdl.console.sync.sync(query, self.downloader)
-        except Exception as e:
-            self._handle_err()
-            raise e
-
-    def save(self, query: list[str]) -> None:
-        try:
-            self.is_user_auth()
-            spotdl.console.save.save(query, self.downloader)
-        except Exception as e:
-            self._handle_err()
-            raise e
-
-    def meta(self, query: list[str]) -> None:
-        try:
-            spotdl.console.meta.meta(query, self.downloader)
-        except Exception as e:
-            self._handle_err()
-            raise e
-
-    def url(self, query: list[str]) -> None:
-        try:
-            spotdl.console.url.url(query, self.downloader)
-        except Exception as e:
-            self._handle_err()
-            raise e
-
-    def cleanup(self) -> None:
-        if self.spotify_options["use_cache_file"]:
-            save_spotify_cache(self.spotify_client.cache)
-        self.downloader.progress_handler.close()
-
-    def _handle_err(self) -> None:
-        self.downloader.progress_handler.close()
-
-    def is_user_auth(self) -> None:
-        if not self.spotify_options["user_auth"]:
-            raise SpotifyError("'user_auth' option wasn't set")
-
-    def check_ffmpeg(self) -> None:
-        if not is_ffmpeg_installed(self.downloader_options["ffmpeg"]):
-            raise FFmpegError(
-                "FFmpeg is not installed. Please run `spotdl --download-ffmpeg` to install it, "
-                "or `spotdl --ffmpeg /path/to/ffmpeg` to specify the path to ffmpeg."
-            )
+        if self._spotify_options["use_cache_file"]:
+            save_spotify_cache(self._spotify_client.cache)
 
     @staticmethod
     def get_config_options() -> tuple[SpotifyOptions, DownloaderOptions]:
@@ -97,13 +126,6 @@ class SpotdlApi:
             SpotifyOptions(merge_maps(SPOTIFY_OPTIONS, config)),
             DownloaderOptions(merge_maps(DOWNLOADER_OPTIONS, config)),
         )
-
-    def __enter__(self):
-        self.check_ffmpeg()
-        return self
-
-    def __exit__(self, exc_type, exc_value, exc_tb):
-        self.cleanup()
 
 
 def merge_maps(key_from: dict[str, Any], values_from: dict[str, Any]) -> dict[str, Any]:
@@ -126,15 +148,10 @@ if __name__ == "__main__":
 
     import tempfile
 
-    spotify_options, downloader_options = SpotdlApi.get_config_options()
-
-    spotify_options.update({"user_auth": True})
-    downloader_options.update({"sponsor_block": True, "print_errors": True})
-
     tempdir = tempfile.mkdtemp()
     print(f"Output folder: {tempdir}")
 
-    downloader_options["output"] = tempdir
-
-    with SpotdlApi(spotify_options, downloader_options) as api:
-        api.download(["saved"])
+    api = SpotdlApi(user_auth=True)
+    api.downloader.settings.update({"sponsor_block": True, "output": tempdir})
+    result = api.simple_search_and_download(["saved"])
+    print(result)

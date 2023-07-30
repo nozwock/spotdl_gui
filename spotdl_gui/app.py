@@ -1,16 +1,14 @@
 import os
-import pickle
-import subprocess
 import sys
 import time
 from multiprocessing import Process
 from pathlib import Path
 
 import platformdirs
-from PyQt6 import QtCore
-from PyQt6.QtCore import QSize, Qt
-from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import (
+from PySide6 import QtCore
+from PySide6.QtCore import QObject, QRunnable, QSize, Qt, Signal
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import (
     QApplication,
     QComboBox,
     QFileDialog,
@@ -18,52 +16,36 @@ from PyQt6.QtWidgets import (
     QMainWindow,
     QPushButton,
     QStackedLayout,
-    QToolBar,
     QVBoxLayout,
     QWidget,
 )
 
+from spotdl_gui.config import Config
 from spotdl_gui.spotdl_api import SpotdlApi
 
-CHOICES = ["Liked Songs", "All User Playlists", "Custom Query"]
-PROCS: list[Process] = []
-
-STATE_DIR = Path(platformdirs.user_config_dir()).joinpath("spotdl_gui")
-STATE_DIR.mkdir(parents=True, exist_ok=True)
-STATE_PATH = STATE_DIR.joinpath("state.pickle")
-
-if STATE_PATH.is_file():
-    with open(STATE_PATH, "rb") as f:
-        STATE = pickle.load(f)
-else:
-    STATE = {"output_dir": Path()}
-
-
-spotify_options, downloader_options = SpotdlApi.get_config_options()
-
-spotify_options.update({"user_auth": True})
-downloader_options.update({"sponsor_block": True, "print_errors": True})
+CONFIG = Config.load()
 
 
 class PollProc(QtCore.QThread):
-    tx = QtCore.pyqtSignal(object)  # Why object? https://stackoverflow.com/a/46694063
+    proc_done = Signal()
 
-    def __init__(self, parent):
+    def __init__(self, parent, proc: Process):
         super().__init__(parent)
+        self.stop = False
+        self.proc = proc
 
     def run(self):
-        while ...:
-            is_procs_complete = all(not p.is_alive() for p in PROCS)
-            if is_procs_complete:
-                kill_all_procs()
-                self.tx.emit(0)
+        while not self.stop:
+            if not self.proc.is_alive():
+                self.proc_done.emit()
                 break
             time.sleep(0.1)
-        self.exit()
 
 
 class MainWindow(QMainWindow):
-    threads: list[QtCore.QThread] = []
+    CHOICES = ["Liked Songs", "All User Playlists", "Custom Query"]
+    POLLPROC_THREAD: PollProc | None = None
+    DOWNLOAD_PROC: Process | None = None
 
     def __init__(self):
         super().__init__()
@@ -79,7 +61,7 @@ class MainWindow(QMainWindow):
                 QFileDialog.getExistingDirectory(
                     self,
                     "Pick output folder",
-                    directory=str(STATE["output_dir"].absolute()),
+                    dir=str(CONFIG.output_dir.absolute()),
                 )
             )
         )
@@ -97,7 +79,7 @@ class MainWindow(QMainWindow):
 
         self.choice_list = QComboBox(self)
         main_vbox.addWidget(self.choice_list)
-        self.choice_list.addItems(CHOICES)
+        self.choice_list.addItems(self.CHOICES)
 
         self.query = QLineEdit(self)
         main_vbox.addWidget(self.query)
@@ -113,7 +95,7 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         self.query.hide()
         self.choice_list.currentTextChanged.connect(
             lambda: self.query.show()
-            if self.choice_list.currentText() == CHOICES[2]
+            if self.choice_list.currentText() == self.CHOICES[2]
             else self.query.hide()
         )
 
@@ -138,20 +120,10 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
         self.setCentralWidget(widget)
 
     def closeEvent(self, event):
-        kill_all_procs()
+        self.stop_poll_proc_thread()
+        self.kill_download_proc()
 
-        # Cleaning up threads
-        for _ in range(len(self.threads)):
-            t = self.threads[0]
-            if t.isRunning():
-                t.disconnect()
-                t.exit()
-            while t.isRunning():
-                t.wait()
-            self.threads.pop(0)
-
-        with open(STATE_PATH, "wb") as f:
-            pickle.dump(STATE, f)
+        CONFIG.store()
 
     def set_page(self, page_idx: int = 0, menubar_enabled: bool = True) -> None:
         self.pages.setCurrentIndex(page_idx)
@@ -160,23 +132,19 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
     def download_btn_clicked(self) -> None:
         self.set_page(1, False)
         self.statusbar.showMessage("Downloading...")
-        init_download(self.choice_list.currentText(), self.query.text())
+        self.init_download()
 
-        poll = PollProc(self)
-        poll.tx.connect(
+        assert self.DOWNLOAD_PROC is not None
+        poll = PollProc(self, self.DOWNLOAD_PROC)
+        poll.proc_done.connect(
             self.on_proc_complete
         )  # Go back to the main page once the proc is complete
         poll.start()
-        self.threads.append(poll)
+        self.POLLPROC_THREAD = poll
 
     def cancel_btn_clicked(self) -> None:
-        kill_all_procs()
-
-        t = self.threads[0]
-        if t.isRunning():
-            t.disconnect()
-            t.exit()
-        self.threads.pop(0)
+        self.stop_poll_proc_thread()
+        self.kill_download_proc()
 
         self.set_page()
         self.statusbar.showMessage("Process canceled", 5000)
@@ -186,45 +154,59 @@ For album/playlist/artist searching, include 'album:', 'playlist:', 'artist:'
     def on_proc_complete(self) -> None:
         self.set_page()
         self.statusbar.showMessage("Process complete", 5000)
-        kill_all_procs()
+        self.kill_download_proc()
         print("Process complete")
 
+    def init_download(self) -> None:
+        def _download(query: list[str]) -> None:
+            api = SpotdlApi(user_auth=True)
+            api.downloader.settings.update(
+                {
+                    "sponsor_block": True,
+                    "print_errors": True,
+                    "output": str(CONFIG.output_dir.absolute()),
+                }
+            )
+            api.simple_search_and_download(query)
 
-def init_download(choice: str, query: str) -> None:
-    def _download(query: list[str]) -> None:
-        with SpotdlApi(spotify_options, downloader_options) as api:
-            # This runs in a new proc every time, so maybe 'cleanup()' is fine?
-            api.download(query)
+        choice = self.choice_list.currentText()
+        query = self.query.text()
 
-    print(f"Starting download for {choice}")
+        print(f"Starting download for {choice}")
 
-    if choice == CHOICES[0]:
-        p = Process(target=_download, args=(["saved"],))
-    elif choice == CHOICES[1]:
-        p = Process(target=_download, args=(["all-user-playlists"],))
-    elif choice == CHOICES[2]:
-        p = Process(target=_download, args=([query],))
-    else:
-        raise Exception("Impossible case")
+        if choice == self.CHOICES[0]:
+            p = Process(target=_download, args=(["saved"],))
+        elif choice == self.CHOICES[1]:
+            p = Process(target=_download, args=(["all-user-playlists"],))
+        elif choice == self.CHOICES[2]:
+            p = Process(target=_download, args=([query],))
+        else:
+            raise Exception("Impossible case")
 
-    PROCS.append(p)
-    p.start()
+        self.DOWNLOAD_PROC = p
+        p.start()
+
+    def stop_poll_proc_thread(self):
+        if self.POLLPROC_THREAD is not None:
+            if self.POLLPROC_THREAD.isRunning():
+                self.POLLPROC_THREAD.proc_done.disconnect(self.on_proc_complete)
+                self.POLLPROC_THREAD.stop = True
+            self.POLLPROC_THREAD = None
+
+    def kill_download_proc(self) -> None:
+        if self.DOWNLOAD_PROC is not None:
+            if self.DOWNLOAD_PROC.is_alive():
+                self.DOWNLOAD_PROC.kill()
+            self.DOWNLOAD_PROC = None
 
 
-def kill_all_procs() -> None:
-    for _ in range(len(PROCS)):
-        p = PROCS[0]
-        if p.is_alive():
-            p.kill()
-        PROCS.pop(0)
+def set_output_dir(dir: Path | str) -> None:
+    if isinstance(dir, str):
+        dir = Path(dir)
 
-
-def set_output_dir(dir: str) -> None:
-    if dir:
-        path = Path(dir)
-        downloader_options["output"] = str(path.absolute())
-        STATE["output_dir"] = path
-        print(f"Output folder: {path.absolute()}")
+    if dir != CONFIG.output_dir:
+        CONFIG.output_dir = dir
+    print(f"Output folder: {dir.absolute()}")
 
 
 def clear_screen() -> None:
@@ -236,7 +218,7 @@ def main() -> None:
     window = MainWindow()
     window.show()
 
-    set_output_dir(STATE["output_dir"])
+    set_output_dir(CONFIG.output_dir)
     sys.exit(app.exec())
 
 
