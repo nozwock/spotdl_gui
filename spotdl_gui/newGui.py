@@ -1,16 +1,19 @@
 import sys
+from pathlib import Path
 
 import qdarktheme
-from assets import resource
-from models.tracks_model import TracksModel
 from PySide6 import QtWidgets
 from PySide6.QtCore import QThreadPool
-from PySide6.QtGui import QKeySequence, QShortcut
-from PySide6.QtWidgets import QDialog, QWidget
-from spotdl_api import Song
-from views.about import Ui_About
-from views.mainwindow import Ui_MainWindow
-from workers.search_worker import SearchWorker
+from PySide6.QtGui import QAction, QKeySequence, QShortcut
+from PySide6.QtWidgets import QDialog, QFileDialog, QWidget
+
+from .assets import resource
+from .config import Config
+from .models.tracks_model import TracksModel
+from .spotdl_api import Song
+from .views.about import Ui_About
+from .views.mainwindow import Ui_MainWindow
+from .workers.search_worker import SearchWorker
 
 
 class AboutDialog(QtWidgets.QDialog, Ui_About):
@@ -27,10 +30,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.set_page(0)
 
+        self.config = Config.load()
+
         self.threadpool = QThreadPool(self)
 
         self.about_dialog = AboutDialog(self)
         self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
+
+        self.actionPick_Output_Folder.triggered.connect(
+            lambda: self.set_output_dir(
+                QFileDialog.getExistingDirectory(
+                    self,
+                    "Pick output folder",
+                    dir=str(self.config.output_dir.absolute()),
+                )
+            )
+        )
 
         self.tracks_model = TracksModel()
         self.tableView_tracks_list.setModel(self.tracks_model)
@@ -44,6 +59,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def closeEvent(self, event):
         self.threadpool.clear()
+        self.config.store()
 
     def set_page(self, idx: int) -> None:
         def hide_search_bar(yes: bool) -> None:
@@ -103,6 +119,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.pushButton_cancel_search.clicked.connect(cancel_search)
         self.threadpool.start(self.search_worker)
 
+    def set_output_dir(self, dir: Path | str) -> None:
+        if isinstance(dir, str):
+            if not dir:
+                return None
+            dir = Path(dir)
+
+        if dir != self.config.output_dir:
+            self.config.output_dir = dir
+
 
 def main() -> None:
     app = QtWidgets.QApplication(sys.argv)
@@ -110,7 +135,7 @@ def main() -> None:
 
     window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

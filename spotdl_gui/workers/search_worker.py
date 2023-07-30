@@ -38,6 +38,8 @@ class SearchWorker(QRunnable):
             if p.is_alive():
                 p.kill()
 
+        # I know...
+
         p = Process(target=_run, args=[self.queue])
         p.start()
 
