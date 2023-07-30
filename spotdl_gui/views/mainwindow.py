@@ -87,9 +87,9 @@ class Ui_MainWindow(object):
         self.page_tracks_list.setObjectName("page_tracks_list")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.page_tracks_list)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.columnView_tracks_list = QtWidgets.QColumnView(parent=self.page_tracks_list)
-        self.columnView_tracks_list.setObjectName("columnView_tracks_list")
-        self.horizontalLayout_2.addWidget(self.columnView_tracks_list)
+        self.tableView_tracks_list = QtWidgets.QTableView(parent=self.page_tracks_list)
+        self.tableView_tracks_list.setObjectName("tableView_tracks_list")
+        self.horizontalLayout_2.addWidget(self.tableView_tracks_list)
         self.stackedWidget_pages.addWidget(self.page_tracks_list)
         self.page_downloading = QtWidgets.QWidget()
         self.page_downloading.setObjectName("page_downloading")
@@ -117,7 +117,7 @@ class Ui_MainWindow(object):
         spacerItem5 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.verticalLayout_5.addItem(spacerItem5)
         self.stackedWidget_pages.addWidget(self.page_downloading)
-        self.verticalLayout_3.addWidget(self.stackedWidget_pages, 0, QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout_3.addWidget(self.stackedWidget_pages)
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(parent=MainWindow)
@@ -180,7 +180,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionSettings)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget_pages.setCurrentIndex(0)
+        self.stackedWidget_pages.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
