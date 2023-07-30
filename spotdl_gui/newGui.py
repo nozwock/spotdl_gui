@@ -147,7 +147,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.information(
                 self,
                 "Download complete",
-                f"Downloaded {len(self.tracks_model.tracks)} tracks in {self.config.output_dir}",
+                f"Downloaded {len(v)} tracks in {self.config.output_dir}",
             )
 
         def download_error(e) -> None:
@@ -167,12 +167,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if songs:
             self.set_page(3)
             self.label_downloading.setText(
-                self.label_downloading_text.replace(
-                    "%count%", str(len(self.tracks_model.tracks))
-                )
+                self.label_downloading_text.replace("%count%", str(len(songs)))
             )
 
-            self.download_worker = DownloadWorker(songs)
+            self.download_worker = DownloadWorker(songs, self.config.output_dir)
             self.download_worker.signals.result.connect(download_success)
             self.download_worker.signals.error.connect(download_error)
             self.pushButton_cancel_download.clicked.connect(cancel_download)

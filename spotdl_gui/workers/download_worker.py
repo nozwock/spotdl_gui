@@ -1,5 +1,6 @@
 import time
 from multiprocessing import Process, Queue
+from pathlib import Path
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
@@ -16,12 +17,10 @@ class WorkerSignals(QObject):
 
 
 class DownloadWorker(QRunnable):
-    def __init__(
-        self,
-        songs: list[Song],
-    ):
+    def __init__(self, songs: list[Song], output_dir: Path | None = None):
         super().__init__()
         self.songs = songs
+        self.output_dir = output_dir
         self.signals = WorkerSignals()
         self.stopped = False
         self.queue = Queue()  # type: ignore
@@ -33,6 +32,8 @@ class DownloadWorker(QRunnable):
     def run(self) -> None:
         def _run(queue: Queue) -> None:
             api = SpotdlApi()
+            if self.output_dir is not None:
+                api.downloader.settings["output"] = str(self.output_dir.absolute())
             try:
                 ret = api.download_songs(self.songs)
                 queue.put(ret)
