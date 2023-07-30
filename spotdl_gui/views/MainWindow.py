@@ -116,14 +116,16 @@ class Ui_MainWindow(object):
         )
         self.verticalLayout_6.addItem(spacerItem3)
         self.stackedWidget.addWidget(self.page_searching)
-        self.page_songs_list = QtWidgets.QWidget()
-        self.page_songs_list.setObjectName("page_songs_list")
-        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.page_songs_list)
+        self.page_tracks_list = QtWidgets.QWidget()
+        self.page_tracks_list.setObjectName("page_tracks_list")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.page_tracks_list)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.columnView = QtWidgets.QColumnView(parent=self.page_songs_list)
-        self.columnView.setObjectName("columnView")
-        self.horizontalLayout_2.addWidget(self.columnView)
-        self.stackedWidget.addWidget(self.page_songs_list)
+        self.columnView_tracks_list = QtWidgets.QColumnView(
+            parent=self.page_tracks_list
+        )
+        self.columnView_tracks_list.setObjectName("columnView_tracks_list")
+        self.horizontalLayout_2.addWidget(self.columnView_tracks_list)
+        self.stackedWidget.addWidget(self.page_tracks_list)
         self.page_downloading = QtWidgets.QWidget()
         self.page_downloading.setObjectName("page_downloading")
         self.verticalLayout_5 = QtWidgets.QVBoxLayout(self.page_downloading)
@@ -284,7 +286,7 @@ class Ui_MainWindow(object):
         self.label_downloading.setText(
             _translate(
                 "MainWindow",
-                '<html><head/><body><p><span style=" font-size:16pt;">Downloading %num% tracks</span></p></body></html>',
+                '<html><head/><body><p><span style=" font-size:16pt;">Downloading %count% tracks</span></p></body></html>',
             )
         )
         self.pushButton_cancel_download.setText(_translate("MainWindow", "Cancel"))
