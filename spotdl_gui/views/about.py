@@ -12,12 +12,16 @@ from PySide6 import QtCore, QtGui, QtWidgets
 class Ui_About(object):
     def setupUi(self, About):
         About.setObjectName("About")
-        About.resize(260, 180)
+        About.resize(300, 200)
         self.verticalLayout = QtWidgets.QVBoxLayout(About)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label = QtWidgets.QLabel(parent=About)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
+        self.buttonBox = QtWidgets.QDialogButtonBox(parent=About)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.verticalLayout.addWidget(self.buttonBox)
 
         self.retranslateUi(About)
         QtCore.QMetaObject.connectSlotsByName(About)

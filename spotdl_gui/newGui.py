@@ -11,7 +11,9 @@ from views.mainwindow import Ui_MainWindow
 class AboutDialog(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        Ui_About().setupUi(self)
+        self.ui = Ui_About()
+        self.ui.setupUi(self)
+        self.ui.buttonBox.accepted.connect(self.accept)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
