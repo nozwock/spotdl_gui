@@ -11,7 +11,8 @@ spotdl-gui = 'spotdl_gui.app:main'
 
 [tool.poetry.dependencies]
 python = ">=3.11,<3.12"
-spotdl = "^4.2.0"
+# spotdl = "^4.2.0"
+spotdl = { git = "https://github.com/nozwock/spotify-downloader.git" }
 platformdirs = "^3.9.1"
 pyside6 = "^6.5.2"
 
