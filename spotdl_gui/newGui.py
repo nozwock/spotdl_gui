@@ -53,7 +53,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 QFileDialog.getExistingDirectory(
                     self,
                     "Pick output folder",
-                    dir=str(self.config.output_dir.absolute()),
+                    dir=str(
+                        self.config.output_dir.absolute()
+                        if self.config.output_dir.is_dir()
+                        else Path()
+                    ),
                 )
             )
         )
