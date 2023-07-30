@@ -5,6 +5,7 @@ from assets import resource
 from models.tracks_model import TracksModel
 from PySide6 import QtWidgets
 from PySide6.QtCore import QThreadPool
+from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import QDialog, QWidget
 from spotdl_api import Song
 from views.about import Ui_About
@@ -34,6 +35,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tracks_model = TracksModel()
         self.tableView_tracks_list.setModel(self.tracks_model)
 
+        self.search_kb_shortcut = QShortcut(
+            QKeySequence("Return"), self.lineEdit_search, self.search
+        )
         self.pushButton_search.clicked.connect(self.search)
 
         self.label_searching_text = self.label_searching.text()
