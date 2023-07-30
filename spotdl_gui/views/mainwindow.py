@@ -198,7 +198,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><img src=\":/images/music-note-slider.svg\"/></p></body></html>"))
         self.label_searching.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt;\">Processing query</span></p><p><span style=\" font-size:12pt;\">&quot;%query%&quot;</span></p></body></html>"))
         self.pushButton_cancel_search.setText(_translate("MainWindow", "Cancel"))
-        self.label_downloading.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt;\">Downloading %count% tracks</span></p></body></html>"))
+        self.label_downloading.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:16pt;\">Downloading %count% track(s)</span></p></body></html>"))
         self.pushButton_cancel_download.setText(_translate("MainWindow", "Cancel"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))

@@ -147,7 +147,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.information(
                 self,
                 "Download complete",
-                f"Downloaded {len(v)} tracks in {self.config.output_dir}",
+                f"Downloaded {len(v)} track(s) in {self.config.output_dir}",
             )
 
         def download_error(e) -> None:
