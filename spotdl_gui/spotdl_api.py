@@ -127,18 +127,3 @@ def merge_maps(key_from: dict[str, Any], values_from: dict[str, Any]) -> dict[st
             out[k] = values_from[k]
 
     return out
-
-
-if __name__ == "__main__":
-    # Example usage
-    # =============
-
-    import tempfile
-
-    tempdir = tempfile.mkdtemp()
-    print(f"Output folder: {tempdir}")
-
-    # api = SpotdlApi(user_auth=True)
-    # api.downloader.settings.update({"sponsor_block": True, "output": tempdir})
-    # result = api.simple_search_and_download(["saved"])
-    # print(result)
