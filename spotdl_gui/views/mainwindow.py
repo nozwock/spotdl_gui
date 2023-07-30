@@ -107,7 +107,8 @@ class Ui_MainWindow(object):
         self.label_downloading.setObjectName("label_downloading")
         self.verticalLayout_5.addWidget(self.label_downloading)
         self.progressBar_download = QtWidgets.QProgressBar(parent=self.page_downloading)
-        self.progressBar_download.setProperty("value", 24)
+        self.progressBar_download.setMaximum(0)
+        self.progressBar_download.setProperty("value", -1)
         self.progressBar_download.setObjectName("progressBar_download")
         self.verticalLayout_5.addWidget(self.progressBar_download)
         self.pushButton_cancel_download = QtWidgets.QPushButton(parent=self.page_downloading)
@@ -179,7 +180,7 @@ class Ui_MainWindow(object):
         self.toolBar.addAction(self.actionSettings)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget_pages.setCurrentIndex(2)
+        self.stackedWidget_pages.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
