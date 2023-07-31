@@ -1,3 +1,5 @@
+import dataclasses
+import json
 import sys
 from pathlib import Path
 
@@ -9,6 +11,7 @@ from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableView, QWi
 
 from .assets import resource
 from .config import Config
+from .defines import SPOTDL_FILE_FILTER
 from .models.tracks_model import TracksModel
 from .spotdl_api import Song, get_spotdl_path
 from .utils import open_default
@@ -82,6 +85,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # )
         self.pushButton_search.clicked.connect(self.search)
 
+        self.actionImport.triggered.connect(self.import_tracks_from_file)
+        self.actionExport.triggered.connect(self.export_tracks_to_file)
         self.actionDownload.triggered.connect(self.download)
 
     def closeEvent(self, event):
@@ -187,6 +192,39 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.download_worker.signals.error.connect(download_error)
             self.pushButton_cancel_download.clicked.connect(cancel_download)
             self.threadpool.start(self.download_worker)
+
+    def import_tracks_from_file(self) -> None:
+        import_file = Path(
+            QFileDialog.getOpenFileName(
+                self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
+            )[0]
+        )
+
+        try:
+            with open(import_file, "r", encoding="utf-8") as f:
+                self.tracks_model.tracks = [Song(**song) for song in json.load(f)]
+                self.tracks_model.layoutChanged.emit()
+                self.set_page(2)
+        except Exception as e:
+            QMessageBox.critical(self, "Import failed", repr(e))
+
+    def export_tracks_to_file(self) -> None:
+        export_file = Path(
+            QFileDialog.getSaveFileName(
+                self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
+            )[0]
+        )
+
+        try:
+            with open(export_file, "w", encoding="utf-8") as f:
+                json.dump(
+                    [dataclasses.asdict(song) for song in self.tracks_model.tracks],
+                    f,
+                    indent=4,
+                    ensure_ascii=False,
+                )
+        except Exception as e:
+            QMessageBox.critical(self, "Export failed", repr(e))
 
     def set_output_dir(self, dir: Path | str) -> None:
         if isinstance(dir, str):
