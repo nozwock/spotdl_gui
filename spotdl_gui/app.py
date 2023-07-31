@@ -40,6 +40,11 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         super().__init__(parent)
         self.setupUi(self)
 
+        self.lineEdit_spotify_auth_token.setHidden(True)
+        self.comboBox_downloader_bitrate.setHidden(True)
+        self.cookie_file_group.setHidden(True)
+        self.lineEdit_downloader_ffmpeg_args.setHidden(True)
+
         self.buttonBox.button(
             QtWidgets.QDialogButtonBox.StandardButton.Apply
         ).clicked.connect(self.accept)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>429</width>
-    <height>516</height>
+    <width>400</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,9 +23,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>395</width>
-        <height>889</height>
+        <y>-447</y>
+        <width>366</width>
+        <height>895</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -58,7 +58,7 @@
           <item row="3" column="0">
            <widget class="QCheckBox" name="checkBox_auth_token_set">
             <property name="text">
-             <string>Auth Token</string>
+             <string>Use Auth Token</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -89,53 +89,67 @@
             </property>
            </widget>
           </item>
-          <item row="17" column="0">
-           <widget class="QCheckBox" name="checkBox_spotify_no_cache">
-            <property name="text">
-             <string>No Cache</string>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="0">
-           <widget class="QCheckBox" name="checkBox_spotify_use_cache_file">
-            <property name="text">
-             <string>Use Cache File</string>
-            </property>
-           </widget>
-          </item>
-          <item row="19" column="0">
+          <item row="21" column="0">
            <widget class="QLabel" name="label_9">
             <property name="text">
              <string>Max Retries</string>
             </property>
            </widget>
           </item>
-          <item row="19" column="1">
+          <item row="21" column="1">
            <widget class="QSpinBox" name="spinBox_spotify_max_retries"/>
           </item>
           <item row="15" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <item>
-             <widget class="QLineEdit" name="lineEdit_spotify_cache_path"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButton_cache_path_pick">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../assets/resource.qrc">
-                <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QWidget" name="cache_path_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_spotify_cache_path"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_cache_path_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="16" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_no_cache">
+            <property name="text">
+             <string>No Cache</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_use_cache_file">
+            <property name="text">
+             <string>Use Cache File</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -149,7 +163,7 @@
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBox_bitrate_set">
             <property name="text">
-             <string>Bitrate</string>
+             <string>Custom Bitrate</string>
             </property>
            </widget>
           </item>
@@ -186,33 +200,9 @@
           <item row="8" column="0">
            <widget class="QCheckBox" name="checkBox_cookie_file_set">
             <property name="text">
-             <string>Cookie file</string>
+             <string>Set Cookie File</string>
             </property>
            </widget>
-          </item>
-          <item row="8" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_2">
-            <item>
-             <widget class="QLineEdit" name="lineEdit_downloader_cookie_file"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButton_cookie_file_pick">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../assets/resource.qrc">
-                <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
           </item>
           <item row="10" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_sponsorblock">
@@ -224,7 +214,7 @@
           <item row="11" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_print_errors">
             <property name="text">
-             <string>Print errors</string>
+             <string>Print Errors</string>
             </property>
            </widget>
           </item>
@@ -269,34 +259,10 @@
             </property>
            </widget>
           </item>
-          <item row="17" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_3">
-            <item>
-             <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg"/>
-            </item>
-            <item>
-             <widget class="QToolButton" name="toolButton_ffmpeg_pick">
-              <property name="text">
-               <string>...</string>
-              </property>
-              <property name="icon">
-               <iconset resource="../assets/resource.qrc">
-                <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
-              </property>
-              <property name="iconSize">
-               <size>
-                <width>24</width>
-                <height>24</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
           <item row="18" column="0">
            <widget class="QCheckBox" name="checkBox_ffmpeg_args_set">
             <property name="text">
-             <string>FFmpeg Args</string>
+             <string>Set FFmpeg Args</string>
             </property>
             <property name="checked">
              <bool>false</bool>
@@ -305,6 +271,82 @@
           </item>
           <item row="18" column="1">
            <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg_args"/>
+          </item>
+          <item row="8" column="1">
+           <widget class="QWidget" name="cookie_file_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_downloader_cookie_file"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_cookie_file_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <widget class="QWidget" name="ffmpeg_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_ffmpeg_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -385,15 +427,15 @@
      <y>261</y>
     </hint>
     <hint type="destinationlabel">
-     <x>93</x>
-     <y>292</y>
+     <x>272</x>
+     <y>423</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>checkBox_bitrate_set</sender>
    <signal>toggled(bool)</signal>
-   <receiver>comboBox_downloader_format</receiver>
+   <receiver>comboBox_downloader_bitrate</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -401,24 +443,24 @@
      <y>129</y>
     </hint>
     <hint type="destinationlabel">
-     <x>286</x>
-     <y>162</y>
+     <x>272</x>
+     <y>22</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>checkBox_cookie_file_set</sender>
    <signal>toggled(bool)</signal>
-   <receiver>lineEdit_downloader_cookie_file</receiver>
+   <receiver>cookie_file_group</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>78</x>
-     <y>256</y>
+     <y>152</y>
     </hint>
     <hint type="destinationlabel">
-     <x>267</x>
-     <y>260</y>
+     <x>272</x>
+     <y>156</y>
     </hint>
    </hints>
   </connection>
