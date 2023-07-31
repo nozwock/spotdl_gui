@@ -34,7 +34,6 @@ class SpotdlConfigManager(ConfigManager):
         super().__init__(
             parent=parent,
             *args,
-            # filename=get_spotdl_config_path(),
             **kwargs,
         )
 
@@ -68,13 +67,19 @@ class SpotdlConfigManager(ConfigManager):
             }
         )
 
+    def _resolve_optionals(self, cfg: dict[str, Any]) -> dict[str, Any]:
+        out: dict[str, Any] = {}
+        for k in cfg:
+            if k.startswith(SpotdlConfigManager.OPTIONAL_PREF_PREFIX):
+                assert isinstance(cfg[k], bool)
+                if cfg[k]:
+                    out[k.lstrip(SpotdlConfigManager.OPTIONAL_PREF_PREFIX)] = None
+            elif out.get(k) is None:
+                out[k] = cfg[k]
+        return out
+
     def as_dict(self) -> dict[str, Any]:
-        raise NotImplementedError
-
-        cfg = super().as_dict()
-        # return after eval and removing optionals
-
-        return cfg
+        return self._resolve_optionals(self.config)
 
 
 class AboutDialog(QtWidgets.QDialog, Ui_About):
@@ -112,6 +117,7 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
     def accept(self) -> None:
         # There probably is a better way...
         self.spotdl_config.set_defaults(self.spotdl_config.config)
+        self.spotdl_config.save()  # Pass the config to downloader, instead of writing everytime. And save only once on exit.
         super().accept()
 
     @QtCore.Slot()
