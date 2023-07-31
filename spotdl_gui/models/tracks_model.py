@@ -1,7 +1,7 @@
 from PySide6 import QtCore
 from PySide6.QtCore import Qt
 
-from spotdl_gui.spotdl_api import Song
+from ..spotdl_api import Song
 
 
 class TracksModel(QtCore.QAbstractTableModel):
