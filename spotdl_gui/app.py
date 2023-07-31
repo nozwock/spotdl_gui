@@ -104,6 +104,18 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         self.cookie_file_group.setHidden(True)
         self.lineEdit_downloader_ffmpeg_args.setHidden(True)
 
+        self.toolButton_cache_path_pick.clicked.connect(
+            lambda: self._put_file_path_to_lineEdit(self.lineEdit_spotify_cache_path)
+        )
+        self.toolButton_cookie_file_pick.clicked.connect(
+            lambda: self._put_file_path_to_lineEdit(
+                self.lineEdit_downloader_cookie_file
+            )
+        )
+        self.toolButton_ffmpeg_pick.clicked.connect(
+            lambda: self._put_file_path_to_lineEdit(self.lineEdit_downloader_ffmpeg)
+        )
+
         self.buttonBox.button(
             QtWidgets.QDialogButtonBox.StandardButton.Apply
         ).clicked.connect(self.accept)
@@ -112,6 +124,11 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         ).clicked.connect(self.reject)
 
         self.setup_spotdl_config()
+
+    def _put_file_path_to_lineEdit(self, widget: QtWidgets.QLineEdit):
+        path = QFileDialog.getOpenFileName(self)[0]
+        if path:
+            widget.setText(path)
 
     @QtCore.Slot()
     def accept(self) -> None:
