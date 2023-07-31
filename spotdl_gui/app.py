@@ -40,6 +40,13 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         super().__init__(parent)
         self.setupUi(self)
 
+        self.buttonBox.button(
+            QtWidgets.QDialogButtonBox.StandardButton.Apply
+        ).clicked.connect(self.accept)
+        self.buttonBox.button(
+            QtWidgets.QDialogButtonBox.StandardButton.Discard
+        ).clicked.connect(self.reject)
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(
