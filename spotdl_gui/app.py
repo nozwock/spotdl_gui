@@ -18,6 +18,7 @@ from .spotdl_api import Song, get_spotdl_path
 from .utils import open_default
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
+from .views.settings import Ui_Settings
 from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
 
@@ -32,6 +33,12 @@ class AboutDialog(QtWidgets.QDialog, Ui_About):
             .replace(r"%version%", __version__)
             .replace(r"%spotdlversion%", SPOTDL_VERSION)
         )
+
+
+class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
+    def __init__(self, parent=None) -> None:
+        super().__init__(parent)
+        self.setupUi(self)
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
@@ -65,6 +72,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         self.about_dialog = AboutDialog(self)
         self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
+
+        self.settings_dialog = SettingsDialog(self)
+        self.actionSettings.triggered.connect(lambda: self.settings_dialog.exec())
 
         self.actionOpen_SpotDL_config_folder.triggered.connect(
             lambda: open_default(get_spotdl_path())

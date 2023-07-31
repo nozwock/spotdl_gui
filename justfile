@@ -2,7 +2,7 @@ proj_dir := justfile_directory()
 ui_dir := proj_dir / "spotdl_gui" / "views"
 rc_path := proj_dir / "spotdl_gui" / "assets" / "resource.qrc"
 
-ui_list := "about.ui mainwindow.ui"
+ui_list := "about.ui mainwindow.ui settings.ui"
 
 default: build-all
 
