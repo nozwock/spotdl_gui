@@ -188,6 +188,10 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.stackedWidget_pages.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        MainWindow.setTabOrder(self.lineEdit_search, self.pushButton_search)
+        MainWindow.setTabOrder(self.pushButton_search, self.pushButton_cancel_download)
+        MainWindow.setTabOrder(self.pushButton_cancel_download, self.tableView_tracks_list)
+        MainWindow.setTabOrder(self.tableView_tracks_list, self.pushButton_cancel_search)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

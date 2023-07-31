@@ -408,6 +408,13 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_search</tabstop>
+  <tabstop>pushButton_search</tabstop>
+  <tabstop>pushButton_cancel_download</tabstop>
+  <tabstop>tableView_tracks_list</tabstop>
+  <tabstop>pushButton_cancel_search</tabstop>
+ </tabstops>
  <resources>
   <include location="../assets/resource.qrc"/>
  </resources>

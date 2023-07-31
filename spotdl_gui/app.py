@@ -37,6 +37,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.label_searching_text = self.label_searching.text()
         self.label_downloading_text = self.label_downloading.text()
 
+        self.search_completer = QtWidgets.QCompleter(
+            (
+                "user:saved-tracks",
+                "user:all-playlists",
+                "album:",
+                "playlist:",
+                "artist:",
+            ),
+            self,
+        )
+        self.lineEdit_search.setCompleter(self.search_completer)
+
         self.threadpool = QThreadPool(self)
         self.search_worker: SearchWorker | None = None
         self.download_worker: DownloadWorker | None = None
@@ -65,9 +77,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tracks_model = TracksModel()
         self.tableView_tracks_list.setModel(self.tracks_model)
 
-        self.search_kb_shortcut = QShortcut(
-            QKeySequence("Return"), self.lineEdit_search, self.search
-        )
+        # self.search_kb_shortcut = QShortcut(
+        #     QKeySequence("Ctrl+Return"), self.lineEdit_search, self.search
+        # )
         self.pushButton_search.clicked.connect(self.search)
 
         self.actionDownload.triggered.connect(self.download)
