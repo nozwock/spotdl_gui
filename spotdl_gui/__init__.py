@@ -1,3 +1,1 @@
-import importlib.metadata
-
-__version__ = importlib.metadata.version("spotdl_gui")
+__version__ = "0.2.1"
