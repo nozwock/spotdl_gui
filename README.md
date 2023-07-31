@@ -1,5 +1,7 @@
 # spotdl_gui
 
+![preview](https://github.com/nozwock/spotdl_gui/assets/57829219/0f4f7173-1d65-4ae6-a46f-9f5602d86e81)
+
 ## Installation
 ```sh
 python -m pip install --user pipx
