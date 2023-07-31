@@ -201,11 +201,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.threadpool.start(self.download_worker)
 
     def import_tracks_from_file(self) -> None:
-        import_file = Path(
-            QFileDialog.getOpenFileName(
-                self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
-            )[0]
-        )
+        import_file = QFileDialog.getOpenFileName(
+            self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
+        )[0]
+
+        if not import_file:
+            return
 
         try:
             with open(import_file, "r", encoding="utf-8") as f:
@@ -216,11 +217,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, "Import failed", repr(e))
 
     def export_tracks_to_file(self) -> None:
-        export_file = Path(
-            QFileDialog.getSaveFileName(
-                self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
-            )[0]
-        )
+        export_file_ = QFileDialog.getSaveFileName(
+            self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
+        )[0]
+
+        if not export_file_:
+            return
+
+        export_file = Path(export_file_)
 
         if not export_file.suffix:
             export_file = export_file.with_suffix(".spotdl")
