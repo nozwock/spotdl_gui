@@ -222,6 +222,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             )[0]
         )
 
+        if not export_file.suffix:
+            export_file = export_file.with_suffix(".spotdl")
+
         try:
             with open(export_file, "w", encoding="utf-8") as f:
                 json.dump(
@@ -232,6 +235,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 )
         except Exception as e:
             QMessageBox.critical(self, "Export failed", repr(e))
+        QMessageBox.information(
+            self,
+            "Export complete",
+            f"Exported {len(self.tracks_model.tracks)} track(s) to {export_file}",
+        )
 
     def set_output_dir(self, dir: Path | str) -> None:
         if isinstance(dir, str):
