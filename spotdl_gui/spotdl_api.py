@@ -3,7 +3,6 @@ from __future__ import annotations
 import os
 import sys
 from pathlib import Path
-from typing import Any
 
 import spotdl
 from spotdl.download.downloader import Downloader
@@ -19,6 +18,8 @@ from spotdl.utils.console import generate_initial_config
 from spotdl.utils.ffmpeg import FFmpegError, is_ffmpeg_installed
 from spotdl.utils.search import get_simple_songs
 from spotdl.utils.spotify import SpotifyClient, SpotifyError, save_spotify_cache
+
+from .utils import override_map_values
 
 
 class SpotdlApi(spotdl.Spotdl):
@@ -110,20 +111,6 @@ class SpotdlApi(spotdl.Spotdl):
         config = get_config()
 
         return (
-            SpotifyOptions(merge_maps(SPOTIFY_OPTIONS, config)),
-            DownloaderOptions(merge_maps(DOWNLOADER_OPTIONS, config)),
+            SpotifyOptions(override_map_values(SPOTIFY_OPTIONS, config)),
+            DownloaderOptions(override_map_values(DOWNLOADER_OPTIONS, config)),
         )
-
-
-def merge_maps(key_from: dict[str, Any], values_from: dict[str, Any]) -> dict[str, Any]:
-    """
-    Returns a map identical in structure to `keys_from` but using the values from `values_from`.
-    """
-
-    out = {}
-    override_keys = values_from.keys()
-    for k in key_from.keys():
-        if k in override_keys:
-            out[k] = values_from[k]
-
-    return out
