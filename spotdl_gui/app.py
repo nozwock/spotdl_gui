@@ -9,9 +9,10 @@ from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QAction, QKeySequence, QShortcut
 from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableView, QWidget
 
+from . import __version__
 from .assets import resource
 from .config import Config
-from .defines import SPOTDL_FILE_FILTER
+from .defines import SPOTDL_FILE_FILTER, SPOTDL_VERSION
 from .models.tracks_model import TracksModel
 from .spotdl_api import Song, get_spotdl_path
 from .utils import open_default
@@ -25,6 +26,12 @@ class AboutDialog(QtWidgets.QDialog, Ui_About):
     def __init__(self, parent=None) -> None:
         super().__init__(parent)
         self.setupUi(self)
+
+        self.label_about.setText(
+            self.label_about.text()
+            .replace(r"%version%", __version__)
+            .replace(r"%spotdlversion%", SPOTDL_VERSION)
+        )
 
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):

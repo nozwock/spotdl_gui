@@ -15,9 +15,9 @@ class Ui_About(object):
         About.resize(300, 200)
         self.verticalLayout = QtWidgets.QVBoxLayout(About)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(parent=About)
-        self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
+        self.label_about = QtWidgets.QLabel(parent=About)
+        self.label_about.setObjectName("label_about")
+        self.verticalLayout.addWidget(self.label_about)
         self.buttonBox = QtWidgets.QDialogButtonBox(parent=About)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Ok)
         self.buttonBox.setObjectName("buttonBox")
@@ -30,4 +30,4 @@ class Ui_About(object):
     def retranslateUi(self, About):
         _translate = QtCore.QCoreApplication.translate
         About.setWindowTitle(_translate("About", "About"))
-        self.label.setText(_translate("About", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt;\">SpotDL GUI</span></p><p align=\"center\"><span style=\" font-size:12pt;\">Version: %version%</span></p><p align=\"center\"><span style=\" font-size:12pt;\">Repository: </span><a href=\"https://github.com/nozwock/spotdl_gui\"><span style=\" text-decoration: underline; color:#007af4;\">GitHub</span></a></p></body></html>"))
+        self.label_about.setText(_translate("About", "<html><head/><body><p align=\"center\"><span style=\" font-size:22pt;\">SpotDL GUI</span></p><p align=\"center\"><span style=\" font-size:12pt;\">Version: %version%</span></p><p align=\"center\"><span style=\" font-size:12pt;\">SpotDL Version: %spotdlversion%</span></p><p align=\"center\"><span style=\" font-size:12pt;\">Repository: </span><a href=\"https://github.com/nozwock/spotdl_gui\"><span style=\" text-decoration: underline; color:#007af4;\">GitHub</span></a></p></body></html>"))
