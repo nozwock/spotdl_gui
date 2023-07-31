@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Settings</class>
+ <widget class="QDialog" name="Settings">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>-447</y>
+        <width>366</width>
+        <height>895</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_spotify_settings">
+         <property name="title">
+          <string>Spotify Settings</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Client ID</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLineEdit" name="lineEdit_spotify_client_id"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Clinet Secret</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="lineEdit_spotify_client_secret"/>
+          </item>
+          <item row="3" column="0">
+           <widget class="QCheckBox" name="checkBox_auth_token_set">
+            <property name="text">
+             <string>Use Auth Token</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLineEdit" name="lineEdit_spotify_auth_token"/>
+          </item>
+          <item row="10" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_user_auth">
+            <property name="text">
+             <string>User Auth</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_headless">
+            <property name="text">
+             <string>Headless</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Cache Path</string>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Max Retries</string>
+            </property>
+           </widget>
+          </item>
+          <item row="21" column="1">
+           <widget class="QSpinBox" name="spinBox_spotify_max_retries"/>
+          </item>
+          <item row="15" column="1">
+           <widget class="QWidget" name="cache_path_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_spotify_cache_path"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_cache_path_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="16" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_no_cache">
+            <property name="text">
+             <string>No Cache</string>
+            </property>
+           </widget>
+          </item>
+          <item row="17" column="0">
+           <widget class="QCheckBox" name="checkBox_spotify_use_cache_file">
+            <property name="text">
+             <string>Use Cache File</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_downloader_settings">
+         <property name="title">
+          <string>Downloader Settings</string>
+         </property>
+         <layout class="QFormLayout" name="formLayout_2">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="checkBox_bitrate_set">
+            <property name="text">
+             <string>Custom Bitrate</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="comboBox_downloader_bitrate"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Format</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="comboBox_downloader_format"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Threads</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QSpinBox" name="spinBox_downloader_threads">
+            <property name="maximum">
+             <number>61</number>
+            </property>
+            <property name="value">
+             <number>4</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="checkBox_cookie_file_set">
+            <property name="text">
+             <string>Set Cookie File</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_sponsorblock">
+            <property name="text">
+             <string>Sponsorblock</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_print_errors">
+            <property name="text">
+             <string>Print Errors</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_playlist_numbering">
+            <property name="text">
+             <string>Playlist Numbering</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_scan_for_songs">
+            <property name="text">
+             <string>Scan for songs</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Overwrite</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="1">
+           <widget class="QComboBox" name="comboBox_downloader_overwrite"/>
+          </item>
+          <item row="15" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Output</string>
+            </property>
+           </widget>
+          </item>
+          <item row="15" column="1">
+           <widget class="QLineEdit" name="lineEdit_downloader_output"/>
+          </item>
+          <item row="17" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>FFmpeg EXE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="0">
+           <widget class="QCheckBox" name="checkBox_ffmpeg_args_set">
+            <property name="text">
+             <string>Set FFmpeg Args</string>
+            </property>
+            <property name="checked">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="1">
+           <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg_args"/>
+          </item>
+          <item row="8" column="1">
+           <widget class="QWidget" name="cookie_file_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_downloader_cookie_file"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_cookie_file_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="17" column="1">
+           <widget class="QWidget" name="ffmpeg_group" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButton_ffmpeg_pick">
+               <property name="text">
+                <string>...</string>
+               </property>
+               <property name="icon">
+                <iconset resource="../assets/resource.qrc">
+                 <normaloff>:/icons/bxs-folder-plus.svg</normaloff>:/icons/bxs-folder-plus.svg</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>24</width>
+                 <height>24</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Apply|QDialogButtonBox::Discard</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../assets/resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>checkBox_auth_token_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_spotify_auth_token</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>81</x>
+     <y>-207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>93</x>
+     <y>-177</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>Settings</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>460</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>Settings</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>253</x>
+     <y>460</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>253</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_ffmpeg_args_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_downloader_ffmpeg_args</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>87</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>423</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_bitrate_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBox_downloader_bitrate</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>22</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_cookie_file_set</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>cookie_file_group</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>152</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>272</x>
+     <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

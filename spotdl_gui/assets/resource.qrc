@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/bx-cog.svg</file>
+        <file>images/music-note-slider.svg</file>
+        <file>icons/bx-download.svg</file>
+        <file>icons/bxs-file-export.svg</file>
+        <file>icons/bxs-file-import.svg</file>
+        <file>icons/bxs-folder-open.svg</file>
+        <file>icons/bxs-folder-plus.svg</file>
+    </qresource>
+</RCC>

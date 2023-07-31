@@ -12,3 +12,8 @@ pipx install git+https://github.com/nozwock/spotdl_gui.git
 ```sh
 pyinstaller -Fsn 'Spotdl GUI' spotdl_gui/__main__.py --collect-data pykakasi --collect-data ytmusicapi
 ```
+
+# Credits
+## Assets
+- https://boxicons.com
+- https://www.svgrepo.com
