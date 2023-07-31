@@ -16,7 +16,7 @@ from .assets import resource
 from .config import Config
 from .defines import SPOTDL_FILE_FILTER, SPOTDL_VERSION
 from .models.tracks_model import TracksModel
-from .spotdl_api import Song, get_spotdl_config, get_spotdl_path
+from .spotdl_api import Song, get_spotdl_config, get_spotdl_config_path, get_spotdl_dir
 from .utils import open_default
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
@@ -24,18 +24,29 @@ from .views.settings import Ui_Settings
 from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
 
-OPTIONAL_PREF_PREFIX = (
-    "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
-)
-
 
 class SpotdlConfigManager(ConfigManager):
+    OPTIONAL_PREF_PREFIX = (
+        "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
+    )
+
     def __init__(self, *args, parent=None, **kwargs):
-        super().__init__(parent=parent, *args, **kwargs)
-        self._config = get_spotdl_config()
-        self._add_optionals(
-            self._config, ("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
+        super().__init__(
+            parent=parent,
+            *args,
+            # filename=get_spotdl_config_path(),
+            **kwargs,
         )
+
+        self.path = get_spotdl_config_path()
+
+        _spotdl_config = get_spotdl_config()
+        self._add_optionals(
+            _spotdl_config, ("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
+        )
+
+        self.set_defaults(_spotdl_config)
+        self.set_many(_spotdl_config)
 
     def add_handlers_keyless(self, handlers: Iterable[QWidget]) -> None:
         self.add_handlers(
@@ -44,15 +55,26 @@ class SpotdlConfigManager(ConfigManager):
 
     @staticmethod
     def _get_handler_args(widget: QWidget) -> tuple[str, QWidget]:
-        return (widget.objectName().split("_", 2)[-1], widget)
+        return (
+            widget.objectName().split("_", 2)[-1],
+            widget,
+        )  # eg. 'checkBox_downloader_print_errors' -> 'print_errors'
 
     def _add_optionals(self, cfg: dict[str, Any], optionals) -> None:
-        cfg.update({f"{OPTIONAL_PREF_PREFIX}{pref}": False for pref in optionals})
+        cfg.update(
+            {
+                f"{SpotdlConfigManager.OPTIONAL_PREF_PREFIX}{pref}": False
+                for pref in optionals
+            }
+        )
 
-    def get_config(self) -> dict[str, Any]:
-        # return after eval and removing optionals
+    def as_dict(self) -> dict[str, Any]:
         raise NotImplementedError
-        return self._config
+
+        cfg = super().as_dict()
+        # return after eval and removing optionals
+
+        return cfg
 
 
 class AboutDialog(QtWidgets.QDialog, Ui_About):
@@ -84,6 +106,55 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
             QtWidgets.QDialogButtonBox.StandardButton.Discard
         ).clicked.connect(self.reject)
 
+        self.setup_spotdl_config()
+
+    @QtCore.Slot()
+    def accept(self) -> None:
+        # There probably is a better way...
+        self.spotdl_config.set_defaults(self.spotdl_config.config)
+        super().accept()
+
+    @QtCore.Slot()
+    def reject(self) -> None:
+        self.spotdl_config.set_many(self.spotdl_config.defaults)
+        super().reject()
+
+    def setup_spotdl_config(self) -> None:
+        self.spotdl_config = SpotdlConfigManager()
+
+        # Adding widget handlers
+        self.spotdl_config.add_handlers_keyless(
+            (
+                # Spotify handlers
+                self.lineEdit_spotify_client_id,
+                self.lineEdit_spotify_client_secret,
+                self.checkBox_spotify_optionalGroup_auth_token,
+                self.lineEdit_spotify_auth_token,
+                self.checkBox_spotify_user_auth,
+                self.checkBox_spotify_headless,
+                self.lineEdit_spotify_cache_path,
+                self.checkBox_spotify_no_cache,
+                self.checkBox_spotify_use_cache_file,
+                self.spinBox_spotify_max_retries,
+                # Downloader handlers
+                self.checkBox_downloader_optionalGroup_bitrate,
+                self.comboBox_downloader_bitrate,
+                self.comboBox_downloader_format,
+                self.spinBox_downloader_threads,
+                self.checkBox_downloader_optionalGroup_cookie_file,
+                self.lineEdit_downloader_cookie_file,
+                self.checkBox_downloader_sponsorblock,
+                self.checkBox_downloader_print_errors,
+                self.checkBox_downloader_playlist_numbering,
+                self.checkBox_downloader_scan_for_songs,
+                self.comboBox_downloader_overwrite,
+                self.lineEdit_downloader_output,
+                self.lineEdit_downloader_ffmpeg,
+                self.lineEdit_downloader_ffmpeg_args,
+                self.checkBox_downloader_optionalGroup_ffmpeg_args,
+            )
+        )
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(
@@ -100,7 +171,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionSettings.triggered.connect(lambda: self.settings_dialog.exec())
 
         self.config = Config.load()
-        self.setup_spotdl_config()
 
         self.label_searching_text = self.label_searching.text()
         self.label_downloading_text = self.label_downloading.text()
@@ -122,7 +192,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.download_worker: DownloadWorker | None = None
 
         self.actionOpen_SpotDL_config_folder.triggered.connect(
-            lambda: open_default(get_spotdl_path())
+            lambda: open_default(get_spotdl_dir())
         )
 
         self.actionPick_Output_Folder.triggered.connect(
@@ -150,43 +220,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionImport.triggered.connect(self.import_tracks_from_file)
         self.actionExport.triggered.connect(self.export_tracks_to_file)
         self.actionDownload.triggered.connect(self.download)
-
-    def setup_spotdl_config(self) -> None:
-        self.spotdl_config_manager = SpotdlConfigManager()
-
-        # Adding widget handlers
-        s = self.settings_dialog
-        self.spotdl_config_manager.add_handlers_keyless(
-            (
-                # Spotify handlers
-                s.lineEdit_spotify_client_id,
-                s.lineEdit_spotify_client_secret,
-                s.checkBox_spotify_optionalGroup_auth_token,
-                s.lineEdit_spotify_auth_token,
-                s.checkBox_spotify_user_auth,
-                s.checkBox_spotify_headless,
-                s.lineEdit_spotify_cache_path,
-                s.checkBox_spotify_no_cache,
-                s.checkBox_spotify_use_cache_file,
-                s.spinBox_spotify_max_retries,
-                # Downloader handlers
-                s.checkBox_downloader_optionalGroup_bitrate,
-                s.comboBox_downloader_bitrate,
-                s.comboBox_downloader_format,
-                s.spinBox_downloader_threads,
-                s.checkBox_downloader_optionalGroup_cookie_file,
-                s.lineEdit_downloader_cookie_file,
-                s.checkBox_downloader_sponsorblock,
-                s.checkBox_downloader_print_errors,
-                s.checkBox_downloader_playlist_numbering,
-                s.checkBox_downloader_scan_for_songs,
-                s.comboBox_downloader_overwrite,
-                s.lineEdit_downloader_output,
-                s.lineEdit_downloader_ffmpeg,
-                s.lineEdit_downloader_ffmpeg_args,
-                s.checkBox_downloader_optionalGroup_ffmpeg_args,
-            )
-        )
 
     def closeEvent(self, event):
         if self.search_worker:

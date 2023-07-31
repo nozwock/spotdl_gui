@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>440</width>
     <height>500</height>
    </rect>
   </property>
@@ -23,8 +23,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-447</y>
-        <width>366</width>
+        <y>-127</y>
+        <width>406</width>
         <height>895</height>
        </rect>
       </property>
@@ -168,7 +168,68 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="comboBox_downloader_bitrate"/>
+           <widget class="QComboBox" name="comboBox_downloader_bitrate">
+            <item>
+             <property name="text">
+              <string>auto</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>disable</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>24k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>48k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>64k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>96k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>128k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>160k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>192k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>224k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>256k</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>320k</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_11">
@@ -178,7 +239,38 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QComboBox" name="comboBox_downloader_format"/>
+           <widget class="QComboBox" name="comboBox_downloader_format">
+            <item>
+             <property name="text">
+              <string>mp3</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>flac</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>ogg</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>opus</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>m4a</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>wav</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item row="5" column="0">
            <widget class="QLabel" name="label_20">
@@ -240,12 +332,28 @@
            </widget>
           </item>
           <item row="14" column="1">
-           <widget class="QComboBox" name="comboBox_downloader_overwrite"/>
+           <widget class="QComboBox" name="comboBox_downloader_overwrite">
+            <item>
+             <property name="text">
+              <string>skip</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>force</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>metadata</string>
+             </property>
+            </item>
+           </widget>
           </item>
           <item row="15" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
-             <string>Output</string>
+             <string>Filename Format</string>
             </property>
            </widget>
           </item>
