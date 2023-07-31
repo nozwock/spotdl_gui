@@ -9,9 +9,11 @@ pipx install git+https://github.com/nozwock/spotdl_gui.git
 - Run with `spotdl-gui`
 
 ## Building frozen app 
-```sh
-pyinstaller -Fsn 'Spotdl GUI' spotdl_gui/__main__.py --collect-data pykakasi --collect-data ytmusicapi
+```console
+pyinstaller -Fn 'Spotdl GUI' spotdl_gui\__main__.py --collect-data pykakasi --collect-data ytmusicapi
 ```
+
+- `pyinstaller -Fsn` for Unix.
 
 # Credits
 ## Assets
