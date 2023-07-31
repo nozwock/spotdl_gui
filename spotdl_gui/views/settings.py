@@ -39,10 +39,10 @@ class Ui_Settings(object):
         self.lineEdit_spotify_client_secret = QtWidgets.QLineEdit(parent=self.groupBox_spotify_settings)
         self.lineEdit_spotify_client_secret.setObjectName("lineEdit_spotify_client_secret")
         self.formLayout.setWidget(2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lineEdit_spotify_client_secret)
-        self.checkBox_auth_token_set = QtWidgets.QCheckBox(parent=self.groupBox_spotify_settings)
-        self.checkBox_auth_token_set.setChecked(False)
-        self.checkBox_auth_token_set.setObjectName("checkBox_auth_token_set")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_auth_token_set)
+        self.checkBox_spotify_optionalGroup_auth_token = QtWidgets.QCheckBox(parent=self.groupBox_spotify_settings)
+        self.checkBox_spotify_optionalGroup_auth_token.setChecked(False)
+        self.checkBox_spotify_optionalGroup_auth_token.setObjectName("checkBox_spotify_optionalGroup_auth_token")
+        self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_spotify_optionalGroup_auth_token)
         self.lineEdit_spotify_auth_token = QtWidgets.QLineEdit(parent=self.groupBox_spotify_settings)
         self.lineEdit_spotify_auth_token.setObjectName("lineEdit_spotify_auth_token")
         self.formLayout.setWidget(3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lineEdit_spotify_auth_token)
@@ -88,9 +88,9 @@ class Ui_Settings(object):
         self.groupBox_downloader_settings.setObjectName("groupBox_downloader_settings")
         self.formLayout_2 = QtWidgets.QFormLayout(self.groupBox_downloader_settings)
         self.formLayout_2.setObjectName("formLayout_2")
-        self.checkBox_bitrate_set = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
-        self.checkBox_bitrate_set.setObjectName("checkBox_bitrate_set")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_bitrate_set)
+        self.checkBox_downloader_optionalGroup_bitrate = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
+        self.checkBox_downloader_optionalGroup_bitrate.setObjectName("checkBox_downloader_optionalGroup_bitrate")
+        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_downloader_optionalGroup_bitrate)
         self.comboBox_downloader_bitrate = QtWidgets.QComboBox(parent=self.groupBox_downloader_settings)
         self.comboBox_downloader_bitrate.setObjectName("comboBox_downloader_bitrate")
         self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.comboBox_downloader_bitrate)
@@ -108,9 +108,9 @@ class Ui_Settings(object):
         self.spinBox_downloader_threads.setProperty("value", 4)
         self.spinBox_downloader_threads.setObjectName("spinBox_downloader_threads")
         self.formLayout_2.setWidget(5, QtWidgets.QFormLayout.ItemRole.FieldRole, self.spinBox_downloader_threads)
-        self.checkBox_cookie_file_set = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
-        self.checkBox_cookie_file_set.setObjectName("checkBox_cookie_file_set")
-        self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_cookie_file_set)
+        self.checkBox_downloader_optionalGroup_cookie_file = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
+        self.checkBox_downloader_optionalGroup_cookie_file.setObjectName("checkBox_downloader_optionalGroup_cookie_file")
+        self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_downloader_optionalGroup_cookie_file)
         self.checkBox_downloader_sponsorblock = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
         self.checkBox_downloader_sponsorblock.setObjectName("checkBox_downloader_sponsorblock")
         self.formLayout_2.setWidget(10, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_downloader_sponsorblock)
@@ -138,10 +138,10 @@ class Ui_Settings(object):
         self.label_8 = QtWidgets.QLabel(parent=self.groupBox_downloader_settings)
         self.label_8.setObjectName("label_8")
         self.formLayout_2.setWidget(17, QtWidgets.QFormLayout.ItemRole.LabelRole, self.label_8)
-        self.checkBox_ffmpeg_args_set = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
-        self.checkBox_ffmpeg_args_set.setChecked(False)
-        self.checkBox_ffmpeg_args_set.setObjectName("checkBox_ffmpeg_args_set")
-        self.formLayout_2.setWidget(18, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_ffmpeg_args_set)
+        self.checkBox_downloader_optionalGroup_ffmpeg_args = QtWidgets.QCheckBox(parent=self.groupBox_downloader_settings)
+        self.checkBox_downloader_optionalGroup_ffmpeg_args.setChecked(False)
+        self.checkBox_downloader_optionalGroup_ffmpeg_args.setObjectName("checkBox_downloader_optionalGroup_ffmpeg_args")
+        self.formLayout_2.setWidget(18, QtWidgets.QFormLayout.ItemRole.LabelRole, self.checkBox_downloader_optionalGroup_ffmpeg_args)
         self.lineEdit_downloader_ffmpeg_args = QtWidgets.QLineEdit(parent=self.groupBox_downloader_settings)
         self.lineEdit_downloader_ffmpeg_args.setObjectName("lineEdit_downloader_ffmpeg_args")
         self.formLayout_2.setWidget(18, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lineEdit_downloader_ffmpeg_args)
@@ -182,12 +182,12 @@ class Ui_Settings(object):
         self.verticalLayout_2.addWidget(self.buttonBox)
 
         self.retranslateUi(Settings)
-        self.checkBox_auth_token_set.toggled['bool'].connect(self.lineEdit_spotify_auth_token.setVisible) # type: ignore
+        self.checkBox_spotify_optionalGroup_auth_token.toggled['bool'].connect(self.lineEdit_spotify_auth_token.setVisible) # type: ignore
         self.buttonBox.accepted.connect(Settings.accept) # type: ignore
         self.buttonBox.rejected.connect(Settings.reject) # type: ignore
-        self.checkBox_ffmpeg_args_set.toggled['bool'].connect(self.lineEdit_downloader_ffmpeg_args.setVisible) # type: ignore
-        self.checkBox_bitrate_set.toggled['bool'].connect(self.comboBox_downloader_bitrate.setVisible) # type: ignore
-        self.checkBox_cookie_file_set.toggled['bool'].connect(self.cookie_file_group.setVisible) # type: ignore
+        self.checkBox_downloader_optionalGroup_ffmpeg_args.toggled['bool'].connect(self.lineEdit_downloader_ffmpeg_args.setVisible) # type: ignore
+        self.checkBox_downloader_optionalGroup_bitrate.toggled['bool'].connect(self.comboBox_downloader_bitrate.setVisible) # type: ignore
+        self.checkBox_downloader_optionalGroup_cookie_file.toggled['bool'].connect(self.cookie_file_group.setVisible) # type: ignore
         QtCore.QMetaObject.connectSlotsByName(Settings)
 
     def retranslateUi(self, Settings):
@@ -196,7 +196,7 @@ class Ui_Settings(object):
         self.groupBox_spotify_settings.setTitle(_translate("Settings", "Spotify Settings"))
         self.label.setText(_translate("Settings", "Client ID"))
         self.label_2.setText(_translate("Settings", "Clinet Secret"))
-        self.checkBox_auth_token_set.setText(_translate("Settings", "Use Auth Token"))
+        self.checkBox_spotify_optionalGroup_auth_token.setText(_translate("Settings", "Use Auth Token"))
         self.checkBox_spotify_user_auth.setText(_translate("Settings", "User Auth"))
         self.checkBox_spotify_headless.setText(_translate("Settings", "Headless"))
         self.label_6.setText(_translate("Settings", "Cache Path"))
@@ -205,10 +205,10 @@ class Ui_Settings(object):
         self.checkBox_spotify_no_cache.setText(_translate("Settings", "No Cache"))
         self.checkBox_spotify_use_cache_file.setText(_translate("Settings", "Use Cache File"))
         self.groupBox_downloader_settings.setTitle(_translate("Settings", "Downloader Settings"))
-        self.checkBox_bitrate_set.setText(_translate("Settings", "Custom Bitrate"))
+        self.checkBox_downloader_optionalGroup_bitrate.setText(_translate("Settings", "Custom Bitrate"))
         self.label_11.setText(_translate("Settings", "Format"))
         self.label_20.setText(_translate("Settings", "Threads"))
-        self.checkBox_cookie_file_set.setText(_translate("Settings", "Set Cookie File"))
+        self.checkBox_downloader_optionalGroup_cookie_file.setText(_translate("Settings", "Set Cookie File"))
         self.checkBox_downloader_sponsorblock.setText(_translate("Settings", "Sponsorblock"))
         self.checkBox_downloader_print_errors.setText(_translate("Settings", "Print Errors"))
         self.checkBox_downloader_playlist_numbering.setText(_translate("Settings", "Playlist Numbering"))
@@ -216,6 +216,6 @@ class Ui_Settings(object):
         self.label_7.setText(_translate("Settings", "Overwrite"))
         self.label_3.setText(_translate("Settings", "Output"))
         self.label_8.setText(_translate("Settings", "FFmpeg EXE"))
-        self.checkBox_ffmpeg_args_set.setText(_translate("Settings", "Set FFmpeg Args"))
+        self.checkBox_downloader_optionalGroup_ffmpeg_args.setText(_translate("Settings", "Set FFmpeg Args"))
         self.toolButton_cookie_file_pick.setText(_translate("Settings", "..."))
         self.toolButton_ffmpeg_pick.setText(_translate("Settings", "..."))

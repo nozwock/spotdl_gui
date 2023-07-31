@@ -2,8 +2,10 @@ import dataclasses
 import json
 import sys
 from pathlib import Path
+from typing import Any, Iterable
 
 import qdarktheme
+from pyqtconfig import ConfigManager
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QAction, QKeySequence, QShortcut
@@ -14,13 +16,43 @@ from .assets import resource
 from .config import Config
 from .defines import SPOTDL_FILE_FILTER, SPOTDL_VERSION
 from .models.tracks_model import TracksModel
-from .spotdl_api import Song, get_spotdl_path
+from .spotdl_api import Song, get_spotdl_config, get_spotdl_path
 from .utils import open_default
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
 from .views.settings import Ui_Settings
 from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
+
+OPTIONAL_PREF_PREFIX = (
+    "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
+)
+
+
+class SpotdlConfigManager(ConfigManager):
+    def __init__(self, *args, parent=None, **kwargs):
+        super().__init__(parent=parent, *args, **kwargs)
+        self._config = get_spotdl_config()
+        self._add_optionals(
+            self._config, ("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
+        )
+
+    def add_handlers_keyless(self, handlers: Iterable[QWidget]) -> None:
+        self.add_handlers(
+            dict(SpotdlConfigManager._get_handler_args(handler) for handler in handlers)
+        )
+
+    @staticmethod
+    def _get_handler_args(widget: QWidget) -> tuple[str, QWidget]:
+        return (widget.objectName().split("_", 2)[-1], widget)
+
+    def _add_optionals(self, cfg: dict[str, Any], optionals) -> None:
+        cfg.update({f"{OPTIONAL_PREF_PREFIX}{pref}": False for pref in optionals})
+
+    def get_config(self) -> dict[str, Any]:
+        # return after eval and removing optionals
+        raise NotImplementedError
+        return self._config
 
 
 class AboutDialog(QtWidgets.QDialog, Ui_About):
@@ -61,7 +93,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.set_page(0)
 
+        self.about_dialog = AboutDialog(self)
+        self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
+
+        self.settings_dialog = SettingsDialog(self)
+        self.actionSettings.triggered.connect(lambda: self.settings_dialog.exec())
+
         self.config = Config.load()
+        self.setup_spotdl_config()
 
         self.label_searching_text = self.label_searching.text()
         self.label_downloading_text = self.label_downloading.text()
@@ -81,12 +120,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.threadpool = QThreadPool(self)
         self.search_worker: SearchWorker | None = None
         self.download_worker: DownloadWorker | None = None
-
-        self.about_dialog = AboutDialog(self)
-        self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
-
-        self.settings_dialog = SettingsDialog(self)
-        self.actionSettings.triggered.connect(lambda: self.settings_dialog.exec())
 
         self.actionOpen_SpotDL_config_folder.triggered.connect(
             lambda: open_default(get_spotdl_path())
@@ -117,6 +150,43 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionImport.triggered.connect(self.import_tracks_from_file)
         self.actionExport.triggered.connect(self.export_tracks_to_file)
         self.actionDownload.triggered.connect(self.download)
+
+    def setup_spotdl_config(self) -> None:
+        self.spotdl_config_manager = SpotdlConfigManager()
+
+        # Adding widget handlers
+        s = self.settings_dialog
+        self.spotdl_config_manager.add_handlers_keyless(
+            (
+                # Spotify handlers
+                s.lineEdit_spotify_client_id,
+                s.lineEdit_spotify_client_secret,
+                s.checkBox_spotify_optionalGroup_auth_token,
+                s.lineEdit_spotify_auth_token,
+                s.checkBox_spotify_user_auth,
+                s.checkBox_spotify_headless,
+                s.lineEdit_spotify_cache_path,
+                s.checkBox_spotify_no_cache,
+                s.checkBox_spotify_use_cache_file,
+                s.spinBox_spotify_max_retries,
+                # Downloader handlers
+                s.checkBox_downloader_optionalGroup_bitrate,
+                s.comboBox_downloader_bitrate,
+                s.comboBox_downloader_format,
+                s.spinBox_downloader_threads,
+                s.checkBox_downloader_optionalGroup_cookie_file,
+                s.lineEdit_downloader_cookie_file,
+                s.checkBox_downloader_sponsorblock,
+                s.checkBox_downloader_print_errors,
+                s.checkBox_downloader_playlist_numbering,
+                s.checkBox_downloader_scan_for_songs,
+                s.comboBox_downloader_overwrite,
+                s.lineEdit_downloader_output,
+                s.lineEdit_downloader_ffmpeg,
+                s.lineEdit_downloader_ffmpeg_args,
+                s.checkBox_downloader_optionalGroup_ffmpeg_args,
+            )
+        )
 
     def closeEvent(self, event):
         if self.search_worker:

@@ -8,12 +8,9 @@ import spotdl
 from spotdl.download.downloader import Downloader
 from spotdl.types.options import DownloaderOptions, SpotifyOptions
 from spotdl.types.song import Song
-from spotdl.utils.config import (
-    DOWNLOADER_OPTIONS,
-    SPOTIFY_OPTIONS,
-    get_config,
-    get_spotdl_path,
-)
+from spotdl.utils.config import DOWNLOADER_OPTIONS, SPOTIFY_OPTIONS
+from spotdl.utils.config import get_config as get_spotdl_config
+from spotdl.utils.config import get_spotdl_path
 from spotdl.utils.console import generate_initial_config
 from spotdl.utils.ffmpeg import FFmpegError, is_ffmpeg_installed
 from spotdl.utils.search import get_simple_songs
@@ -108,7 +105,7 @@ class SpotdlApi(spotdl.Spotdl):
         # Make sure config exists
         generate_initial_config()
 
-        config = get_config()
+        config = get_spotdl_config()
 
         return (
             SpotifyOptions(override_map_values(SPOTIFY_OPTIONS, config)),

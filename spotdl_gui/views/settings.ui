@@ -56,7 +56,7 @@
            <widget class="QLineEdit" name="lineEdit_spotify_client_secret"/>
           </item>
           <item row="3" column="0">
-           <widget class="QCheckBox" name="checkBox_auth_token_set">
+           <widget class="QCheckBox" name="checkBox_spotify_optionalGroup_auth_token">
             <property name="text">
              <string>Use Auth Token</string>
             </property>
@@ -161,7 +161,7 @@
          </property>
          <layout class="QFormLayout" name="formLayout_2">
           <item row="0" column="0">
-           <widget class="QCheckBox" name="checkBox_bitrate_set">
+           <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_bitrate">
             <property name="text">
              <string>Custom Bitrate</string>
             </property>
@@ -198,7 +198,7 @@
            </widget>
           </item>
           <item row="8" column="0">
-           <widget class="QCheckBox" name="checkBox_cookie_file_set">
+           <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_cookie_file">
             <property name="text">
              <string>Set Cookie File</string>
             </property>
@@ -260,7 +260,7 @@
            </widget>
           </item>
           <item row="18" column="0">
-           <widget class="QCheckBox" name="checkBox_ffmpeg_args_set">
+           <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_ffmpeg_args">
             <property name="text">
              <string>Set FFmpeg Args</string>
             </property>
@@ -369,7 +369,7 @@
  </resources>
  <connections>
   <connection>
-   <sender>checkBox_auth_token_set</sender>
+   <sender>checkBox_spotify_optionalGroup_auth_token</sender>
    <signal>toggled(bool)</signal>
    <receiver>lineEdit_spotify_auth_token</receiver>
    <slot>setVisible(bool)</slot>
@@ -417,7 +417,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_ffmpeg_args_set</sender>
+   <sender>checkBox_downloader_optionalGroup_ffmpeg_args</sender>
    <signal>toggled(bool)</signal>
    <receiver>lineEdit_downloader_ffmpeg_args</receiver>
    <slot>setVisible(bool)</slot>
@@ -433,7 +433,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_bitrate_set</sender>
+   <sender>checkBox_downloader_optionalGroup_bitrate</sender>
    <signal>toggled(bool)</signal>
    <receiver>comboBox_downloader_bitrate</receiver>
    <slot>setVisible(bool)</slot>
@@ -449,7 +449,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>checkBox_cookie_file_set</sender>
+   <sender>checkBox_downloader_optionalGroup_cookie_file</sender>
    <signal>toggled(bool)</signal>
    <receiver>cookie_file_group</receiver>
    <slot>setVisible(bool)</slot>
