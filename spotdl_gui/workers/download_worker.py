@@ -16,6 +16,22 @@ class WorkerSignals(QObject):
 # Should do some abstraction maybe...
 
 
+def _download_run(
+    queue: Queue, songs: list[Song], output_dir: Path | None = None
+) -> None:
+    api = SpotdlApi()
+    if output_dir is not None:
+        output = Path(api.downloader.settings["output"])
+        api.downloader.settings["output"] = str(
+            output_dir.joinpath(output.name).absolute()
+        )
+    try:
+        ret = api.download_songs(songs)
+        queue.put(ret)
+    except Exception as e:
+        queue.put(e)
+
+
 class DownloadWorker(QRunnable):
     def __init__(self, songs: list[Song], output_dir: Path | None = None):
         super().__init__()
@@ -30,24 +46,13 @@ class DownloadWorker(QRunnable):
 
     @Slot()
     def run(self) -> None:
-        def _run(queue: Queue) -> None:
-            api = SpotdlApi()
-            if self.output_dir is not None:
-                output = Path(api.downloader.settings["output"])
-                api.downloader.settings["output"] = str(
-                    self.output_dir.joinpath(output.name).absolute()
-                )
-            try:
-                ret = api.download_songs(self.songs)
-                queue.put(ret)
-            except Exception as e:
-                queue.put(e)
-
         def pkill() -> None:
             if p.is_alive():
                 p.kill()
 
-        p = Process(target=_run, args=[self.queue])
+        p = Process(
+            target=_download_run, args=[self.queue, self.songs, self.output_dir]
+        )
         p.start()
 
         while ...:

@@ -12,6 +12,15 @@ class WorkerSignals(QObject):
     error = Signal(object)
 
 
+def _search_run(queue: Queue, query: list[str]) -> None:
+    api = SpotdlApi()
+    try:
+        ret = api.simple_search(query)
+        queue.put(ret)
+    except Exception as e:
+        queue.put(e)
+
+
 class SearchWorker(QRunnable):
     def __init__(self, query: list[str]):
         super().__init__()
@@ -25,21 +34,13 @@ class SearchWorker(QRunnable):
 
     @Slot()
     def run(self) -> None:
-        def _run(queue: Queue) -> None:
-            api = SpotdlApi()
-            try:
-                ret = api.simple_search(self.query)
-                queue.put(ret)
-            except Exception as e:
-                queue.put(e)
-
         def pkill() -> None:
             if p.is_alive():
                 p.kill()
 
         # I know...
 
-        p = Process(target=_run, args=[self.queue])
+        p = Process(target=_search_run, args=[self.queue, self.query])
         p.start()
 
         while ...:
