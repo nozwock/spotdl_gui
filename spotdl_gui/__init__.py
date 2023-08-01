@@ -1,19 +1,16 @@
-from importlib.metadata import version
+from importlib import metadata
 
 try:
-    __version__ = version(__package__)
+    __version__ = metadata.version(__package__)
 except Exception:
     # Package isn't installed
 
-    def pkg_version() -> str | None:
-        from pathlib import Path
+    from pathlib import Path
 
-        import tomllib
+    import tomllib
 
-        with open(Path(__package__).parent.joinpath("pyproject.toml"), "rb") as f:
-            return tomllib.load(f)["tool"]["poetry"]["version"]
+    with open(Path(__package__).parent.joinpath("pyproject.toml"), "rb") as f:
+        _META = tomllib.load(f)
 
-    _version = pkg_version()
-    assert _version is not None
-    __version__ = _version
-    del _version
+    __version__ = _META["tool"]["poetry"]["version"]
+    del _META
