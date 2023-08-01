@@ -18,10 +18,16 @@
 | `artist:`   | Search by artist   |
 
 ## Installation
-```sh
-python -m pip install --user pipx
-pipx install git+https://github.com/nozwock/spotdl_gui.git
-```
+1. Install `pipx`.
+    ```sh
+    python -m pip install --user pipx
+    python -m pipx ensurepath
+    ```
+2. Re-login if on Windows, else open a new terminal.
+3. Install `spotdl_gui`
+    ```sh
+    pipx install git+https://github.com/nozwock/spotdl_gui.git
+    ```
 
 - Run with `spotdl-gui`
 
