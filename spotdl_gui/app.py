@@ -16,7 +16,13 @@ from .assets import resource
 from .config import Config
 from .defines import SPOTDL_FILE_FILTER, SPOTDL_VERSION
 from .models.tracks_model import TracksModel
-from .spotdl_api import Song, get_spotdl_config, get_spotdl_config_path, get_spotdl_dir
+from .spotdl_api import (
+    Song,
+    generate_initial_config,
+    get_spotdl_config,
+    get_spotdl_config_path,
+    get_spotdl_dir,
+)
 from .utils import open_default
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
@@ -39,6 +45,7 @@ class SpotdlConfigManager(ConfigManager):
 
         self.path = get_spotdl_config_path()
 
+        generate_initial_config()
         _spotdl_config = get_spotdl_config()
         self._add_optionals(
             _spotdl_config, ("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
