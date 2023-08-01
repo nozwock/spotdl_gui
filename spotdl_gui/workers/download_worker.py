@@ -53,23 +53,26 @@ class DownloadWorker(QRunnable):
         p = Process(
             target=_download_run, args=[self.queue, self.songs, self.output_dir]
         )
-        p.start()
+        try:
+            p.start()
 
-        while ...:
-            if not p.is_alive() or not self.queue.empty():
-                v = self.queue.get()
-                if isinstance(v, Exception):
-                    self.signals.error.emit(v)
-                else:
-                    self.signals.result.emit(v)
+            while ...:
+                if not p.is_alive() or not self.queue.empty():
+                    v = self.queue.get()
+                    if isinstance(v, Exception):
+                        self.signals.error.emit(v)
+                    else:
+                        self.signals.result.emit(v)
 
-                pkill()
-                break
+                    pkill()
+                    break
 
-            if self.stopped and p.is_alive():
-                pkill()
-                break
+                if self.stopped and p.is_alive():
+                    pkill()
+                    break
 
-            time.sleep(EVENT_CHECK_DELAY)
-
-        self.queue.close()
+                time.sleep(EVENT_CHECK_DELAY)
+        except Exception as e:
+            self.signals.error.emit(e)
+        finally:
+            self.queue.close()
