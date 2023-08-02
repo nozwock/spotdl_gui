@@ -6,7 +6,7 @@ from typing import Any, Iterable
 
 import qdarktheme
 from pyqtconfig import ConfigManager
-from PySide6 import QtCore, QtWidgets
+from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import Qt, QThreadPool
 from PySide6.QtGui import QAction, QKeySequence, QShortcut
 from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableView, QWidget
@@ -416,6 +416,7 @@ def main() -> None:
     freeze_support()
 
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(":/images/music-note-slider.svg"))
     qdarktheme.setup_theme()
 
     window = MainWindow()
