@@ -411,6 +411,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 def main() -> None:
+    from multiprocessing import freeze_support
+
+    freeze_support()
+
     app = QtWidgets.QApplication(sys.argv)
     qdarktheme.setup_theme()
 
