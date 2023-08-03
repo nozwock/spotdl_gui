@@ -314,7 +314,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.label_searching_text.replace("%query%", self.lineEdit_search.text())
         )
 
-        self.search_worker = SearchWorker([self.lineEdit_search.text()])
+        self.search_worker = SearchWorker(self.lineEdit_search.text())
         self.search_worker.signals.result.connect(search_success)
         self.search_worker.signals.error.connect(search_error)
         self.pushButton_cancel_search.clicked.connect(cancel_search)

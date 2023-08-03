@@ -4,6 +4,7 @@ from multiprocessing import Process, Queue
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 from ..spotdl_api import SpotdlApi
+from ..utils.splitter import Splitter
 from . import EVENT_CHECK_DELAY
 
 
@@ -22,7 +23,7 @@ def _search_run(queue: Queue, query: list[str]) -> None:
 
 
 class SearchWorker(QRunnable):
-    def __init__(self, query: list[str]):
+    def __init__(self, query: str):
         super().__init__()
         self.query = query
         self.signals = WorkerSignals()
@@ -38,9 +39,10 @@ class SearchWorker(QRunnable):
             if p.is_alive():
                 p.kill()
 
-        # I know...
-
-        p = Process(target=_search_run, args=[self.queue, self.query])
+        p = Process(
+            target=_search_run,
+            args=[self.queue, [s.strip() for s in Splitter().split(self.query)]],
+        )
         try:
             p.start()
 
