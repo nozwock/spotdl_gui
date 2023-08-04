@@ -366,7 +366,7 @@
     <string>Export</string>
    </property>
    <property name="toolTip">
-    <string>Export tracks list to spotdl file</string>
+    <string>Export tracks list to a '.spotdl' file</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -381,7 +381,7 @@
     <string>Import</string>
    </property>
    <property name="toolTip">
-    <string>Import tracks from spotdl file</string>
+    <string>Import tracks from a '.spotdl' file</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
@@ -396,7 +396,7 @@
     <string>Pick Output Folder</string>
    </property>
    <property name="toolTip">
-    <string>Pick output folder</string>
+    <string>Pick download folder</string>
    </property>
    <property name="menuRole">
     <enum>QAction::NoRole</enum>
