@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "spotdl-gui"
-version = "0.2.3"
+version = "0.3.0"
 description = ""
 authors = ["nozwock <57829219+nozwock@users.noreply.github.com>"]
 readme = "README.md"
