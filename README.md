@@ -45,12 +45,15 @@ Upon pressing the Download button, the selected tracks will be downloaded. You c
 
 ## Building
 ```sh
-pip install -e .
+git clone https://github.com/nozwock/spotdl_gui.git
+cd spotdl_gui
+poetry install
+poetry run spotdl-gui
 ```
 
 ### Building frozen app 
 ```console
-pyinstaller -Fn 'Spotdl GUI' spotdl_gui\__main__.py --collect-data pykakasi --collect-data ytmusicapi --copy-metadata spotdl_gui --copy-metadata spotdl
+poetry run -- pyinstaller -Fn 'Spotdl GUI' spotdl_gui\__main__.py --collect-data pykakasi --collect-data ytmusicapi --copy-metadata spotdl_gui --copy-metadata spotdl
 ```
 
 - `pyinstaller -Fsn` for Unix.
