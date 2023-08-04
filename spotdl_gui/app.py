@@ -315,7 +315,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.set_page(1)
 
-        self.search_worker = SearchWorker(self.lineEdit_search.text())
+        self.search_worker = SearchWorker(query=self.lineEdit_search.text())
         self.search_worker.signals.result.connect(search_success)
         self.search_worker.signals.error.connect(search_error)
         self.pushButton_cancel_search.clicked.connect(cancel_search)
@@ -323,12 +323,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def download(self) -> None:
         def download_success(v) -> None:
-            self.set_page(2)
             QMessageBox.information(
                 self,
                 "Download complete",
                 f"Downloaded {len(v)} track(s) in {self.config.output_dir}",
             )
+            self.set_page(2)
 
         def download_error(e) -> None:
             self.set_page(2)
@@ -355,6 +355,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.download_worker.signals.error.connect(download_error)
             self.pushButton_cancel_download.clicked.connect(cancel_download)
             self.threadpool.start(self.download_worker)
+        else:
+            QMessageBox.information(
+                self, "No tracks selected", "Only selected tracks will be downloaded"
+            )
 
     def import_tracks_from_file(self) -> None:
         import_file = QFileDialog.getOpenFileName(
