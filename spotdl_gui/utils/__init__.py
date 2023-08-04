@@ -31,3 +31,7 @@ def override_map_values(
             out[k] = values_from[k]
 
     return out
+
+
+def shorten_string(txt: str, width: int = 40, suffix: str = "...") -> str:
+    return txt[: width + 1] + suffix if len(txt) > width + len(suffix) else txt

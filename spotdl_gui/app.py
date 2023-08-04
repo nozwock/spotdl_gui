@@ -23,7 +23,7 @@ from .spotdl_api import (
     get_spotdl_config_path,
     get_spotdl_dir,
 )
-from .utils import open_default
+from .utils import open_default, shorten_string
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
 from .views.settings import Ui_Settings
@@ -36,9 +36,8 @@ class SpotdlConfigManager(ConfigManager):
         "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
     )
 
-    def __init__(self, *args, parent=None, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(
-            parent=parent,
             *args,
             **kwargs,
         )
@@ -309,10 +308,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.search_worker.kill()
                 self.set_page(0)
 
-        self.set_page(1)
         self.label_searching.setText(
-            self.label_searching_text.replace("%query%", self.lineEdit_search.text())
+            self.label_searching_text.replace(
+                "%query%", shorten_string(self.lineEdit_search.text())
+            )
         )
+        self.set_page(1)
 
         self.search_worker = SearchWorker(self.lineEdit_search.text())
         self.search_worker.signals.result.connect(search_success)
