@@ -377,6 +377,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, "Import failed", repr(e))
 
     def export_tracks_to_file(self) -> None:
+        SUFFIX = ".spotdl"
+
         export_file_ = QFileDialog.getSaveFileName(
             self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
         )[0]
@@ -386,8 +388,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         export_file = Path(export_file_)
 
-        if not export_file.suffix:
-            export_file = export_file.with_suffix(".spotdl")
+        if not export_file.suffix or export_file.suffix.lower() == SUFFIX:
+            export_file = export_file.with_suffix(SUFFIX)
+        else:
+            export_file = export_file.with_name(export_file.name + SUFFIX)
 
         try:
             with open(export_file, "w", encoding="utf-8") as f:
