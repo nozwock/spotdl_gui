@@ -35,3 +35,12 @@ def override_map_values(
 
 def shorten_string(txt: str, width: int = 40, suffix: str = "...") -> str:
     return txt[: width + 1] + suffix if len(txt) > width + len(suffix) else txt
+
+
+def with_extension(path: Path, ext: str) -> Path:
+    if not path.suffix or path.suffix.lower() == ext:
+        path = path.with_suffix(ext)
+    else:
+        path = path.with_name(path.name + ext)
+
+    return path

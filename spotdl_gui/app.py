@@ -23,7 +23,7 @@ from .spotdl_api import (
     get_spotdl_config_path,
     get_spotdl_dir,
 )
-from .utils import open_default, shorten_string
+from .utils import open_default, shorten_string, with_extension
 from .views.about import Ui_About
 from .views.mainwindow import Ui_MainWindow
 from .views.settings import Ui_Settings
@@ -361,9 +361,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             )
 
     def import_tracks_from_file(self) -> None:
-        import_file = QFileDialog.getOpenFileName(
-            self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
-        )[0]
+        import_file = (
+            QFileDialog.getOpenFileName(  # TODO: Have the filter be case insensitive
+                self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
+            )[0]
+        )
 
         if not import_file:
             return
@@ -377,8 +379,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QMessageBox.critical(self, "Import failed", repr(e))
 
     def export_tracks_to_file(self) -> None:
-        SUFFIX = ".spotdl"
-
         export_file_ = QFileDialog.getSaveFileName(
             self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
         )[0]
@@ -386,12 +386,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not export_file_:
             return
 
-        export_file = Path(export_file_)
-
-        if not export_file.suffix or export_file.suffix.lower() == SUFFIX:
-            export_file = export_file.with_suffix(SUFFIX)
-        else:
-            export_file = export_file.with_name(export_file.name + SUFFIX)
+        export_file = with_extension(Path(export_file_), ".spotdl")
 
         try:
             with open(export_file, "w", encoding="utf-8") as f:
