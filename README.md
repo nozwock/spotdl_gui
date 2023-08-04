@@ -2,39 +2,9 @@
 
 ![preview](https://github.com/nozwock/spotdl_gui/assets/57829219/0f4f7173-1d65-4ae6-a46f-9f5602d86e81)
 
-## Usage
-
-### Searches
-You can search for multiple items at a time by separating them with a comma `','`. \
-For example: `Aurora, Coolio, Full Confession`.
-
-To use a comma as part of your search term without it acting as a separator, you can escape it with the backslash character `'\'`. \
-For example: `This here\, will be escaped` will be treated as a literal string `This here, will be escaped`.
-
-
-#### Reserved search terms
-
-| Term                 | Description                     |
-| -------------------- | ------------------------------- |
-| `user:saved-tracks`  | Spotify user's favourite tracks |
-| `user:all-playlists` | Spotify user's all playlists    |
-
-#### Search prefixes
-
-| Prefix      | Description        |
-| ----------- | ------------------ |
-| `album:`    | Search by album    |
-| `playlist:` | Search by playlist |
-| `artist:`   | Search by artist   |
-
-### Downloads
-Upon pressing the Download button, the selected tracks will be downloaded. You can choose all tracks at once with `Ctrl+A`, or individually by holding `Ctrl` and clicking on the desired tracks.
-
-
 ## Installation
-
 > **Note**\
-> Download the executable from the GitHub release page or install using `pipx`.
+> Download the executable from the [GitHub release page](https://github.com/nozwock/spotdl_gui/releases) or install using `pipx`.
 
 1. Install `pipx`.
     ```sh
@@ -48,6 +18,30 @@ Upon pressing the Download button, the selected tracks will be downloaded. You c
     ```
 
 - Run with `spotdl-gui`
+
+## Usage
+### Searches
+You can search for multiple items at a time by separating them with a comma `','`. \
+For example: `Aurora, Coolio, Full Confession`.
+
+To use a comma as part of your search term without it acting as a separator, you can escape it with the backslash character `'\'`. \
+For example: `This here\, will be escaped` will be treated as a literal string `This here, will be escaped`.
+
+#### Reserved search terms
+| Term                 | Description                     |
+| -------------------- | ------------------------------- |
+| `user:saved-tracks`  | Spotify user's favourite tracks |
+| `user:all-playlists` | Spotify user's all playlists    |
+
+#### Search prefixes
+| Prefix      | Description        |
+| ----------- | ------------------ |
+| `album:`    | Search by album    |
+| `playlist:` | Search by playlist |
+| `artist:`   | Search by artist   |
+
+### Downloads
+Upon pressing the Download button, the selected tracks will be downloaded. You can choose all tracks at once with `Ctrl+A`, or individually by holding `Ctrl` and clicking on the desired tracks.
 
 ## Building
 ```sh
