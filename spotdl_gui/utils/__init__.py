@@ -33,8 +33,15 @@ def override_map_values(
     return out
 
 
-def shorten_string(txt: str, width: int = 40, suffix: str = "...") -> str:
-    return txt[: width + 1] + suffix if len(txt) > width + len(suffix) else txt
+def shorten_string(
+    txt: str, width: int = 40, suffix: str = "...", lshorten: bool = False
+) -> str:
+    if lshorten:
+        return (
+            suffix + txt[len(txt) - width :] if len(txt) > width + len(suffix) else txt
+        )
+    else:
+        return txt[: width + 1] + suffix if len(txt) > width + len(suffix) else txt
 
 
 def with_extension(path: Path, ext: str) -> Path:

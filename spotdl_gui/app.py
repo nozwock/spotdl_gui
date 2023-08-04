@@ -191,19 +191,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     ) -> None:
         super().__init__()
         self.setupUi(self)
+        self.setWindowTitle(f"{self.windowTitle()} v{__version__}")
         self.set_page(0)
 
+        # Setup dialogs
         self.about_dialog = AboutDialog(self)
         self.actionAbout.triggered.connect(lambda: self.about_dialog.exec())
 
         self.settings_dialog = SettingsDialog(self)
         self.actionSettings.triggered.connect(lambda: self.settings_dialog.exec())
 
+        # Load app config
         self.config = Config.load()
 
+        # Initials text for substitution
         self.label_searching_text = self.label_searching.text()
         self.label_downloading_text = self.label_downloading.text()
 
+        # Search bar
         self.search_completer = QtWidgets.QCompleter(
             (
                 "user:saved-tracks",
@@ -216,10 +221,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         )
         self.lineEdit_search.setCompleter(self.search_completer)
 
+        # Setup tracks list model
+        self.tracks_model = TracksModel()
+        self.tableView_tracks_list.setModel(self.tracks_model)
+
+        # Setup status bar
+        self.label_statusbar_output_dir = QtWidgets.QLabel(self.get_output_dir_label())
+        self.label_statusbar_output_dir.mousePressEvent = lambda *_: open_default(
+            self.config.output_dir
+        )  # disable mypy `method-assign`
+        self.statusbar.addWidget(self.label_statusbar_output_dir)
+
+        # Workers
         self.threadpool = QThreadPool(self)
         self.search_worker: SearchWorker | None = None
         self.download_worker: DownloadWorker | None = None
 
+        # Setup actions
         self.actionOpen_SpotDL_config_folder.triggered.connect(
             lambda: open_default(get_spotdl_dir())
         )
@@ -237,9 +255,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 )
             )
         )
-
-        self.tracks_model = TracksModel()
-        self.tableView_tracks_list.setModel(self.tracks_model)
 
         # self.search_kb_shortcut = QShortcut(
         #     QKeySequence("Ctrl+Return"), self.lineEdit_search, self.search
@@ -404,6 +419,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             f"Exported {len(self.tracks_model.tracks)} track(s) to {export_file}",
         )
 
+    def get_output_dir_label(self) -> str:
+        return f"Download folder: {shorten_string(str(self.config.output_dir), width=50, lshorten=True)}"
+
     def set_output_dir(self, dir: Path | str) -> None:
         if isinstance(dir, str):
             if not dir:
@@ -412,6 +430,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if dir != self.config.output_dir:
             self.config.output_dir = dir
+            self.label_statusbar_output_dir.setText(self.get_output_dir_label())
 
 
 def main() -> None:
