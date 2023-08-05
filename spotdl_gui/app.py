@@ -384,11 +384,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.download_worker.kill()
                 self.set_page(2)
 
-        def handle_progress(p: float) -> None:
-            if p > 0:
+        def handle_progress(pinfo: tuple[float, int]) -> None:
+            progress, total = pinfo
+            if progress > 0:
                 if self.progressBar_download.maximum() == 0:
-                    self.progressBar_download.setMaximum(100)
-                self.progressBar_download.setValue(int(p))
+                    self.progressBar_download.setMaximum(total)
+                self.progressBar_download.setValue(int(progress))
 
         songs = [
             self.tracks_model.tracks[row.row()]

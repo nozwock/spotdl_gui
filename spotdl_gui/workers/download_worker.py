@@ -25,16 +25,17 @@ def _download_run(
     try:
 
         def _task() -> None:
+            handler = api.downloader.progress_handler
             while ...:
-                progress = api.downloader.progress_handler.overall_progress
+                progress, total = handler.overall_progress, handler.overall_total
                 queue.put(
                     (
                         MessageType.Progress,
-                        progress,
+                        (progress, total),
                     )
                 )
 
-                if progress >= 100:
+                if progress >= total:
                     break
 
                 time.sleep(EVENT_CHECK_DELAY)
