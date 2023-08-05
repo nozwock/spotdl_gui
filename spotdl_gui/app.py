@@ -314,9 +314,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.tracks_model.layoutChanged.emit()
             self.set_page(2)
 
-        def search_error(e) -> None:
+        def search_error(err: tuple[Exception, str]) -> None:
+            exc, trace = err
+
+            print(
+                trace
+            )  # TODO: Show this in the dialog in more details? and a button to copy traceback
             self.set_page(0)
-            QMessageBox.critical(self, "Search failed", repr(e))
+            QMessageBox.critical(self, "Search failed", repr(exc))
 
         def cancel_search() -> None:
             if self.search_worker:
@@ -338,16 +343,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def download(self) -> None:
         def download_success(v) -> None:
+            self.set_page(2)
             QMessageBox.information(
                 self,
                 "Download complete",
                 f"Downloaded {len(v)} track(s) in {self.config.output_dir}",
             )
-            self.set_page(2)
 
-        def download_error(e) -> None:
+        def download_error(err: tuple[Exception, str]) -> None:
+            exc, trace = err
+
+            print(trace)
             self.set_page(2)
-            QMessageBox.critical(self, "Download failed", repr(e))
+            QMessageBox.critical(self, "Download failed", repr(exc))
 
         def cancel_download() -> None:
             if self.download_worker:

@@ -1,11 +1,12 @@
 import time
+import traceback
 from multiprocessing import Process, Queue
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
 from ..spotdl_api import SpotdlApi
 from ..utils.splitter import Splitter
-from . import EVENT_CHECK_DELAY
+from . import EVENT_CHECK_DELAY, MessageType
 
 
 class WorkerSignals(QObject):
@@ -14,12 +15,12 @@ class WorkerSignals(QObject):
 
 
 def _search_run(queue: Queue, query: list[str]) -> None:
-    api = SpotdlApi()
     try:
-        ret = api.simple_search(query)
-        queue.put(ret)
+        api = SpotdlApi()
+        songs = api.simple_search(query)
+        queue.put((MessageType.Success, songs))
     except Exception as e:
-        queue.put(e)
+        queue.put((MessageType.Error, (e, traceback.format_exc())))
 
 
 class SearchWorker(QRunnable):
@@ -28,7 +29,7 @@ class SearchWorker(QRunnable):
         self.query = query
         self.signals = WorkerSignals()
         self.stopped = False
-        self.queue = Queue()  # type: ignore
+        self.queue: Queue[tuple[MessageType, object]] = Queue()
 
     def kill(self):
         self.stopped = True
@@ -48,21 +49,20 @@ class SearchWorker(QRunnable):
 
             while ...:
                 if not p.is_alive() or not self.queue.empty():
-                    v = self.queue.get()
-                    if isinstance(v, Exception):
-                        self.signals.error.emit(v)
-                    else:
-                        self.signals.result.emit(v)
-
-                    pkill()
+                    typ, v = self.queue.get()
+                    match typ:
+                        case MessageType.Success:
+                            self.signals.result.emit(v)
+                        case MessageType.Error:
+                            self.signals.error.emit(v)
                     break
 
                 if self.stopped and p.is_alive():
-                    pkill()
                     break
 
                 time.sleep(EVENT_CHECK_DELAY)
         except Exception as e:
-            self.signals.error.emit(e)
+            self.signals.error.emit((e, traceback.format_exc()))
         finally:
             self.queue.close()
+            pkill()
