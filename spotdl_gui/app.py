@@ -245,11 +245,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tableView_tracks_list.setModel(self.tracks_model)
 
         # Setup status bar
-        self.label_statusbar_output_dir = QtWidgets.QLabel(self.get_output_dir_label())
+        self.label_statusbar_output_dir = QtWidgets.QLabel("")
         self.label_statusbar_output_dir.mousePressEvent = lambda *_: open_default(
             self.config.output_dir
         )  # disable mypy `method-assign`
         self.statusbar.addWidget(self.label_statusbar_output_dir)
+        self.set_output_dir(self.config.output_dir)
 
         # Workers
         self.threadpool = QThreadPool(self)
@@ -464,9 +465,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 return None
             dir = Path(dir)
 
-        if dir != self.config.output_dir:
-            self.config.output_dir = dir
-            self.label_statusbar_output_dir.setText(self.get_output_dir_label())
+        if not dir.is_dir():
+            dir = Path()
+
+        self.config.output_dir = dir.absolute()
+        self.label_statusbar_output_dir.setText(self.get_output_dir_label())
 
 
 def main() -> None:
