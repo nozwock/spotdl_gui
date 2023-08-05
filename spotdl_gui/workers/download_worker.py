@@ -2,6 +2,7 @@ import time
 import traceback
 from multiprocessing import Process, Queue
 from pathlib import Path
+from threading import Thread
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
@@ -12,6 +13,7 @@ from . import EVENT_CHECK_DELAY, MessageType
 class WorkerSignals(QObject):
     result = Signal(object)
     error = Signal(object)
+    progress = Signal(object)
 
 
 # Should do some abstraction maybe...
@@ -21,17 +23,40 @@ def _download_run(
     queue: Queue, songs: list[Song], output_dir: Path | None = None
 ) -> None:
     try:
+
+        def _task() -> None:
+            while ...:
+                progress = api.downloader.progress_handler.overall_progress
+                queue.put(
+                    (
+                        MessageType.Progress,
+                        progress,
+                    )
+                )
+
+                if progress >= 100:
+                    break
+
+                time.sleep(EVENT_CHECK_DELAY)
+
         api = SpotdlApi()
         if output_dir is not None:
             output = Path(api.downloader.settings["output"])
             api.downloader.settings["output"] = str(
                 output_dir.joinpath(output.name).absolute()
             )
+
+        progress_thread = Thread(target=_task)
+        progress_thread.start()
+
         downloaded_songs = api.download_songs(songs)
         api.downloader.progress_handler.close()
         queue.put((MessageType.Success, downloaded_songs))
+
     except Exception as e:
         queue.put((MessageType.Error, (e, traceback.format_exc())))
+    finally:
+        progress_thread.join()
 
 
 class DownloadWorker(QRunnable):
@@ -66,6 +91,9 @@ class DownloadWorker(QRunnable):
                             self.signals.result.emit(v)
                         case MessageType.Error:
                             self.signals.error.emit(v)
+                        case MessageType.Progress:
+                            self.signals.progress.emit(v)
+                            continue
                     break
 
                 if self.stopped and p.is_alive():

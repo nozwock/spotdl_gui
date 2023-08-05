@@ -295,6 +295,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.config.store()
 
     def set_page(self, idx: int) -> None:
+        def reset_progressbar() -> None:
+            self.progressBar_download.setMaximum(0)
+            self.progressBar_download.setValue(-1)
+
         def hide_search_bar(yes: bool) -> None:
             if yes:
                 self.lineEdit_search.hide()
@@ -309,6 +313,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.actionExport.setDisabled(True)
             self.actionImport.setDisabled(False)
             hide_search_bar(False)
+            reset_progressbar()
         elif idx == 1:
             self.actionDownload.setDisabled(True)
             self.actionExport.setDisabled(True)
@@ -319,6 +324,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.actionExport.setDisabled(False)
             self.actionImport.setDisabled(False)
             hide_search_bar(False)
+            reset_progressbar()
         elif idx == 3:
             self.actionDownload.setDisabled(True)
             self.actionExport.setDisabled(True)
@@ -377,6 +383,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.download_worker.kill()
                 self.set_page(2)
 
+        def handle_progress(p: float) -> None:
+            if p > 0:
+                if self.progressBar_download.maximum() == 0:
+                    self.progressBar_download.setMaximum(100)
+                self.progressBar_download.setValue(int(p))
+
         songs = [
             self.tracks_model.tracks[row.row()]
             for row in self.tableView_tracks_list.selectionModel().selectedRows()
@@ -391,6 +403,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.download_worker = DownloadWorker(songs, self.config.output_dir)
             self.download_worker.signals.result.connect(download_success)
             self.download_worker.signals.error.connect(download_error)
+            self.download_worker.signals.progress.connect(handle_progress)
             self.pushButton_cancel_download.clicked.connect(cancel_download)
             self.threadpool.start(self.download_worker)
         else:
