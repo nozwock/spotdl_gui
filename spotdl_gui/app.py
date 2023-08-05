@@ -31,6 +31,25 @@ from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
 
 
+def critical_dialog(
+    parent: QWidget,
+    title: str,
+    text: str,
+    detailed_text: str | None = None,
+    *args,
+    **kwargs,
+) -> QMessageBox:
+    msg = QMessageBox(parent, *args, **kwargs)
+    msg.setIcon(QMessageBox.Icon.Critical)
+    msg.setWindowTitle(title)
+    msg.setText(text)
+
+    if detailed_text:
+        msg.setDetailedText(detailed_text)
+
+    return msg
+
+
 class SpotdlConfigManager(ConfigManager):
     OPTIONAL_PREF_PREFIX = (
         "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
@@ -317,11 +336,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         def search_error(err: tuple[Exception, str]) -> None:
             exc, trace = err
 
-            print(
-                trace
-            )  # TODO: Show this in the dialog in more details? and a button to copy traceback
             self.set_page(0)
-            QMessageBox.critical(self, "Search failed", repr(exc))
+            critical_dialog(self, "Search failed", repr(exc), trace).exec()
 
         def cancel_search() -> None:
             if self.search_worker:
@@ -353,9 +369,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         def download_error(err: tuple[Exception, str]) -> None:
             exc, trace = err
 
-            print(trace)
             self.set_page(2)
-            QMessageBox.critical(self, "Download failed", repr(exc))
+            critical_dialog(self, "Download failed", repr(exc), trace).exec()
 
         def cancel_download() -> None:
             if self.download_worker:
