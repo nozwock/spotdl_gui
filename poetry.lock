@@ -1913,4 +1913,4 @@ dev = ["coverage", "flake8", "pre-commit", "sphinx", "sphinx-rtd-theme", "yapf"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "45336b795cb71c341e941ece58ec985e3f2cc0273546928c1bcad9e48dbcf980"
+content-hash = "57d7f77ad10d2682fa7cb15382806c05c7e02e20ebed70a5d4ec8d43613ac526"
