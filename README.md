@@ -1,4 +1,4 @@
-# SpotDL GUI
+# spotDL GUI
 
 ![preview](https://github.com/nozwock/spotdl_gui/assets/57829219/0f4f7173-1d65-4ae6-a46f-9f5602d86e81)
 
@@ -53,7 +53,7 @@ poetry run spotdl-gui
 
 ### Building frozen app 
 ```console
-poetry run -- pyinstaller -Fn 'Spotdl GUI' spotdl_gui\__main__.py --collect-data pykakasi --collect-data ytmusicapi --copy-metadata spotdl_gui --copy-metadata spotdl
+poetry run -- pyinstaller -Fn 'spotDL_GUI' spotdl_gui\__main__.py --collect-data pykakasi --collect-data ytmusicapi --copy-metadata spotdl_gui --copy-metadata spotdl
 ```
 
 - `pyinstaller -Fsn` for Unix.

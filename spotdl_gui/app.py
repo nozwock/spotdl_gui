@@ -257,7 +257,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.download_worker: DownloadWorker | None = None
 
         # Setup actions
-        self.actionOpen_SpotDL_config_folder.triggered.connect(
+        self.actionOpen_spotDL_config_folder.triggered.connect(
             lambda: open_default(get_spotdl_dir())
         )
 
@@ -401,7 +401,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def import_tracks_from_file(self) -> None:
         import_file = (
             QFileDialog.getOpenFileName(  # TODO: Have the filter be case insensitive
-                self, "Import tracks from spotdl file", filter=SPOTDL_FILE_FILTER
+                self, self.actionImport.toolTip(), filter=SPOTDL_FILE_FILTER
             )[0]
         )
 
@@ -418,7 +418,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def export_tracks_to_file(self) -> None:
         export_file_ = QFileDialog.getSaveFileName(
-            self, "Export tracks to spotdl file", filter=SPOTDL_FILE_FILTER
+            self, self.actionExport.toolTip(), filter=SPOTDL_FILE_FILTER
         )[0]
 
         if not export_file_:

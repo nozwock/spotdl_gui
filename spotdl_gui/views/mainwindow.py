@@ -141,8 +141,8 @@ class Ui_MainWindow(object):
         self.toolBar.setIconSize(QtCore.QSize(36, 36))
         self.toolBar.setObjectName("toolBar")
         MainWindow.addToolBar(QtCore.Qt.ToolBarArea.TopToolBarArea, self.toolBar)
-        self.actionOpen_SpotDL_config_folder = QtGui.QAction(parent=MainWindow)
-        self.actionOpen_SpotDL_config_folder.setObjectName("actionOpen_SpotDL_config_folder")
+        self.actionOpen_spotDL_config_folder = QtGui.QAction(parent=MainWindow)
+        self.actionOpen_spotDL_config_folder.setObjectName("actionOpen_spotDL_config_folder")
         self.actionSettings = QtGui.QAction(parent=MainWindow)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/bx-cog.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -175,7 +175,7 @@ class Ui_MainWindow(object):
         self.actionPick_Output_Folder.setObjectName("actionPick_Output_Folder")
         self.actionAbout = QtGui.QAction(parent=MainWindow)
         self.actionAbout.setObjectName("actionAbout")
-        self.menuFile.addAction(self.actionOpen_SpotDL_config_folder)
+        self.menuFile.addAction(self.actionOpen_spotDL_config_folder)
         self.menuHelp.addAction(self.actionAbout)
         self.menuBar.addAction(self.menuFile.menuAction())
         self.menuBar.addAction(self.menuHelp.menuAction())
@@ -195,7 +195,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "SpotDL GUI"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "spotDL GUI"))
         self.lineEdit_search.setPlaceholderText(_translate("MainWindow", "🔍  Search for tracks or paste link here..."))
         self.pushButton_search.setText(_translate("MainWindow", "Search"))
         self.label_2.setText(_translate("MainWindow", "<html><head/><body><p align=\"center\"><span style=\" font-size:16pt; font-weight:700; color:#ffb27f;\">Spotify Downloader</span></p></body></html>"))
@@ -207,7 +207,8 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
-        self.actionOpen_SpotDL_config_folder.setText(_translate("MainWindow", "Open SpotDL Config Folder"))
+        self.actionOpen_spotDL_config_folder.setText(_translate("MainWindow", "Open spotDL Config Folder"))
+        self.actionOpen_spotDL_config_folder.setToolTip(_translate("MainWindow", "Open spotDL Config Folder"))
         self.actionSettings.setText(_translate("MainWindow", "Settings"))
         self.actionDownload.setText(_translate("MainWindow", "Download"))
         self.actionDownload.setToolTip(_translate("MainWindow", "Download selected tracks"))

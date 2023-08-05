@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>SpotDL GUI</string>
+   <string>spotDL GUI</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -292,7 +292,7 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_SpotDL_config_folder"/>
+    <addaction name="actionOpen_spotDL_config_folder"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -325,9 +325,12 @@
    <addaction name="actionDownload"/>
    <addaction name="actionSettings"/>
   </widget>
-  <action name="actionOpen_SpotDL_config_folder">
+  <action name="actionOpen_spotDL_config_folder">
    <property name="text">
-    <string>Open SpotDL Config Folder</string>
+    <string>Open spotDL Config Folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Open spotDL Config Folder</string>
    </property>
   </action>
   <action name="actionSettings">
