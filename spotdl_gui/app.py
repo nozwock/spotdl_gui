@@ -7,12 +7,11 @@ from typing import Any, Iterable
 import qdarktheme
 from pyqtconfig import ConfigManager
 from PySide6 import QtCore, QtGui, QtWidgets
-from PySide6.QtCore import Qt, QThreadPool
-from PySide6.QtGui import QAction, QKeySequence, QShortcut
-from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableView, QWidget
+from PySide6.QtCore import QThreadPool
+from PySide6.QtWidgets import QFileDialog, QMessageBox, QWidget
 
 from . import __version__
-from .assets import resource
+from .assets import resource  # noqa: F401
 from .config import Config
 from .defines import SPOTDL_FILE_FILTER, SPOTDL_VERSION
 from .models.tracks_model import TracksModel
@@ -159,7 +158,9 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
     def accept(self) -> None:
         # There probably is a better way...
         self.spotdl_config.set_defaults(self.spotdl_config.config)
-        self.spotdl_config.save()  # Pass the config to downloader, instead of writing everytime. And save only once on exit.
+        # TODO: Pass the config to downloader, instead of writing everytime.
+        # And save only once on exit.
+        self.spotdl_config.save()
         super().accept()
 
     @QtCore.Slot()

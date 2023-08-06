@@ -6,7 +6,7 @@ from threading import Thread
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
 
-from ..spotdl_api import DownloaderOptions, Song, SpotdlApi
+from ..spotdl_api import Song, SpotdlApi
 from . import EVENT_CHECK_DELAY, MessageType
 
 

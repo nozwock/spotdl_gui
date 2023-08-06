@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import os
-import sys
 from pathlib import Path
 
 import spotdl
@@ -10,12 +8,11 @@ from spotdl.types.options import DownloaderOptions, SpotifyOptions
 from spotdl.types.song import Song
 from spotdl.utils.config import DOWNLOADER_OPTIONS, SPOTIFY_OPTIONS
 from spotdl.utils.config import get_config as get_spotdl_config
-from spotdl.utils.config import get_config_file as get_spotdl_config_path
-from spotdl.utils.config import get_spotdl_path as get_spotdl_dir
+from spotdl.utils.config import get_config_file as get_spotdl_config_path  # noqa: F401
+from spotdl.utils.config import get_spotdl_path as get_spotdl_dir  # noqa: F401
 from spotdl.utils.console import generate_initial_config
-from spotdl.utils.ffmpeg import FFmpegError, is_ffmpeg_installed
 from spotdl.utils.search import get_simple_songs
-from spotdl.utils.spotify import SpotifyClient, SpotifyError, save_spotify_cache
+from spotdl.utils.spotify import SpotifyClient, save_spotify_cache
 
 from .utils import override_map_values
 
