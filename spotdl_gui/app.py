@@ -267,7 +267,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             lambda: self.set_output_dir(
                 QFileDialog.getExistingDirectory(
                     self,
-                    "Pick output folder",
+                    self.actionPick_Output_Folder.toolTip(),
                     dir=str(
                         self.config.output_dir.absolute()
                         if self.config.output_dir.is_dir()
