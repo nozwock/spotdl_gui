@@ -161,3 +161,4 @@ cython_debug/
 
 # Qt Creator
 *.pyproject*
+/resources/*.xcf
