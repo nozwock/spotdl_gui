@@ -478,6 +478,8 @@ def main() -> None:
     import os
     from multiprocessing import freeze_support
 
+    freeze_support()
+
     # Close pyinstaller splash window
     is_frozen = getattr(sys, "frozen", False) and getattr(sys, "_MEIPASS", False)
     is_splash_enabled = os.environ.get("_PYIBoot_SPLASH")
@@ -486,8 +488,6 @@ def main() -> None:
 
         if pyi_splash.is_alive():
             pyi_splash.close()
-
-    freeze_support()
 
     app = QtWidgets.QApplication(sys.argv)
     app.setWindowIcon(QtGui.QIcon(":/images/music-note-slider.svg"))
