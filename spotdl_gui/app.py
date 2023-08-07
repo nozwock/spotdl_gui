@@ -126,11 +126,16 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.lineEdit_spotify_auth_token.setHidden(True)
-        self.comboBox_downloader_bitrate.setHidden(True)
-        self.cookie_file_group.setHidden(True)
-        self.lineEdit_downloader_ffmpeg_args.setHidden(True)
-        self.comboBox_downloader_log_level.addItems(logging._nameToLevel.keys())
+        widget: QWidget
+        for widget in (
+            self.lineEdit_spotify_auth_token,
+            self.comboBox_downloader_bitrate,
+            self.cookie_file_group,
+            self.lineEdit_downloader_ffmpeg_args,
+            self.lineEdit_downloader_m3u,
+            self.comboBox_downloader_log_level,
+        ):
+            widget.setHidden(True)
 
         self.toolButton_cache_path_pick.clicked.connect(
             lambda: self._put_file_path_to_lineEdit(self.lineEdit_spotify_cache_path)
@@ -174,7 +179,7 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
 
     def setup_spotdl_config(self) -> None:
         self.spotdl_config = SpotdlConfigManager(
-            optionals=("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
+            optionals=("auth_token", "cookie_file", "bitrate", "ffmpeg_args", "m3u")
         )
 
         # Adding widget handlers
@@ -202,6 +207,8 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
                 self.checkBox_downloader_print_errors,
                 self.checkBox_downloader_playlist_numbering,
                 self.checkBox_downloader_scan_for_songs,
+                self.checkBox_downloader_optionalGroup_m3u,
+                self.lineEdit_downloader_m3u,
                 self.comboBox_downloader_overwrite,
                 self.lineEdit_downloader_output,
                 self.comboBox_downloader_log_level,

@@ -23,9 +23,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-473</y>
+        <y>-397</y>
         <width>406</width>
-        <height>921</height>
+        <height>845</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -68,38 +68,21 @@
           <item row="3" column="1">
            <widget class="QLineEdit" name="lineEdit_spotify_auth_token"/>
           </item>
-          <item row="10" column="0">
+          <item row="4" column="0">
            <widget class="QCheckBox" name="checkBox_spotify_user_auth">
             <property name="text">
              <string>User Auth</string>
             </property>
            </widget>
           </item>
-          <item row="11" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="checkBox_spotify_headless">
             <property name="text">
              <string>Headless</string>
             </property>
            </widget>
           </item>
-          <item row="15" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Cache Path</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="0">
-           <widget class="QLabel" name="label_9">
-            <property name="text">
-             <string>Max Retries</string>
-            </property>
-           </widget>
-          </item>
-          <item row="21" column="1">
-           <widget class="QSpinBox" name="spinBox_spotify_max_retries"/>
-          </item>
-          <item row="15" column="1">
+          <item row="6" column="1">
            <widget class="QWidget" name="cache_path_group" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout">
              <property name="leftMargin">
@@ -137,17 +120,34 @@
             </layout>
            </widget>
           </item>
-          <item row="16" column="0">
+          <item row="6" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Cache Path</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
            <widget class="QCheckBox" name="checkBox_spotify_no_cache">
             <property name="text">
              <string>No Cache</string>
             </property>
            </widget>
           </item>
-          <item row="17" column="0">
+          <item row="8" column="0">
            <widget class="QCheckBox" name="checkBox_spotify_use_cache_file">
             <property name="text">
              <string>Use Cache File</string>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="1">
+           <widget class="QSpinBox" name="spinBox_spotify_max_retries"/>
+          </item>
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Max Retries</string>
             </property>
            </widget>
           </item>
@@ -272,14 +272,14 @@
             </item>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="label_20">
             <property name="text">
              <string>Threads</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="2" column="1">
            <widget class="QSpinBox" name="spinBox_downloader_threads">
             <property name="maximum">
              <number>61</number>
@@ -289,14 +289,14 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_cookie_file">
             <property name="text">
              <string>Set Cookie File</string>
             </property>
            </widget>
           </item>
-          <item row="8" column="1">
+          <item row="3" column="1">
            <widget class="QWidget" name="cookie_file_group" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_2">
              <property name="leftMargin">
@@ -334,42 +334,35 @@
             </layout>
            </widget>
           </item>
-          <item row="10" column="0">
-           <widget class="QCheckBox" name="checkBox_downloader_sponsorblock">
-            <property name="text">
-             <string>Sponsorblock</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_print_errors">
             <property name="text">
              <string>Enable Error Logging</string>
             </property>
            </widget>
           </item>
-          <item row="12" column="0">
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_sponsorblock">
+            <property name="text">
+             <string>Sponsorblock</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_playlist_numbering">
             <property name="text">
              <string>Playlist Numbering</string>
             </property>
            </widget>
           </item>
-          <item row="13" column="0">
+          <item row="7" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_scan_for_songs">
             <property name="text">
-             <string>Scan for songs</string>
+             <string>Scan For Songs</string>
             </property>
            </widget>
           </item>
-          <item row="14" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Overwrite</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
+          <item row="9" column="1">
            <widget class="QComboBox" name="comboBox_downloader_overwrite">
             <item>
              <property name="text">
@@ -388,31 +381,34 @@
             </item>
            </widget>
           </item>
-          <item row="15" column="0">
+          <item row="9" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>Overwrite</string>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="1">
+           <widget class="QLineEdit" name="lineEdit_downloader_output"/>
+          </item>
+          <item row="10" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>Filename Format</string>
             </property>
            </widget>
           </item>
-          <item row="15" column="1">
-           <widget class="QLineEdit" name="lineEdit_downloader_output"/>
+          <item row="11" column="1">
+           <widget class="QComboBox" name="comboBox_downloader_log_level"/>
           </item>
-          <item row="16" column="0">
+          <item row="11" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Logging Level</string>
             </property>
            </widget>
           </item>
-          <item row="17" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>FFmpeg EXE</string>
-            </property>
-           </widget>
-          </item>
-          <item row="17" column="1">
+          <item row="12" column="1">
            <widget class="QWidget" name="ffmpeg_group" native="true">
             <layout class="QHBoxLayout" name="horizontalLayout_3">
              <property name="leftMargin">
@@ -450,7 +446,17 @@
             </layout>
            </widget>
           </item>
-          <item row="18" column="0">
+          <item row="12" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>FFmpeg EXE</string>
+            </property>
+           </widget>
+          </item>
+          <item row="13" column="1">
+           <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg_args"/>
+          </item>
+          <item row="13" column="0">
            <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_ffmpeg_args">
             <property name="text">
              <string>Set FFmpeg Args</string>
@@ -460,11 +466,15 @@
             </property>
            </widget>
           </item>
-          <item row="18" column="1">
-           <widget class="QLineEdit" name="lineEdit_downloader_ffmpeg_args"/>
+          <item row="8" column="1">
+           <widget class="QLineEdit" name="lineEdit_downloader_m3u"/>
           </item>
-          <item row="16" column="1">
-           <widget class="QComboBox" name="comboBox_downloader_log_level"/>
+          <item row="8" column="0">
+           <widget class="QCheckBox" name="checkBox_downloader_optionalGroup_m3u">
+            <property name="text">
+             <string>M3U8</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -579,6 +589,22 @@
     <hint type="destinationlabel">
      <x>272</x>
      <y>156</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_downloader_optionalGroup_m3u</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEdit_downloader_m3u</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>62</x>
+     <y>247</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>298</x>
+     <y>248</y>
     </hint>
    </hints>
   </connection>
