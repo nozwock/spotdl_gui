@@ -129,13 +129,14 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         widget: QWidget
         for widget in (
             self.lineEdit_spotify_auth_token,
-            self.comboBox_downloader_bitrate,
             self.cookie_file_group,
+            self.comboBox_downloader_bitrate,
             self.lineEdit_downloader_ffmpeg_args,
             self.lineEdit_downloader_m3u,
-            self.comboBox_downloader_log_level,
         ):
             widget.setHidden(True)
+
+        self.comboBox_downloader_log_level.addItems(logging._nameToLevel.keys())
 
         self.toolButton_cache_path_pick.clicked.connect(
             lambda: self._put_file_path_to_lineEdit(self.lineEdit_spotify_cache_path)
