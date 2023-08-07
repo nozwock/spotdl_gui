@@ -247,9 +247,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # Setup status bar
         self.label_statusbar_output_dir = QtWidgets.QLabel("")
-        self.label_statusbar_output_dir.mousePressEvent = lambda *_: open_default(
+        self.label_statusbar_output_dir.mousePressEvent = lambda *_: open_default(  # type: ignore[method-assign]
             self.config.output_dir
-        )  # disable mypy `method-assign`
+        )
         self.statusbar.addWidget(self.label_statusbar_output_dir)
         self.set_output_dir(self.config.output_dir)
 
@@ -475,13 +475,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
 def main() -> None:
-    import os
     from multiprocessing import freeze_support
 
     freeze_support()
 
+    import os
+
+    from .utils import is_frozen
+
     # Close pyinstaller splash window
-    is_frozen = getattr(sys, "frozen", False) and getattr(sys, "_MEIPASS", False)
     is_splash_enabled = os.environ.get("_PYIBoot_SPLASH")
     if is_frozen and is_splash_enabled:
         import pyi_splash

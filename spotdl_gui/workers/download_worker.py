@@ -50,6 +50,8 @@ def _download_run(
         progress_thread = Thread(target=_task)
         progress_thread.start()
 
+        from ..utils import pythonw_patches  # noqa: F401
+
         downloaded_songs = api.download_songs(songs)
         api.downloader.progress_handler.close()
         queue.put((MessageType.Success, downloaded_songs))

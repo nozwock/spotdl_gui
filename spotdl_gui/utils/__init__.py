@@ -1,8 +1,11 @@
 import os
 import platform
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
+
+is_frozen = hasattr(sys, "frozen") and hasattr(sys, "_MEIPASS")
 
 
 def open_default(path: Path) -> None:
