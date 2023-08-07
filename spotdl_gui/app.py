@@ -387,8 +387,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.threadpool.start(self.search_worker)
 
     def download(self) -> None:
-        def download_success(res: tuple[list[Any], str]) -> None:
-            tracks, log_path = res
+        def download_success(res: tuple[int, Path, str]) -> None:
+            tracks_count, download_path, log_path = res
             with open(log_path, "r") as f:
                 logs = f.read()
 
@@ -396,7 +396,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             detailed_dialog(
                 self,
                 "Download complete",
-                f"Downloaded {len(tracks)} track(s) in {self.config.output_dir}",
+                f"Downloaded {tracks_count} track(s) in {download_path}",
                 icon=QMessageBox.Icon.Information,
                 detailed_text=logs,
             ).exec()

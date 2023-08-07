@@ -25,7 +25,7 @@ class WorkerSignals(QObject):
 def _download_run(
     queue: Queue,
     songs: list[Song],
-    output_dir: Path | None = None,
+    output_dir: Path,
     log_level: int = logging.DEBUG,
 ) -> None:
     try:
@@ -57,11 +57,10 @@ def _download_run(
         logger.addHandler(fh)
 
         api = SpotdlApi()
-        if output_dir is not None:
-            output = Path(api.downloader.settings["output"])
-            api.downloader.settings["output"] = str(
-                output_dir.joinpath(output.name).absolute()
-            )
+        output = Path(api.downloader.settings["output"])
+        api.downloader.settings["output"] = str(
+            output_dir.joinpath(output.name).absolute()
+        )
 
         progress_thread = Thread(target=_task)
         progress_thread.start()
@@ -69,9 +68,21 @@ def _download_run(
         from ..utils import pythonw_patches  # noqa: F401
 
         downloaded_songs = api.download_songs(songs)
+        # Don't send the return value to the main GUI thread as we aren't making full use of it.
         api.downloader.progress_handler.close()
 
-        queue.put((MessageType.Success, (downloaded_songs, log_path)))
+        queue.put(
+            (
+                MessageType.Success,
+                (
+                    sum(
+                        1 for _, path in downloaded_songs if path is not None
+                    ),  # Number of succesfully downloaded songs
+                    output_dir.absolute(),
+                    log_path,
+                ),
+            )
+        )
 
     except Exception as e:
         os.remove(log_path)
@@ -85,7 +96,7 @@ class DownloadWorker(QRunnable):
     def __init__(
         self,
         songs: list[Song],
-        output_dir: Path | None = None,
+        output_dir: Path,
         log_level: int = logging.DEBUG,
     ):
         super().__init__()
