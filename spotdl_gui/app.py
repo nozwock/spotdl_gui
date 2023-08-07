@@ -130,6 +130,7 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         self.comboBox_downloader_bitrate.setHidden(True)
         self.cookie_file_group.setHidden(True)
         self.lineEdit_downloader_ffmpeg_args.setHidden(True)
+        self.comboBox_downloader_log_level.addItems(logging._nameToLevel.keys())
 
         self.toolButton_cache_path_pick.clicked.connect(
             lambda: self._put_file_path_to_lineEdit(self.lineEdit_spotify_cache_path)
@@ -203,6 +204,7 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
                 self.checkBox_downloader_scan_for_songs,
                 self.comboBox_downloader_overwrite,
                 self.lineEdit_downloader_output,
+                self.comboBox_downloader_log_level,
                 self.lineEdit_downloader_ffmpeg,
                 self.lineEdit_downloader_ffmpeg_args,
                 self.checkBox_downloader_optionalGroup_ffmpeg_args,
