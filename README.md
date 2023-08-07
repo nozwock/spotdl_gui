@@ -55,8 +55,10 @@ poetry run spotdl-gui
 ```powershell
 poetry run -- pyinstaller `
     --name 'SpotdlGUI' `
-    --onefile `
     --noupx `
+    --onedir `
+    --windowed `
+    --noconfirm `
     --collect-data pykakasi `
     --collect-data ytmusicapi `
     --copy-metadata spotdl_gui `

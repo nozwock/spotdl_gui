@@ -1,5 +1,7 @@
 import dataclasses
 import json
+import logging
+import os
 import sys
 from pathlib import Path
 from typing import Any, Iterable
@@ -30,16 +32,18 @@ from .workers.download_worker import DownloadWorker
 from .workers.search_worker import SearchWorker
 
 
-def critical_dialog(
+def detailed_dialog(
     parent: QWidget,
     title: str,
     text: str,
+    /,
+    icon: QMessageBox.Icon = QMessageBox.Icon.NoIcon,
     detailed_text: str | None = None,
     *args,
     **kwargs,
 ) -> QMessageBox:
     msg = QMessageBox(parent, *args, **kwargs)
-    msg.setIcon(QMessageBox.Icon.Critical)
+    msg.setIcon(icon)
     msg.setWindowTitle(title)
     msg.setText(text)
 
@@ -345,7 +349,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             exc, trace = err
 
             self.set_page(0)
-            critical_dialog(self, "Search failed", repr(exc), trace).exec()
+            detailed_dialog(
+                self,
+                "Search failed",
+                repr(exc),
+                icon=QMessageBox.Icon.Critical,
+                detailed_text=trace,
+            ).exec()
 
         def cancel_search() -> None:
             if self.search_worker:
@@ -366,19 +376,33 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.threadpool.start(self.search_worker)
 
     def download(self) -> None:
-        def download_success(v) -> None:
+        def download_success(res: tuple[list[Any], str]) -> None:
+            tracks, log_path = res
+            with open(log_path, "r") as f:
+                logs = f.read()
+
             self.set_page(2)
-            QMessageBox.information(
+            detailed_dialog(
                 self,
                 "Download complete",
-                f"Downloaded {len(v)} track(s) in {self.config.output_dir}",
-            )
+                f"Downloaded {len(tracks)} track(s) in {self.config.output_dir}",
+                icon=QMessageBox.Icon.Information,
+                detailed_text=logs,
+            ).exec()
+
+            os.remove(log_path)
 
         def download_error(err: tuple[Exception, str]) -> None:
             exc, trace = err
 
             self.set_page(2)
-            critical_dialog(self, "Download failed", repr(exc), trace).exec()
+            detailed_dialog(
+                self,
+                "Download failed",
+                repr(exc),
+                icon=QMessageBox.Icon.Critical,
+                detailed_text=trace,
+            ).exec()
 
         def cancel_download() -> None:
             if self.download_worker:
@@ -403,7 +427,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.label_downloading_text.replace("%count%", str(len(songs)))
             )
 
-            self.download_worker = DownloadWorker(songs, self.config.output_dir)
+            log_level = logging._nameToLevel.get(
+                self.settings_dialog.spotdl_config.get("log_level")
+            )
+            log_level = log_level if log_level else logging.DEBUG
+
+            self.download_worker = DownloadWorker(
+                songs, self.config.output_dir, log_level
+            )
             self.download_worker.signals.result.connect(download_success)
             self.download_worker.signals.error.connect(download_error)
             self.download_worker.signals.progress.connect(handle_progress)

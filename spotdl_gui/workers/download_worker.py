@@ -1,3 +1,6 @@
+import logging
+import os
+import tempfile
 import time
 import traceback
 from multiprocessing import Process, Queue
@@ -20,7 +23,10 @@ class WorkerSignals(QObject):
 
 
 def _download_run(
-    queue: Queue, songs: list[Song], output_dir: Path | None = None
+    queue: Queue,
+    songs: list[Song],
+    output_dir: Path | None = None,
+    log_level: int = logging.DEBUG,
 ) -> None:
     try:
 
@@ -40,6 +46,16 @@ def _download_run(
 
                 time.sleep(EVENT_CHECK_DELAY)
 
+        _log_fd, log_path = tempfile.mkstemp()
+        os.fdopen(_log_fd).close()
+
+        # Setup logger
+        logger = logging.getLogger("spotdl")
+        logger.setLevel(log_level)
+        fh = logging.FileHandler(log_path, "w")
+        fh.setLevel(log_level)
+        logger.addHandler(fh)
+
         api = SpotdlApi()
         if output_dir is not None:
             output = Path(api.downloader.settings["output"])
@@ -54,19 +70,28 @@ def _download_run(
 
         downloaded_songs = api.download_songs(songs)
         api.downloader.progress_handler.close()
-        queue.put((MessageType.Success, downloaded_songs))
+
+        queue.put((MessageType.Success, (downloaded_songs, log_path)))
 
     except Exception as e:
+        os.remove(log_path)
+
         queue.put((MessageType.Error, (e, traceback.format_exc())))
     finally:
         progress_thread.join()
 
 
 class DownloadWorker(QRunnable):
-    def __init__(self, songs: list[Song], output_dir: Path | None = None):
+    def __init__(
+        self,
+        songs: list[Song],
+        output_dir: Path | None = None,
+        log_level: int = logging.DEBUG,
+    ):
         super().__init__()
         self.songs = songs
         self.output_dir = output_dir
+        self.log_level = log_level
         self.signals = WorkerSignals()
         self.stopped = False
         self.queue: Queue[tuple[MessageType, object]] = Queue()
@@ -81,7 +106,8 @@ class DownloadWorker(QRunnable):
                 p.kill()
 
         p = Process(
-            target=_download_run, args=[self.queue, self.songs, self.output_dir]
+            target=_download_run,
+            args=[self.queue, self.songs, self.output_dir, self.log_level],
         )
         try:
             p.start()
