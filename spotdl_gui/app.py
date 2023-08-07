@@ -58,7 +58,7 @@ class SpotdlConfigManager(ConfigManager):
         "optionalGroup_"  # i.e. for `WidgetValue | None` depending on CheckBox state
     )
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, optionals: Iterable[str] | None = None, **kwargs):
         super().__init__(
             *args,
             **kwargs,
@@ -68,9 +68,8 @@ class SpotdlConfigManager(ConfigManager):
 
         generate_initial_config()
         _spotdl_config = get_spotdl_config()
-        self._add_optionals(
-            _spotdl_config, ("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
-        )
+        if optionals is not None:
+            self._add_optionals(_spotdl_config, optionals)
 
         self.set_defaults(_spotdl_config)
         self.set_many(_spotdl_config)
@@ -173,7 +172,9 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
         super().reject()
 
     def setup_spotdl_config(self) -> None:
-        self.spotdl_config = SpotdlConfigManager()
+        self.spotdl_config = SpotdlConfigManager(
+            optionals=("auth_token", "cookie_file", "bitrate", "ffmpeg_args")
+        )
 
         # Adding widget handlers
         self.spotdl_config.add_handlers_keyless(

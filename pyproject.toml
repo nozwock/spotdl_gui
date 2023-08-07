@@ -24,6 +24,9 @@ regex = "^2023.6.3"
 mypy = "^1.4.1"
 pyinstaller = "^5.13.0"
 
+[tool.ruff]
+line-length = 120
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
