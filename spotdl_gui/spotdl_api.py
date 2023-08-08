@@ -88,7 +88,7 @@ class SpotdlApi(spotdl.Spotdl):
     def search_and_download(self, query: list[str]) -> list[tuple[Song, Path | None]]:
         return self.download_songs(self.search(query))
 
-    def save_if_use_cache_file(self) -> None:
+    def save_spotify_cache_if_set(self) -> None:
         """Save Spotify cache."""
 
         if self._spotify_options["use_cache_file"]:
