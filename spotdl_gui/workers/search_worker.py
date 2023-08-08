@@ -18,6 +18,7 @@ def _search_task(queue: Queue, query: list[str]) -> None:
     try:
         api = SpotdlApi()
         songs = api.simple_search(query)
+        api.save_spotify_cache_if_set()
         queue.put((MessageType.Success, songs))
     except Exception as e:
         queue.put((MessageType.Error, (e, traceback.format_exc())))
