@@ -22,7 +22,7 @@ class WorkerSignals(QObject):
 # Should do some abstraction maybe...
 
 
-def _download_run(
+def _download_task(
     queue: Queue,
     songs: list[Song],
     output_dir: Path,
@@ -117,7 +117,7 @@ class DownloadWorker(QRunnable):
                 p.kill()
 
         p = Process(
-            target=_download_run,
+            target=_download_task,
             args=[self.queue, self.songs, self.output_dir, self.log_level],
         )
         try:

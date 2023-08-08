@@ -14,7 +14,7 @@ class WorkerSignals(QObject):
     error = Signal(object)
 
 
-def _search_run(queue: Queue, query: list[str]) -> None:
+def _search_task(queue: Queue, query: list[str]) -> None:
     try:
         api = SpotdlApi()
         songs = api.simple_search(query)
@@ -41,7 +41,7 @@ class SearchWorker(QRunnable):
                 p.kill()
 
         p = Process(
-            target=_search_run,
+            target=_search_task,
             args=[self.queue, [s.strip() for s in Splitter().split(self.query)]],
         )
         try:

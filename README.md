@@ -1,4 +1,5 @@
 # spotDL GUI
+Simple GUI wrapper over [**spotDL**](https://github.com/spotDL/spotify-downloader), a Spotify downloader.
 
 ![preview](https://github.com/nozwock/spotdl_gui/assets/57829219/0f4f7173-1d65-4ae6-a46f-9f5602d86e81)
 
@@ -18,6 +19,14 @@
     ```
 
 - Run with `spotdl-gui`
+
+### Prerequisites
+**FFmpeg** is required for the GUI and spotDL to work.
+
+On Windows, Install with:
+```console
+winget install -e --id Gyan.FFmpeg
+```
 
 ## Usage
 ### Searches
@@ -68,7 +77,7 @@ poetry run -- pyinstaller `
     spotdl_gui\__main__.py
 ```
 
-- `pyinstaller -Fsn` for Unix.
+- `--strip` for Unix.
 
 # Credits
 ## Assets
