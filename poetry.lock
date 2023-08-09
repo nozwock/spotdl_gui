@@ -1066,6 +1066,107 @@ docs = ["sphinx (>=1.8)", "sphinx-intl", "sphinx-py3doc-enhanced-theme", "sphinx
 test = ["coverage[toml] (>=5.2)", "py-cpuinfo", "pytest", "pytest-benchmark", "pytest-cov", "pytest-pep8", "pytest-profiling"]
 
 [[package]]
+name = "pyqt6"
+version = "6.4.2"
+description = "Python bindings for the Qt cross platform application toolkit"
+optional = false
+python-versions = ">=3.6.1"
+files = [
+    {file = "PyQt6-6.4.2-cp37-abi3-macosx_10_14_universal2.whl", hash = "sha256:c128bc0f17833e324593e3db83e99470d451a197dd17ff0333927b946c935bd9"},
+    {file = "PyQt6-6.4.2-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:18d1daf98d9236d55102cdadafd1056f5802f3c9288fcf7238569937b71a89f0"},
+    {file = "PyQt6-6.4.2-cp37-abi3-win_amd64.whl", hash = "sha256:25bd399b4a95dce65d5f937c1aa85d3c7e14a21745ae2a4ca14c0116cd104290"},
+    {file = "PyQt6-6.4.2.tar.gz", hash = "sha256:740244f608fe15ee1d89695c43f31a14caeca41c4f02ac36c86dfba4a5d5813d"},
+]
+
+[package.dependencies]
+PyQt6-Qt6 = ">=6.4.0"
+PyQt6-sip = ">=13.4,<14"
+
+[[package]]
+name = "pyqt6-plugins"
+version = "6.4.2.2.3"
+description = "PyQt Designer and QML plugins"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pyqt6_plugins-6.4.2.2.3-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:01f9ce8538894970354ee1a6084685b18076c87fc71042fc1076b29ef13f5783"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:49c2704edc09dbfd95557701d6deb287f2e1a5df7eee1345d02d234118942b0d"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp310-cp310-win_amd64.whl", hash = "sha256:8d021627e73de9768ab1d8e30fbe0df02b82e070e30e2990ecf2c9da5834d515"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp311-cp311-macosx_10_14_universal2.whl", hash = "sha256:680c483d03442902fff13e519ca890d2dded4fe14d9ad9b088b5c8ce7040ec9b"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp311-cp311-manylinux2014_x86_64.whl", hash = "sha256:0e7fc73da2272d401b60eab16b17ba123ebc58b98fdd05de12fd79bc35544c8f"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp311-cp311-win_amd64.whl", hash = "sha256:bca16efe5c26b1cddbfd2b66c5464f8a1ec7d7226fd95a63d32326707b0bb665"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:f4b7dafd93fe7478d61145fc7b4f6ced261b17459fe5553f2ab8752a40d29155"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp37-cp37m-manylinux2014_x86_64.whl", hash = "sha256:77ecdcb0bdf3e52a1a2c30ab0e9fac0d43803e8c517c507bb8d6055ae61a9ae1"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp37-cp37m-win_amd64.whl", hash = "sha256:f1762458710138f23496be5b3fae593b04248db655189a8d2bd4fa5efbfc10a1"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:a63ee26b7cd4415ddf8758c30064b01e19f31a286404ecfe430ae93c1c7b2a1c"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:91a40447879dfc8c7d232bef04182fb80e2e9698dfeb7a7cf47832f785fbd7f6"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp38-cp38-win_amd64.whl", hash = "sha256:e42f00a73ed91fc93fac27b169dace6928f4eb7a6b1c143345c27158594528b0"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:bea5caa5821f540c4577b1eb22723bd2c150792c2c69292518d899d25cb2a8e0"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:caac3299a28b1207c4844a4e89b0f4402cab2673a66e9bf46459786e45090b0a"},
+    {file = "pyqt6_plugins-6.4.2.2.3-cp39-cp39-win_amd64.whl", hash = "sha256:07985e1289ca066c5e467303f34e31ff56fe217a85535b77ba72d7f7f5d9b7a2"},
+]
+
+[package.dependencies]
+click = "*"
+pyqt6 = "6.4.2"
+pyqt6-qt6 = "6.4.3"
+qt6-tools = ">=6.4.3.1.2,<6.4.3.2"
+
+[[package]]
+name = "pyqt6-qt6"
+version = "6.4.3"
+description = "The subset of a Qt installation needed by PyQt6."
+optional = false
+python-versions = "*"
+files = [
+    {file = "PyQt6_Qt6-6.4.3-py3-none-macosx_10_14_x86_64.whl", hash = "sha256:b133bbc53e1cc05aafd78bfd3a577826481a976021d041c1c57d7dadc7de1c11"},
+    {file = "PyQt6_Qt6-6.4.3-py3-none-macosx_11_0_arm64.whl", hash = "sha256:27cc19976c872ae7111fcab8a9e9eae8c5ec5e55bfb6938a379551148b85f5b0"},
+    {file = "PyQt6_Qt6-6.4.3-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:96f30cca49af18f6863c66576b90f2f29987dc35397994d0575b197226c5b328"},
+    {file = "PyQt6_Qt6-6.4.3-py3-none-win_amd64.whl", hash = "sha256:b0151097aa93235676c0f83ce23916ee31ca8584bd1b45923725068404542cc2"},
+]
+
+[[package]]
+name = "pyqt6-sip"
+version = "13.5.2"
+description = "The sip module support for PyQt6"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "PyQt6_sip-13.5.2-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:c0b4e55c4d0dc44728da90eb1451dfff0d05260b4a3496ff0014494e6c1865a6"},
+    {file = "PyQt6_sip-13.5.2-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:9ad5b8c4c92d62e00ebf254a4c9656668b130f2a1d2792034e0d82b2d6571509"},
+    {file = "PyQt6_sip-13.5.2-cp310-cp310-win_amd64.whl", hash = "sha256:5d0fd42da765198b51d7fe12c29721cbe3e14b77ca4f68aa43618149ee7dbeff"},
+    {file = "PyQt6_sip-13.5.2-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:4b5b0c4b557e0293eba008021342459a0f91c69a7a2eb5231276d495d1d2960a"},
+    {file = "PyQt6_sip-13.5.2-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:831f5d606fc5296a80303ab30892c3308954c5766039bf7a96267488bb2524a5"},
+    {file = "PyQt6_sip-13.5.2-cp311-cp311-win_amd64.whl", hash = "sha256:91812f0094443b816a74a89954d60bb50060807f54d7c016a4de7bd29454091e"},
+    {file = "PyQt6_sip-13.5.2-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:94afb031db89159aa330891eba2c937b0378b4b264570998848c7a78eddf7c94"},
+    {file = "PyQt6_sip-13.5.2-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:ace942b78378bff8ae2d6bafccc84465f1ff0cf30720b8321e0bd6c95c36ede6"},
+    {file = "PyQt6_sip-13.5.2-cp37-cp37m-win_amd64.whl", hash = "sha256:318d4d1c7ef60f69c68227cef78fc439accc9028ec6149200eea3d34c433d373"},
+    {file = "PyQt6_sip-13.5.2-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:87d758ba999baa16459f0a3c7f7ed47a5b45e8991ad691f17345bf3c493a4281"},
+    {file = "PyQt6_sip-13.5.2-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:5b499eff7150d9f31fe835a73cc41f076bba2fcde0f5b0325b1284797f17c0ac"},
+    {file = "PyQt6_sip-13.5.2-cp38-cp38-win_amd64.whl", hash = "sha256:1bdb1f7b5b2f6ac31d517a6f3a13c38055640ac0014f67a2e5422d2083ce69ec"},
+    {file = "PyQt6_sip-13.5.2-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:9c9dac067710015895f523f5a2a4d59cbef8624a152b6f9a426e5b848d8c6d29"},
+    {file = "PyQt6_sip-13.5.2-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:dcf602c233ee7600e810927adcb9e518d61bc796a6b2013c17feedd24c4e5413"},
+    {file = "PyQt6_sip-13.5.2-cp39-cp39-win_amd64.whl", hash = "sha256:b54b0d8d21c5835af8f6d6d8a323a23106e67b7cd4c31e23c35bb4c321000de8"},
+    {file = "PyQt6_sip-13.5.2.tar.gz", hash = "sha256:ebf6264b6feda01ba37d3b60a4bb87493bdb87be70f7b2a5384a7acd4902d88d"},
+]
+
+[[package]]
+name = "pyqt6-tools"
+version = "6.4.2.3.3"
+description = "PyQt Designer and QML plugins"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "pyqt6_tools-6.4.2.3.3-py3-none-any.whl", hash = "sha256:dfeea682e64fb757f447328742402682eaba9784faf25ceedbd6e38e3d8871b7"},
+]
+
+[package.dependencies]
+click = "*"
+pyqt6 = "6.4.2"
+pyqt6-plugins = ">=6.4.2.2.2,<6.4.2.3"
+python-dotenv = "*"
+
+[[package]]
 name = "pyqtconfig"
 version = "0.9.2"
 description = "An API for keeping PyQt widgets in sync with a config dictionary or QSettings object."
@@ -1161,6 +1262,20 @@ files = [
 six = ">=1.5"
 
 [[package]]
+name = "python-dotenv"
+version = "1.0.0"
+description = "Read key-value pairs from a .env file and set them as environment variables"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
+]
+
+[package.extras]
+cli = ["click (>=5.0)"]
+
+[[package]]
 name = "python-slugify"
 version = "8.0.1"
 description = "A Python slugify application that also handles Unicode"
@@ -1199,6 +1314,32 @@ files = [
     {file = "pywin32-ctypes-0.2.2.tar.gz", hash = "sha256:3426e063bdd5fd4df74a14fa3cf80a0b42845a87e1d1e81f6549f9daec593a60"},
     {file = "pywin32_ctypes-0.2.2-py3-none-any.whl", hash = "sha256:bf490a1a709baf35d688fe0ecf980ed4de11d2b3e37b51e5442587a75d9957e7"},
 ]
+
+[[package]]
+name = "qt6-applications"
+version = "6.4.3.2.3"
+description = "The collection of Qt tools easily installable in Python"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "qt6_applications-6.4.3.2.3-py3-none-macosx_10_14_universal2.whl", hash = "sha256:aa4d1562ab154e32809045a08b7c2cd6fe86f061bbbe179eaba3580397168005"},
+    {file = "qt6_applications-6.4.3.2.3-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:f9c47faf46a71cf1b61b6ffd1908783454c99742fbfd59c49d523f29f035467e"},
+    {file = "qt6_applications-6.4.3.2.3-py3-none-win_amd64.whl", hash = "sha256:029a24611a45fa77a403476ce1a54f3046ef4bde5cfaa5ee6477dc17f8053be2"},
+]
+
+[[package]]
+name = "qt6-tools"
+version = "6.4.3.1.3"
+description = "Wrappers for the raw Qt programs from qt6-applications"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "qt6_tools-6.4.3.1.3-py3-none-any.whl", hash = "sha256:dd01cdf830ec8a14f353b7f6d0b81eb4d7472b86f9fa8e872c8ed9c3465726e3"},
+]
+
+[package.dependencies]
+click = "*"
+qt6-applications = ">=6.4.3.2.2,<6.4.3.3"
 
 [[package]]
 name = "rapidfuzz"
@@ -1913,4 +2054,4 @@ dev = ["coverage", "flake8", "pre-commit", "sphinx", "sphinx-rtd-theme", "yapf"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "57d7f77ad10d2682fa7cb15382806c05c7e02e20ebed70a5d4ec8d43613ac526"
+content-hash = "f61ae1018d2721119a43550c32f934176c7249298cbb0aa01d675306f78f671b"
