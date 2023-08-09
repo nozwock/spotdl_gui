@@ -133,6 +133,7 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
             self.comboBox_downloader_bitrate,
             self.lineEdit_downloader_ffmpeg_args,
             self.lineEdit_downloader_m3u,
+            self.lineEdit_downloader_yt_dlp_args,
         ):
             widget.setHidden(True)
 
@@ -180,7 +181,14 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
 
     def setup_spotdl_config(self) -> None:
         self.spotdl_config = SpotdlConfigManager(
-            optionals=("auth_token", "cookie_file", "bitrate", "ffmpeg_args", "m3u")
+            optionals=(
+                "auth_token",
+                "cookie_file",
+                "bitrate",
+                "ffmpeg_args",
+                "m3u",
+                "yt_dlp_args",
+            )
         )
 
         # Adding widget handlers
@@ -194,7 +202,6 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
                 self.checkBox_spotify_user_auth,
                 self.checkBox_spotify_headless,
                 self.lineEdit_spotify_cache_path,
-                self.checkBox_spotify_no_cache,
                 self.checkBox_spotify_use_cache_file,
                 self.spinBox_spotify_max_retries,
                 # Downloader handlers
@@ -205,17 +212,26 @@ class SettingsDialog(QtWidgets.QDialog, Ui_Settings):
                 self.checkBox_downloader_optionalGroup_cookie_file,
                 self.lineEdit_downloader_cookie_file,
                 self.checkBox_downloader_sponsorblock,
-                self.checkBox_downloader_print_errors,
                 self.checkBox_downloader_playlist_numbering,
                 self.checkBox_downloader_scan_for_songs,
+                self.checkBox_downloader_preload,
+                self.checkBox_downloader_fetch_albums,
+                self.checkBox_downloader_filter_results,
+                self.checkBox_downloader_only_verified_results,
+                self.checkBox_downloader_ytm_data,
+                self.checkBox_downloader_force_update_metadata,
+                self.checkBox_downloader_print_errors,
                 self.checkBox_downloader_optionalGroup_m3u,
                 self.lineEdit_downloader_m3u,
                 self.comboBox_downloader_overwrite,
                 self.lineEdit_downloader_output,
+                self.lineEdit_downloader_id3_separator,
                 self.comboBox_downloader_log_level,
                 self.lineEdit_downloader_ffmpeg,
-                self.lineEdit_downloader_ffmpeg_args,
                 self.checkBox_downloader_optionalGroup_ffmpeg_args,
+                self.lineEdit_downloader_ffmpeg_args,
+                self.checkBox_downloader_optionalGroup_yt_dlp_args,
+                self.lineEdit_downloader_yt_dlp_args,
             )
         )
 
