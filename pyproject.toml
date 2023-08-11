@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "spotdl-gui"
-version = "0.5.2"
+version = "0.6.0"
 description = "Simple GUI wrapper over spotDL, a Spotify downloader"
 authors = ["nozwock <57829219+nozwock@users.noreply.github.com>"]
 readme = "README.md"
