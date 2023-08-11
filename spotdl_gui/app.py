@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Iterator
 
 import qdarktheme
 from pyqtconfig import ConfigManager
@@ -275,6 +275,50 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         # Setup tracks list model
         self.tracks_model = TracksModel()
         self.tableView_tracks_list.setModel(self.tracks_model)
+
+        def tracks_list_contextMenuEvent(self, event) -> None:
+            def get_selected_tracks() -> Iterator:
+                return (
+                    self.model().tracks[row.row()]
+                    for row in self.selectionModel().selectedRows()
+                )
+
+            def copy_fields(fields: Iterable[str]) -> None:
+                QtWidgets.QApplication.clipboard().setText("\n".join(fields))
+
+            self.menu = QtWidgets.QMenu(self)
+            copy_menu = self.menu.addMenu("&Copy")
+            copy_album = QtGui.QAction("&Album", self)
+            copy_menu.addAction(copy_album)
+            copy_title = QtGui.QAction("&Title", self)
+            copy_menu.addAction(copy_title)
+            copy_artists = QtGui.QAction("A&rtists", self)
+            copy_menu.addAction(copy_artists)
+            copy_link = QtGui.QAction("&Link", self)
+            copy_menu.addAction(copy_link)
+
+            copy_album.triggered.connect(
+                lambda: copy_fields(
+                    (track.album_name for track in get_selected_tracks())
+                )
+            )
+            copy_title.triggered.connect(
+                lambda: copy_fields((track.name for track in get_selected_tracks()))
+            )
+            copy_artists.triggered.connect(
+                lambda: copy_fields(
+                    (", ".join(track.artists) for track in get_selected_tracks())
+                )
+            )
+            copy_link.triggered.connect(
+                lambda: copy_fields((track.url for track in get_selected_tracks()))
+            )
+
+            self.menu.exec(QtGui.QCursor.pos())
+
+        self.tableView_tracks_list.contextMenuEvent = (
+            tracks_list_contextMenuEvent.__get__(self.tableView_tracks_list)
+        )
 
         # Setup status bar
         self.label_statusbar_output_dir = QtWidgets.QLabel("")
