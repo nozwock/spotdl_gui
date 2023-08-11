@@ -276,7 +276,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.tracks_model = TracksModel()
         self.tableView_tracks_list.setModel(self.tracks_model)
 
-        def tracks_list_contextMenuEvent(self, event) -> None:
+        def tracks_list_contextMenuEvent(self: QtWidgets.QTableView, event) -> None:
             def get_selected_tracks() -> Iterator:
                 return (
                     self.model().tracks[row.row()]
