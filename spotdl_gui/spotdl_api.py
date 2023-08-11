@@ -5,7 +5,7 @@ from pathlib import Path
 import spotdl
 from spotdl.download.downloader import Downloader
 from spotdl.types.options import DownloaderOptions, SpotifyOptions
-from spotdl.types.song import Song
+from spotdl.types.song import Song as _Song
 from spotdl.utils.config import DOWNLOADER_OPTIONS, SPOTIFY_OPTIONS
 from spotdl.utils.config import get_config as get_spotdl_config
 from spotdl.utils.config import get_config_file as get_spotdl_config_path  # noqa: F401
@@ -15,6 +15,11 @@ from spotdl.utils.search import get_simple_songs
 from spotdl.utils.spotify import SpotifyClient, save_spotify_cache
 
 from .utils import override_map_values
+
+
+class Song(_Song):
+    def __hash__(self):
+        return hash(self.url)
 
 
 class SpotdlApi(spotdl.Spotdl):

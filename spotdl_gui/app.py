@@ -526,9 +526,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not import_file:
             return
 
+        if self.tracks_model.tracks:
+            merge = (
+                True
+                if QMessageBox.question(
+                    self,
+                    "Merge tracks list?",
+                    "Should the imported tracks list be merged into the current list?",
+                )
+                == QMessageBox.StandardButton.Yes
+                else False
+            )
+
         try:
             with open(import_file, "r", encoding="utf-8") as f:
-                self.tracks_model.tracks = [Song(**song) for song in json.load(f)]
+                imported_tracks = [Song(**song) for song in json.load(f)]
+                if self.tracks_model.tracks and merge:
+                    imported_tracks.extend(self.tracks_model.tracks)
+                    self.tracks_model.tracks = list(set(imported_tracks))  # Deduplicate
+                else:
+                    self.tracks_model.tracks = imported_tracks
                 self.tracks_model.layoutChanged.emit()
                 self.set_page(2)
         except Exception as e:
