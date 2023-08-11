@@ -18,7 +18,7 @@ class TracksModel(QtCore.QAbstractTableModel):
                 mins, secs = divmod(duration, 60)
             else:  # ms
                 mins, secs = divmod(duration / 1000, 60)
-            return f"{int(mins)}:{int(secs) if secs > 9 else f'0{int(secs)}'}"
+            return f"{int(mins)}:{int(secs):>02}"
 
         @dataclass
         class DataMapValue:
