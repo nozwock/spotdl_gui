@@ -72,8 +72,8 @@ poetry run -- pyinstaller `
     --collect-data ytmusicapi `
     --copy-metadata spotdl_gui `
     --copy-metadata spotdl `
-    --splash resources\splash.png `
-    -i resources\icon.ico `
+    --splash release\resources\splash.png `
+    -i release\resources\icon.ico `
     spotdl_gui\__main__.py
 ```
 
