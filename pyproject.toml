@@ -23,7 +23,7 @@ regex = "^2023.6.3"
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.4.1"
 pyinstaller = "^5.13.0"
-pyqt6-tools = "^6.4.2.3.3"
+pyqt6-tools = { version = "^6.4.2.3.3", optional = true }
 
 [tool.ruff]
 line-length = 120
