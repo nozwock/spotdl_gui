@@ -2,10 +2,10 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "New tag name"
-        required: true
+    # inputs:
+    #   tag:
+    #     description: "New tag name"
+    #     required: true
 
 permissions:
   contents: write
@@ -59,8 +59,9 @@ jobs:
         run: |
           cd dist/
           ls
-          # find . -type f ! -name "*.app" -delete
-          # find . -type d -delete
+          find . -type f ! -name "*.app" -delete
+          find . -type d -delete
+          ls
 
       - name: Release
         uses: softprops/action-gh-release@v1
