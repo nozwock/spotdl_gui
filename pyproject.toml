@@ -25,6 +25,9 @@ mypy = "^1.4.1"
 pyinstaller = "^5.13.0"
 pyqt6-tools = { version = "^6.4.2.3.3", optional = true }
 
+[tool.poetry.extras]
+dev = ["pyqt6-tools"]
+
 [tool.ruff]
 line-length = 120
 

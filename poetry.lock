@@ -2051,7 +2051,10 @@ requests = ">=2.22"
 [package.extras]
 dev = ["coverage", "flake8", "pre-commit", "sphinx", "sphinx-rtd-theme", "yapf"]
 
+[extras]
+dev = []
+
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<3.12"
-content-hash = "8ef74fd61824c5fed1e9c504e4e9a34c9e6060257b39ca683c1024eaa2da045c"
+content-hash = "4fe59b546f8828aad73c844f0072cc702081e6cbd61d564d52923a426b570553"
