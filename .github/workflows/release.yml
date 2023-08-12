@@ -30,7 +30,7 @@ jobs:
       - name: Build executable
         run: poetry run python release/build.py
 
-      - name: Finalizing build
+      - name: Finalizing build (Linux)
         if: matrix.platform == 'ubuntu-latest'
         run: |
           NAME=$(basename dist/*)
@@ -38,7 +38,7 @@ jobs:
           zip -r ${NAME}.zip *
           rm -rf $NAME
 
-      - name: Finalizing build
+      - name: Finalizing build (Windows)
         if: matrix.platform == 'windows-latest'
         run: |
           $FirstFile = Get-ChildItem "dist" | Select-Object -First 1
@@ -47,7 +47,7 @@ jobs:
           7z a "$NAME.zip" *
           Remove-Item -Force -Recurse $Name
 
-      - name: Finalizing build
+      - name: Finalizing build (Darwin)
         if: matrix.platform == 'macos-latest'
         run: |
           cd dist/
