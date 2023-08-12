@@ -614,8 +614,21 @@ def main() -> None:
     app.setWindowIcon(QtGui.QIcon(":/images/music-note-slider.svg"))
     qdarktheme.setup_theme()
 
-    window = MainWindow()
-    window.show()
+    try:
+        window = MainWindow()
+        window.show()
+    except Exception as e:
+        import traceback
+
+        detailed_dialog(
+            None,
+            "Failed to launch main window",
+            repr(e),
+            icon=QMessageBox.Icon.Critical,
+            detailed_text=traceback.format_exc(),
+        ).exec()
+        sys.exit(1)
+
     sys.exit(app.exec())
 
 
