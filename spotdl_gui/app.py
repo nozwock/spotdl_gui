@@ -20,7 +20,7 @@ from .models.tracks_model import TracksModel
 from .spotdl_api import (
     Song,
     generate_initial_config,
-    get_spotdl_config,
+    get_spotdl_config_all,
     get_spotdl_config_path,
     get_spotdl_dir,
 )
@@ -67,7 +67,7 @@ class SpotdlConfigManager(ConfigManager):
         self.path = get_spotdl_config_path()
 
         generate_initial_config()
-        _spotdl_config = get_spotdl_config()
+        _spotdl_config = get_spotdl_config_all()
         if optionals is not None:
             self._add_optionals(_spotdl_config, optionals)
 

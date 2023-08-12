@@ -2,6 +2,7 @@ import os
 import platform
 import subprocess
 import sys
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +28,7 @@ def override_map_values(
     Returns a map identical in structure to `keys_from` but using the values from `values_from`.
     """
 
-    out = {}
+    out = deepcopy(key_from)
     override_keys = values_from.keys()
     for k in key_from.keys():
         if k in override_keys:
