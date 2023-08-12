@@ -57,9 +57,9 @@ def _download_task(
         logger.addHandler(fh)
 
         api = SpotdlApi()
-        output = Path(api.downloader.settings["output"])
-        api.downloader.settings["output"] = str(
-            output_dir.joinpath(output.name).absolute()
+        output_format = Path(api.downloader.settings["output"])
+        api.downloader.settings["output"] = str(  # spotdl bs
+            output_dir.joinpath(output_format).absolute()
         )
 
         progress_thread = Thread(target=_task)
