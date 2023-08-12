@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         platform: ["ubuntu-latest", "macos-latest", "windows-latest"]
     runs-on: ${{ matrix.platform }}
@@ -29,14 +30,16 @@ jobs:
       - name: Build executable
         run: poetry run python release/build.py
 
-      - if: matrix.platform == 'ubuntu-latest'
+      - name: Finalizing build
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           NAME=$(basename dist/*)
           cd dist/
           zip -r ${NAME}.zip *
           rm -rf $NAME
 
-      - if: matrix.platform == 'windows-latest'
+      - name: Finalizing build
+        if: matrix.platform == 'windows-latest'
         run: |
           $FirstFile = Get-ChildItem "dist" | Select-Object -First 1
           $Name = $FirstFile.BaseName
@@ -44,7 +47,8 @@ jobs:
           7z a "$NAME.zip" *
           Remove-Item -Force -Recurse $Name
 
-      - if: matrix.platform == 'macos-latest'
+      - name: Finalizing build
+        if: matrix.platform == 'macos-latest'
         run: |
           cd dist/
           find . -type f ! -name "*.app" -delete
