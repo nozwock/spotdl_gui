@@ -279,42 +279,45 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         def tracks_list_contextMenuEvent(self: QtWidgets.QTableView, event) -> None:
             def get_selected_tracks() -> Iterator:
                 return (
-                    self.model().tracks[row.row()]
+                    self.model().tracks[row.row()]  # type: ignore[attr-defined]
                     for row in self.selectionModel().selectedRows()
                 )
 
             def copy_fields(fields: Iterable[str]) -> None:
                 QtWidgets.QApplication.clipboard().setText("\n".join(fields))
 
-            self.menu = QtWidgets.QMenu(self)
-            copy_menu = self.menu.addMenu("&Copy")
-            copy_album = QtGui.QAction("&Album", self)
-            copy_menu.addAction(copy_album)
-            copy_title = QtGui.QAction("&Title", self)
-            copy_menu.addAction(copy_title)
-            copy_artists = QtGui.QAction("A&rtists", self)
-            copy_menu.addAction(copy_artists)
-            copy_link = QtGui.QAction("&Link", self)
-            copy_menu.addAction(copy_link)
+            try:
+                self.context_menu  # type: ignore[attr-defined]
+            except Exception:
+                self.context_menu = QtWidgets.QMenu(self)  # type: ignore[attr-defined]
+                copy_menu = self.context_menu.addMenu("&Copy")  # type: ignore[attr-defined]
+                copy_album = QtGui.QAction("&Album", self)
+                copy_menu.addAction(copy_album)
+                copy_title = QtGui.QAction("&Title", self)
+                copy_menu.addAction(copy_title)
+                copy_artists = QtGui.QAction("A&rtists", self)
+                copy_menu.addAction(copy_artists)
+                copy_link = QtGui.QAction("&Link", self)
+                copy_menu.addAction(copy_link)
 
-            copy_album.triggered.connect(
-                lambda: copy_fields(
-                    (track.album_name for track in get_selected_tracks())
+                copy_album.triggered.connect(
+                    lambda: copy_fields(
+                        (track.album_name for track in get_selected_tracks())
+                    )
                 )
-            )
-            copy_title.triggered.connect(
-                lambda: copy_fields((track.name for track in get_selected_tracks()))
-            )
-            copy_artists.triggered.connect(
-                lambda: copy_fields(
-                    (", ".join(track.artists) for track in get_selected_tracks())
+                copy_title.triggered.connect(
+                    lambda: copy_fields((track.name for track in get_selected_tracks()))
                 )
-            )
-            copy_link.triggered.connect(
-                lambda: copy_fields((track.url for track in get_selected_tracks()))
-            )
+                copy_artists.triggered.connect(
+                    lambda: copy_fields(
+                        (", ".join(track.artists) for track in get_selected_tracks())
+                    )
+                )
+                copy_link.triggered.connect(
+                    lambda: copy_fields((track.url for track in get_selected_tracks()))
+                )
 
-            self.menu.exec(QtGui.QCursor.pos())
+            self.context_menu.exec(QtGui.QCursor.pos())  # type: ignore[attr-defined]
 
         self.tableView_tracks_list.contextMenuEvent = (
             tracks_list_contextMenuEvent.__get__(self.tableView_tracks_list)
@@ -620,16 +623,17 @@ def main() -> None:
     except Exception as e:
         import traceback
 
+        widget = QWidget()
         detailed_dialog(
-            None,
+            widget,
             "Failed to launch main window",
             repr(e),
             icon=QMessageBox.Icon.Critical,
             detailed_text=traceback.format_exc(),
         ).exec()
-        sys.exit(1)
-
-    sys.exit(app.exec())
+        app.quit()
+    else:
+        sys.exit(app.exec())
 
 
 if __name__ == "__main__":
