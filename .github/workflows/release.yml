@@ -58,10 +58,11 @@ jobs:
         if: matrix.platform == 'macos-latest'
         run: |
           cd dist/
-          ls
           find . -type f ! -name "*.app" -delete
           find . -type d -delete
-          ls
+          NAME=$(basename $(find . -type f -name "*.app"))
+          zip -r ${NAME}.zip *
+          rm -rf $NAME
 
       - name: Release
         uses: softprops/action-gh-release@v1
