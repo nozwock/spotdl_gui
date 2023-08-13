@@ -31,7 +31,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry env use "3.11"
+          # poetry env use "3.11"
           poetry install
 
       - name: Build executable
