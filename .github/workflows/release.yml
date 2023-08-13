@@ -6,6 +6,9 @@ on:
     #   tag:
     #     description: "New tag name"
     #     required: true
+  push:
+    tags:
+      - "**"
 
 permissions:
   contents: write
