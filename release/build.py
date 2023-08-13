@@ -6,7 +6,8 @@ import PyInstaller.__main__
 from spotdl_gui import __version__
 
 root_path = Path(__file__).parent.parent
-on_macos = platform.system() == "Darwin"
+_system = platform.system()
+on_macos = _system == "Darwin"
 icon = "icon.icns" if on_macos else "icon.ico"
 
 
@@ -37,5 +38,8 @@ if not on_macos:
             str(root_path / "release/resources/splash.png"),
         ]
     )
+
+if _system == "Linux" or on_macos:
+    args.append("--strip")
 
 PyInstaller.__main__.run(args)
