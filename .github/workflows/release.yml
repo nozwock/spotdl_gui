@@ -22,6 +22,11 @@ jobs:
 
       - name: Install poetry
         run: pipx install poetry
+        if: matrix.platform != 'windows-latest'
+
+      - name: Install poetry (1.3.2)
+        run: pipx install git+https://github.com/python-poetry/poetry.git@1.3.2
+        if: matrix.platform == 'windows-latest'
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v4
