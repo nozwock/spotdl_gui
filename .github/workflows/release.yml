@@ -43,7 +43,6 @@ jobs:
           NAME=$(basename dist/*)
           cd dist/
           zip -r ${NAME}.zip *
-          rm -rf $NAME
 
       - name: Finalizing build (Windows)
         if: matrix.platform == 'windows-latest'
@@ -52,17 +51,13 @@ jobs:
           $Name = $FirstFile.BaseName
           Set-Location "dist"
           7z a "$NAME.zip" *
-          Remove-Item -Force -Recurse $Name
 
       - name: Finalizing build (Darwin)
         if: matrix.platform == 'macos-latest'
         run: |
           cd dist/
-          find . -type f ! -name "*.app" -delete
-          find . -type d -delete
-          NAME=$(basename $(find . -type f -name "*.app"))
-          zip -r ${NAME}.zip *
-          rm -rf $NAME
+          NAME=$(basename $(find . -type d -name "*.app"))
+          zip -r ${NAME%.*}.zip $NAME
 
       - name: Release
         uses: softprops/action-gh-release@v1
