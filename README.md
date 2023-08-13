@@ -61,23 +61,9 @@ poetry run spotdl-gui
 ```
 
 ### Building frozen app 
-```powershell
-poetry run -- pyinstaller `
-    --name 'SpotdlGUI' `
-    --noupx `
-    --onedir `
-    --windowed `
-    --noconfirm `
-    --collect-data pykakasi `
-    --collect-data ytmusicapi `
-    --copy-metadata spotdl_gui `
-    --copy-metadata spotdl `
-    --splash release\resources\splash.png `
-    -i release\resources\icon.ico `
-    spotdl_gui\__main__.py
+```sh
+poetry run python release/build.py
 ```
-
-- `--strip` for Unix.
 
 # Credits
 ## Assets
