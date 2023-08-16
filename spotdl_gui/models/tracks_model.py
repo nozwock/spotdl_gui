@@ -30,7 +30,7 @@ class TracksModel(QtCore.QAbstractTableModel):
             1: DataMapValue("Title", lambda row: self.tracks[row].name),
             2: DataMapValue("Artists", lambda row: ", ".join(self.tracks[row].artists)),
             3: DataMapValue("Date", lambda row: self.tracks[row].date),
-            4: DataMapValue("Duration", lambda row: _get_duration(row)),
+            4: DataMapValue("Duration", _get_duration),
             5: DataMapValue("Link", lambda row: self.tracks[row].url),
         }
 

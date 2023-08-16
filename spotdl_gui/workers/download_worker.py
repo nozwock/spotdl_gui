@@ -30,7 +30,7 @@ def _download_task(
 ) -> None:
     try:
 
-        def _task() -> None:
+        def _progress_task() -> None:
             handler = api.downloader.progress_handler
             while ...:
                 progress, total = handler.overall_progress, handler.overall_total
@@ -62,7 +62,7 @@ def _download_task(
             output_dir.joinpath(output_format).absolute()
         )
 
-        progress_thread = Thread(target=_task)
+        progress_thread = Thread(target=_progress_task)
         progress_thread.start()
 
         from ..utils import pythonw_patches  # noqa: F401

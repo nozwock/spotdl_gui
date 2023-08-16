@@ -9,7 +9,7 @@ from . import is_frozen
 __all__: list[str] = []
 
 
-class FreezePopen(subprocess.Popen):
+class PythonwPopen(subprocess.Popen):
     def __init__(self, *args, **kwargs):
         if subprocess._mswindows:
             if len(args) >= 14:
@@ -26,4 +26,4 @@ if platform.system() == "Windows" and (
     is_frozen or (not is_frozen and sys.executable.find("pythonw.exe") != -1)
 ):  # Couldn't find a way to know if a frozen app is windowed
     # So this will apply to both --console and --windowed
-    subprocess.Popen = FreezePopen  # type: ignore[misc]
+    subprocess.Popen = PythonwPopen  # type: ignore[misc]
