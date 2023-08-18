@@ -5,6 +5,12 @@ description = "Simple GUI wrapper over spotDL, a Spotify downloader"
 authors = ["nozwock <57829219+nozwock@users.noreply.github.com>"]
 readme = "README.md"
 packages = [{ include = "spotdl_gui" }]
+exclude = [
+    "spotdl_gui/assets/images",
+    "spotdl_gui/assets/icons",
+    "spotdl_gui/assets/*.qrc",
+    "spotdl_gui/views/*.ui",
+]
 
 [tool.poetry.scripts]
 spotdl-gui = 'spotdl_gui.app:main'
